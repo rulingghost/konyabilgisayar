@@ -1,0 +1,42 @@
+[
+  {
+    "id": 3,
+    "customerName": "Ahmet Yılmaz",
+    "customerPhone": "0551 045 42 55",
+    "category": "laptop",
+    "brandModel": "ASUS ROG Strix G16",
+    "specs": "CPU: i7-13, RAM: 16GB, GPU: rtx4060, Storage: 1tbssd, Screen: 165Hz IPS, Battery: Sağlam",
+    "condition": "Kozmetik: 10/10 Sıfır ayarında, Kutu: Kutu+Fatura+Garanti var, Tamir: Orijinal",
+    "estimatedPrice": "26.500 TL - 31.000 TL",
+    "notes": "Sıfırdan farksız, garantisi 14 ay daha devam ediyor.",
+    "location": "Konya / Selçuklu",
+    "status": "beklemede",
+    "createdAt": "2026-10-13T23:32:01.036Z"
+  },
+  {
+    "id": 1,
+    "customerName": "Ahmet Yılmaz",
+    "customerPhone": "0532 555 12 34",
+    "category": "laptop",
+    "brandModel": "Asus TUF Gaming A15",
+    "specs": "Ryzen 7 6800H, RTX 3060 6GB, 16GB RAM, 512GB SSD",
+    "condition": "Temiz, kutu fatura var",
+    "estimatedPrice": "21.500 TL - 23.000 TL",
+    "notes": "İkinci sahibiyim, termal macunu yeni değişti",
+    "status": "beklemede",
+    "createdAt": "2026-10-13T14:30:00Z"
+  },
+  {
+    "id": 2,
+    "customerName": "Merve Demir",
+    "customerPhone": "0544 333 99 88",
+    "category": "macbook",
+    "brandModel": "MacBook Air M1 8GB 256GB Uzay Grisi",
+    "specs": "Apple M1, 8GB RAM, 256GB SSD, Pil %90",
+    "condition": "Kozmetik 9/10, şarj aleti mevcut",
+    "estimatedPrice": "16.000 TL - 17.500 TL",
+    "notes": "Elden teslim etmek istiyorum",
+    "status": "arandi",
+    "createdAt": "2026-10-13T16:15:00Z"
+  }
+]

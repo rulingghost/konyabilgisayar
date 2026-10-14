@@ -1,0 +1,24 @@
+[
+  {
+    "id": 1,
+    "customerName": "Mehmet Kaya",
+    "customerPhone": "0555 444 33 22",
+    "deviceType": "laptop",
+    "brandModel": "Acer Nitro 5",
+    "serviceType": "Genel Bakım & Termal Macun Yenileme",
+    "description": "Oyun oynarken 95 dereceye çıkıyor, fanlar çok ses çıkarıyor.",
+    "status": "islemde",
+    "createdAt": "2026-10-13T11:00:00Z"
+  },
+  {
+    "id": 2,
+    "customerName": "Serkan Öz",
+    "customerPhone": "0533 111 22 33",
+    "deviceType": "masaustu",
+    "brandModel": "Toplama PC",
+    "serviceType": "SSD Yükseltme & Format Kurulum",
+    "description": "Eski HDD yerine 1TB M.2 SSD takılacak ve Windows 11 kurulacak.",
+    "status": "tamamlandi",
+    "createdAt": "2026-10-12T15:20:00Z"
+  }
+]

@@ -1,0 +1,285 @@
+[
+  {
+    "id": 1,
+    "sku": "KB-101",
+    "title": "HP Victus 16 Ryzen 5 7640HS RTX 4050 6GB 16GB DDR5 512GB SSD",
+    "slug": "hp-victus-16-ryzen-5-7640hs-rtx-4050-16gb-ddr5-512gb-ssd",
+    "category": "laptop",
+    "categoryName": "Oyuncu Laptop",
+    "brand": "HP",
+    "price": 31650,
+    "status": "satilik",
+    "image": "https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&w=800&q=80",
+    "gallery": [
+      "https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "specs": {
+      "İşlemci": "AMD Ryzen 5 7640HS (6 Çekirdek / 12 İzlek, 5.0 GHz)",
+      "Ekran Kartı": "NVIDIA GeForce RTX 4050 6 GB GDDR6 (105W)",
+      "RAM": "16 GB DDR5 5600 MHz",
+      "Depolama": "512 GB Kioxia NVMe M.2 SSD",
+      "Ekran": "16.1 inç Full HD (1920x1080) 144Hz IPS",
+      "Batarya": "Sağlık %96, Orijinal Dahili",
+      "Adaptör": "Orijinal 200W Hızlı Şarj",
+      "Kozmetik": "9.5/10 - Çiziksiz, çok temiz",
+      "Garanti": "6 Ay Konya Bilgisayar Mağaza Garantisi",
+      "Test Sonucu": "Tüm testleri yapıldı, sorunsuz ve stabil"
+    },
+    "description": "Temiz kullanılmış, yorulmamış HP Victus 16 oyuncu dizüstü bilgisayarı. Termal bakımı ve macun yenilemesi mağazamızda yapılmıştır. Orijinal kutusu ve adaptörü ile teslim edilir.",
+    "isFeatured": true,
+    "createdAt": "2026-10-10T10:00:00Z"
+  },
+  {
+    "id": 2,
+    "sku": "KB-102",
+    "title": "MacBook Pro 14 M3 Pro 18GB RAM 512GB SSD Uzay Siyahı",
+    "slug": "macbook-pro-14-m3-pro-18gb-ram-512gb-ssd",
+    "category": "macbook",
+    "categoryName": "MacBook",
+    "brand": "Apple",
+    "price": 68900,
+    "status": "satilik",
+    "image": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=800&q=80",
+    "gallery": [
+      "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "specs": {
+      "İşlemci": "Apple M3 Pro (11 Çekirdek CPU, 14 Çekirdek GPU)",
+      "RAM": "18 GB Birleşik Bellek",
+      "Depolama": "512 GB Apple Yüksek Hızlı SSD",
+      "Ekran": "14.2 inç Liquid Retina XDR (3024x1964) ProMotion 120Hz",
+      "Batarya": "Pil Sağlığı %98 (Devir sayısı: 34)",
+      "Adaptör": "Orijinal 70W USB-C ve MagSafe 3 Kablo",
+      "Kozmetik": "10/10 - Sıfırdan farksız",
+      "Garanti": "14 Ay Apple Türkiye Garantisi Devam Ediyor",
+      "Test Sonucu": "Apple Diagnostics testleri %100 kusursuz"
+    },
+    "description": "Kusursuz kondisyonda M3 Pro işlemcili MacBook Pro. Nokta hata yoktur. Kutu, fatura ve tüm aksesuarları eksiksizdir.",
+    "isFeatured": true,
+    "createdAt": "2026-10-11T12:00:00Z"
+  },
+  {
+    "id": 3,
+    "sku": "KB-103",
+    "title": "Ryzen 5 7500F RTX 4070 12GB 32GB DDR5 1TB SSD Gaming Kasa",
+    "slug": "ryzen-5-7500f-rtx-4070-12gb-32gb-ddr5-1tb-ssd-gaming-kasa",
+    "category": "masaustu",
+    "categoryName": "Masaüstü Oyun Bilgisayarı",
+    "brand": "Toplama / Custom",
+    "price": 44500,
+    "status": "satilik",
+    "image": "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=800&q=80",
+    "gallery": [
+      "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1593640408182-31c70c8268f5?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "specs": {
+      "İşlemci": "AMD Ryzen 5 7500F 3.7 GHz (5.0 GHz Turbo) 6C/12T",
+      "Ekran Kartı": "Palit RTX 4070 Dual 12 GB GDDR6X",
+      "Anakart": "ASUS Prime B650M-K DDR5",
+      "RAM": "32 GB (2x16) Corsair Vengeance 6000MHz CL36 DDR5",
+      "Depolama": "1 TB Kingston KC3000 Gen4 M.2 NVMe (7000/6000 MB/s)",
+      "Soğutma": "Thermalright Peerless Assassin 120 SE Kule Tipi",
+      "Güç Kaynağı": "FSP Hyper 80+ Bronze 750W",
+      "Kasa": "DeepCool CC560 4x RGB Fanlı Temperli Cam Kasa",
+      "Test Sonucu": "3DMark & FurMark stres testleri 62°C altında kusursuz"
+    },
+    "description": "Tüm modern oyunları 2K Ultra ayarlarda yüksek FPS ile oynatacak canavar sistem. Parçaların kutu ve faturaları mevcuttur, 1 yıl mağaza garantisi kapsamındadır.",
+    "isFeatured": true,
+    "createdAt": "2026-10-12T14:00:00Z"
+  },
+  {
+    "id": 4,
+    "sku": "KB-104",
+    "title": "Sony PlayStation 5 Slim 1TB + Çift Kol DualSense",
+    "slug": "sony-playstation-5-slim-1tb-cift-kol-dualsense",
+    "category": "konsol",
+    "categoryName": "Oyun Konsolu",
+    "brand": "Sony",
+    "price": 24900,
+    "status": "satilik",
+    "image": "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&w=800&q=80",
+    "gallery": [
+      "https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "specs": {
+      "Kapasite": "1 TB Dahili Ultra Hızlı SSD",
+      "Sürüm": "PS5 Slim Dijital Sürüm (CFI-2000)",
+      "Kollar": "2 Adet Orijinal DualSense Beyaz ve Siyah",
+      "Aksesuarlar": "HDMI 2.1 Kablo, Güç Kablosu, Yatay Stand Ayakları",
+      "Kozmetik": "10/10 - Çiziksiz, sessiz fan",
+      "Garanti": "18 Ay İthalatçı / Mağaza Garantili",
+      "Test Sonucu": "Stick drift yok, fan sesi yok, sorunsuz"
+    },
+    "description": "Az kullanılmış PS5 Slim modeli. İki adet orijinal DualSense kol ile birlikte verilir. Mağazamızda açılıp test edilebilir.",
+    "isFeatured": true,
+    "createdAt": "2026-10-12T16:00:00Z"
+  },
+  {
+    "id": 5,
+    "sku": "KB-105",
+    "title": "Samsung Odyssey G3 27 inç 180Hz 1ms Pivot Gaming Monitör",
+    "slug": "samsung-odyssey-g3-27-inc-180hz-1ms-pivot-gaming-monitor",
+    "category": "monitor",
+    "categoryName": "Monitör",
+    "brand": "Samsung",
+    "price": 5450,
+    "status": "satilik",
+    "image": "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=800&q=80",
+    "gallery": [
+      "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "specs": {
+      "Ekran Boyutu": "27 inç (68.6 cm)",
+      "Çözünürlük": "1920 x 1080 Full HD",
+      "Yenileme Hızı": "180 Hz",
+      "Tepki Süresi": "1 ms (MPRT)",
+      "Panel Türü": "Fast VA, Çerçevesiz Tasarım",
+      "Ergonomi": "Yükseklik ayarı, Pivot (dikey çevirme), Sağa/Sola Dönme",
+      "Girişler": "DisplayPort 1.2, HDMI 2.0, Kulaklık Çıkışı",
+      "Kozmetik": "Ölü piksel, çizik veya ışık sızması yoktur"
+    },
+    "description": "Akıcı ve rekabetçi oyunlar için ideal 180Hz yüksek yenilemeli Samsung Odyssey G3. Pivot ayağı sayesinde dikey kullanım da destekler.",
+    "isFeatured": false,
+    "createdAt": "2026-10-13T09:00:00Z"
+  },
+  {
+    "id": 6,
+    "sku": "KB-106",
+    "title": "Lenovo ThinkPad E14 Gen 4 Core i7 1255U 16GB 512GB SSD",
+    "slug": "lenovo-thinkpad-e14-gen-4-core-i7-1255u-16gb-512gb-ssd",
+    "category": "laptop",
+    "categoryName": "İş & Ofis Laptop",
+    "brand": "Lenovo",
+    "price": 18950,
+    "status": "satilik",
+    "image": "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?auto=format&fit=crop&w=800&q=80",
+    "gallery": [
+      "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "specs": {
+      "İşlemci": "Intel Core i7-1255U (10 Çekirdek, 4.7 GHz Turbo)",
+      "RAM": "16 GB DDR4 3200 MHz",
+      "Depolama": "512 GB NVMe PCIe SSD",
+      "Ekran": "14.0 inç Full HD IPS Mat Ekran",
+      "Batarya": "Pil Sağlığı %92 (5-7 saat arası kullanım)",
+      "Klavye": "Aydınlatmalı Türkçe Q Klavye + Parmak İzi Okuyucu",
+      "Kozmetik": "Temiz iş makinesi, alüminyum üst kapak"
+    },
+    "description": "Efsanevi ThinkPad dayanıklılığı. Mühendislik, ofis, yazılım ve günlük kullanım için hafif, sağlam ve hızlı bir bilgisayar.",
+    "isFeatured": false,
+    "createdAt": "2026-10-13T11:00:00Z"
+  },
+  {
+    "id": 7,
+    "sku": "KB-107",
+    "title": "Apple iPad Air 5. Nesil M1 Çip 64GB Uzay Grisi + Orijinal Kılıf",
+    "slug": "apple-ipad-air-5-m1-64gb-uzay-grisi",
+    "category": "tablet",
+    "categoryName": "iPad & Tablet",
+    "brand": "Apple",
+    "price": 18450,
+    "status": "satilik",
+    "image": "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=800&q=80",
+    "gallery": [
+      "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "specs": {
+      "İşlemci": "Apple M1 Çip (8 Çekirdek CPU, 8 Çekirdek GPU)",
+      "RAM": "8 GB RAM",
+      "Depolama": "64 GB",
+      "Ekran": "10.9 inç Liquid Retina True Tone",
+      "Batarya": "Pil Sağlığı %97",
+      "Kozmetik": "Kusursuz, ekranda kırılmaz cam takılı",
+      "Kutu": "Kutu ve Orijinal Type-C şarj adaptörü mevcut"
+    },
+    "description": "M1 çipli iPad Air 5. Nesil. Çiziksiz, eziksiz tertemiz tablet. Çizim, ders ve tasarım için ideal güçte.",
+    "isFeatured": false,
+    "createdAt": "2026-10-13T13:00:00Z"
+  },
+  {
+    "id": 8,
+    "sku": "KB-108",
+    "title": "Intel Core i5-9400 16GB RAM 480GB SSD Masaüstü Bilgisayar",
+    "slug": "intel-core-i5-9400-16gb-ram-480gb-ssd-masaustu-bilgisayar",
+    "category": "masaustu",
+    "categoryName": "Masaüstü Ofis Kasası",
+    "brand": "Ofis & Ev",
+    "price": 11950,
+    "status": "satilik",
+    "image": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80",
+    "gallery": [
+      "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "specs": {
+      "İşlemci": "Intel Core i5-9400 (6 Çekirdek 4.10 GHz)",
+      "RAM": "16 GB DDR4 2666 MHz",
+      "Depolama": "480 GB SATA SSD (Disk Sağlığı %100)",
+      "Ekran Kartı": "AMD Radeon R5 220 2 GB (HDMI / DVI / VGA)",
+      "Anakart": "Intel H310 Yonga Seti",
+      "Güç Kaynağı": "400W Standart PSU",
+      "Kasa": "Temperli cam yan panelli kompakt kasa"
+    },
+    "description": "Ofis, muhasebe, ev ve öğrenci kullanımı için ideal ekonomik masaüstü sistem. Hızlı açılır, sessiz çalışır.",
+    "isFeatured": false,
+    "createdAt": "2026-10-13T15:00:00Z"
+  },
+  {
+    "id": 9,
+    "sku": "KB-109",
+    "title": "ASUS Dual GeForce RTX 4060 OC 8GB GDDR6 Ekran Kartı",
+    "slug": "asus-dual-geforce-rtx-4060-oc-8gb-gddr6-ekran-karti",
+    "category": "ekran_karti",
+    "categoryName": "Ekran Kartı",
+    "brand": "ASUS",
+    "price": 11800,
+    "status": "satilik",
+    "image": "https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&w=800&q=80",
+    "gallery": [
+      "https://images.unsplash.com/photo-1591488320449-011701bb6704?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "specs": {
+      "Grafik Çipi": "NVIDIA GeForce RTX 4060 (DLSS 3 Destekli)",
+      "Bellek": "8 GB GDDR6 128-Bit",
+      "Çekirdek Hızı": "OC Mode: 2535 MHz",
+      "Güç Bağlantısı": "1x 8-Pin PCIe",
+      "Güvenlik Etiketi": "Fabrika Güvenlik Etiketi (Garanti Bandı) Açılmamış",
+      "Sıcaklık Testi": "FurMark 15 dk tam yükte maksimum 63°C",
+      "Garanti": "14 Ay ASUS Türkiye Resmi Garantili",
+      "Kutu & Fatura": "Kutu ve Vatan Bilgisayar faturası mevcut"
+    },
+    "description": "Mining kesinlikle görmemiş, tertemiz kutulu RTX 4060 ekran kartı. Güvenlik etiketi üzerinde olup FurMark testleri kusursuzdur.",
+    "isFeatured": false,
+    "createdAt": "2026-10-13T17:00:00Z"
+  },
+  {
+    "id": 10,
+    "sku": "KB-110",
+    "title": "Apple iPhone 15 Pro 128GB Naturel Titanyum",
+    "slug": "apple-iphone-15-pro-128gb-naturel-titanyum",
+    "category": "iphone",
+    "categoryName": "iPhone & Telefon",
+    "brand": "Apple",
+    "price": 53500,
+    "status": "satilik",
+    "image": "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?auto=format&fit=crop&w=800&q=80",
+    "gallery": [
+      "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?auto=format&fit=crop&w=1200&q=80"
+    ],
+    "specs": {
+      "Model": "iPhone 15 Pro Naturel Titanyum",
+      "Dahili Hafıza": "128 GB",
+      "Pil Sağlığı": "%94 Orijinal Apple Batarya",
+      "Kozmetik": "9.8/10 - Kılcal çiziksiz, kılıf ve koruyucu camla kullanılmış",
+      "Face ID / True Tone": "Aktif ve Sorunsuz",
+      "Kayıt / Statü": "Apple Türkiye Cihazı, Kayıtlı",
+      "Garanti": "7 Ay Apple Türkiye Garantisi Devam Ediyor",
+      "Kutu": "Orijinal Kutusu ve Örgü Type-C Kablosu Mevcut"
+    },
+    "description": "Apple Türkiye garantili, temiz kullanılmış Naturel Titanyum iPhone 15 Pro. Nokta ezik veya çizik yoktur, mağazamızda incelenip alınabilir.",
+    "isFeatured": true,
+    "createdAt": "2026-10-13T18:00:00Z"
+  }
+]

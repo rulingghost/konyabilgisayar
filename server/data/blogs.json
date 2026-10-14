@@ -1,0 +1,55 @@
+[
+  {
+    "title": "Konya İkinci El PC Piyasası ve 2026 Trendleri (GÜNCELLENDİ)",
+    "category": "Rehber & Tavsiye",
+    "image": "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=1200&q=80",
+    "excerpt": "Konya Selçuklu ve genelinde ikinci el bilgisayar piyasasındaki son gelişmeler, değerleme ve güvenli alım satım ipuçları.",
+    "content": "Konya genelinde masaüstü ve oyuncu kasalarına talep hızla artıyor.\n\n## 1. Değerinde Satış Yapmanın Önemi\nCihazınızı satarken tüm donanım testlerinin eksiksiz yapılması ve anında nakit ödeme alınması çok önemlidir.",
+    "readTime": "5 dk okuma",
+    "author": "Konya Bilgisayar Ekibi",
+    "published": true,
+    "id": 4,
+    "createdAt": "2026-10-13T23:21:12.659Z",
+    "slug": "konya-i-kinci-el-pc-piyasas-ve-2026-trendleri-2659",
+    "updatedAt": "2026-10-13T23:21:12.684Z"
+  },
+  {
+    "id": 1,
+    "title": "İkinci El Laptop Alırken Nelere Dikkat Edilmeli? (Kapsamlı Rehber)",
+    "slug": "ikinci-el-laptop-alirken-nelere-dikkat-edilmeli",
+    "category": "Rehber & Tavsiye",
+    "image": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1200&q=80",
+    "excerpt": "İkinci el dizüstü bilgisayar alırken batarya sağlığı, ekran ölü piksel testi, SSD sağlık durumu ve stres testleri nasıl yapılır? Konya Bilgisayar ekspertiz ipuçları.",
+    "content": "İkinci el laptop satın almak, bütçenizi korurken yüksek performanslı bir bilgisayara sahip olmanın en akılcı yollarından biridir. Ancak yanlış bir cihaz seçimi beklenmedik masraflara yol açabilir. İşte ikinci el laptop alırken mutlaka kontrol etmeniz gereken adımlar:\n\n### 1. Ekran ve Panel Kontrolü (Ölü Piksel Testi)\nEkranı beyaz, siyah ve kırmızı arka planlarda test ederek ölü piksel veya ışık sızması olup olmadığını kontrol edin. Ekranda klavye izi veya derin çizik bulunmamasına dikkat edin.\n\n### 2. Batarya / Pil Sağlığı ve Şarj Döngüsü\nWindows'ta komut istemine `powercfg /batteryreport` yazarak pilin fabrika çıkış kapasitesi ile mevcut kapasitesini karşılaştırın. MacBook kullanıcıları ise Sistem Raporu > Güç menüsünden pil devir sayısını ve maksimum kapasite yüzdesini görmelidir.\n\n### 3. Disk (SSD / HDD) Sağlığı ve Çalışma Saati\nCrystalDiskInfo gibi güvenilir araçlarla diskin sağlık yüzdesini (%100 veya %95+ olmalıdır) ve toplam çalışma saatini kontrol edin. Bad sector (bozuk sektör) içeren disklerden uzak durun.\n\n### 4. İşlemci ve Ekran Kartı Stres Testi (Isınma Kontrolü)\nFurMark ve Cinebench testleriyle cihazı 10-15 dakika tam yük altında çalıştırın. Fanların normal dönüp dönmediğini, sıcaklığın laptoplarda 85-90 dereceyi aşıp aşmadığını gözlemleyin.\n\nKonya Bilgisayar olarak mağazamızdaki tüm ikinci el dizüstü bilgisayarları bu 20 aşamalı testten geçiriyor ve garantiyle teslim ediyoruz.",
+    "readTime": "5 dk okuma",
+    "author": "Konya Bilgisayar Uzman Ekibi",
+    "published": true,
+    "createdAt": "2026-10-12T10:00:00Z"
+  },
+  {
+    "id": 2,
+    "title": "Termal Macun Ne Zaman Değiştirilmeli? Isınma ve Fan Sesi Çözümleri",
+    "slug": "termal-macun-ne-zaman-degistirilmeli",
+    "category": "Teknik Servis",
+    "image": "https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=1200&q=80",
+    "excerpt": "Laptopunuz oyun oynarken çok ısınıyor ve fanlar bağırıyor mu? Termal macunun kuruma belirtileri ve düzenli bakımın işlemci ömrüne etkileri.",
+    "content": "Laptop ve masaüstü bilgisayarlarda işlemci ile soğutucu blok arasındaki ısı iletimini sağlayan en kritik bileşen termal macundur. Zamanla kuruyan macun, ısı transferini engelleyerek işlemcinin aşırı ısınmasına (thermal throttling) ve performans düşüşüne sebep olur.\n\n### Termal Macunun Kuruduğunu Nasıl Anlarsınız?\n- Fanların boştayken bile yüksek devirde ve sesli çalışması\n- Oyunlarda ani FPS düşüşleri ve takılmalar (drop yaşanması)\n- Cihazın alt kısmının dokunulamayacak kadar ısınması\n- Ağır yük altında bilgisayarın aniden kendini kapatması\n\n### Bakım Sıklığı Ne Olmalı?\nYoğun oyun oynanan veya render alınan bilgisayarlarda yılda bir kez, standart ofis kullanımında ise 1.5 - 2 yılda bir termal macun yenilenmeli ve fan ızgaralarındaki tozlar temizlenmelidir.\n\nSelçuklu mağazamızda Arctic MX-4 ve yüksek iletkenlikli macunlarla 1 saat içinde bakım ve fan temizliği yapmaktayız.",
+    "readTime": "4 dk okuma",
+    "author": "Teknik Servis Masası",
+    "published": true,
+    "createdAt": "2026-10-11T14:30:00Z"
+  },
+  {
+    "id": 3,
+    "title": "MacBook Pil Sağlığını Uzun Süre Korumak İçin 6 Altın Kural",
+    "slug": "macbook-pil-sagligini-koruma-rehberi",
+    "category": "Apple & Mac",
+    "image": "https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?auto=format&fit=crop&w=1200&q=80",
+    "excerpt": "Apple M serisi MacBook Air ve Pro kullanıcıları için pil döngüsünü minimumda tutma ve batarya ömrünü maksimuma çıkarma tüyoları.",
+    "content": "Apple Silicon (M1, M2, M3, M4) işlemcili MacBook modelleri inanılmaz bir pil ömrü sunuyor. Ancak lityum iyon bataryaların kimyasal yaşlanmasını yavaşlatmak sizin elinizde:\n\n1. **İyileştirilmiş Pil Şarjını Açık Tutun:** macOS Ayarlar > Pil bölümünden bu ayarı etkinleştirerek cihazın %80 üzerinde kalmasını öğrenmesine izin verin.\n2. **Aşırı Isıdan Kaçının:** Yatak veya yastık üzerinde laptop kullanmayın; hava kanallarını tıkamayın.\n3. **Şarjı %0'a Kadar Düşürmeyin:** Pili tamamen tüketmek döngü stresini artırır. %20 seviyesinde şarja takmak idealdir.\n4. **Orijinal Adaptör ve Kablo Kullanın:** Sahte şarj aletleri voltaj dalgalanmasıyla batarya devrelerine zarar verebilir.\n\nEğer pil sağlığınız %80'in altına düştüyse veya 'Servis Öneriliyor' uyarısı alıyorsanız, mağazamızda orijinal kalitede batarya değişimi yaptırabilirsiniz.",
+    "readTime": "3 dk okuma",
+    "author": "Konya Bilgisayar Apple Masası",
+    "published": true,
+    "createdAt": "2026-10-10T16:00:00Z"
+  }
+]
