@@ -107,30 +107,6 @@ export default function Navbar({
               {settings?.announcementText || "Konya Selçuklu mağazamızda anında nakit alım! Türkiye'nin her yerinden anlaşmalı kargo ile alıyoruz."}
             </span>
           </div>
-
-          <button 
-            onClick={() => handleNav('degerleme')}
-            style={{
-              background: 'transparent',
-              border: 'none',
-              color: '#38bdf8',
-              fontWeight: 700,
-              fontSize: '0.76rem',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '4px',
-              cursor: 'pointer',
-              padding: '2px 6px',
-              borderRadius: '4px',
-              flexShrink: 0,
-              transition: 'color 0.15s ease'
-            }}
-            onMouseEnter={e => e.currentTarget.style.color = '#7dd3fc'}
-            onMouseLeave={e => e.currentTarget.style.color = '#38bdf8'}
-          >
-            <span>Fiyat Teklifi Al</span>
-            <ArrowRight size={12} />
-          </button>
         </div>
       )}
 
@@ -269,63 +245,12 @@ export default function Navbar({
                   <DropdownLink icon={<Truck size={16} />} title="Kargoyla Cihaz Sat" onClick={() => handleNav('kargo')} highlight />
                   <DropdownLink icon={<RefreshCw size={16} />} title="Cihaz Takası" onClick={() => handleNav('takas')} />
                   <DropdownLink icon={<Building2 size={16} />} title="Toplu & Kurumsal Alım" onClick={() => handleNav('toplu-alim')} />
+                  <DropdownLink icon={<HelpCircle size={16} />} title="Cihaz Özelliklerini Öğren" onClick={() => handleNav('ozellikleri-ogrenin')} />
                 </div>
               )}
             </div>
 
-            {/* 2. Değerleme / Fiyat Hesapla Dropdown */}
-            <div 
-              style={{ position: 'relative' }}
-              onMouseEnter={() => setOpenDropdown('calc')}
-              onMouseLeave={() => setOpenDropdown(null)}
-            >
-              <button 
-                style={{
-                  padding: '6px 10px',
-                  fontWeight: 600,
-                  fontSize: '0.84rem',
-                  color: openDropdown === 'calc' ? '#0284c7' : '#334155',
-                  background: openDropdown === 'calc' ? 'rgba(2, 132, 199, 0.08)' : 'transparent',
-                  border: 'none',
-                  borderRadius: '8px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '3px',
-                  cursor: 'pointer',
-                  whiteSpace: 'nowrap',
-                  transition: 'all 0.15s ease'
-                }}
-              >
-                <span>Fiyat Hesapla</span>
-                <ChevronDown size={13} style={{ opacity: 0.65 }} />
-              </button>
-              {openDropdown === 'calc' && (
-                <div style={{
-                  position: 'absolute',
-                  top: 'calc(100% + 4px)',
-                  left: 0,
-                  width: '260px',
-                  background: '#ffffff',
-                  borderRadius: '12px',
-                  boxShadow: '0 12px 36px rgba(15, 23, 42, 0.12), 0 2px 8px rgba(15, 23, 42, 0.04)',
-                  border: '1px solid rgba(226, 232, 240, 0.9)',
-                  padding: '6px',
-                  zIndex: 1100
-                }}>
-                  <div style={{ padding: '6px 10px 4px', fontSize: '0.68rem', fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                    Değerleme Sihirbazı
-                  </div>
-                  <DropdownLink icon={<Laptop size={16} />} title="Laptop Ne Kadar Eder?" onClick={() => handleNav('degerleme', { category: 'laptop' })} />
-                  <DropdownLink icon={<Monitor size={16} />} title="Kasa / PC Ne Kadar Eder?" onClick={() => handleNav('degerleme', { category: 'masaustu' })} />
-                  <DropdownLink icon={<Laptop size={16} />} title="MacBook Ne Kadar Eder?" onClick={() => handleNav('degerleme', { category: 'macbook' })} />
-                  <DropdownLink icon={<Gamepad2 size={16} />} title="PlayStation Ne Kadar Eder?" onClick={() => handleNav('degerleme', { category: 'konsol' })} />
-                  <div style={{ height: '1px', background: '#f1f5f9', margin: '4px 0' }} />
-                  <DropdownLink icon={<HelpCircle size={16} />} title="Cihaz Özelliklerini Öğren" onClick={() => handleNav('ozellikleri-ogrenin')} highlight />
-                </div>
-              )}
-            </div>
-
-            {/* 3. Satılık Ürünler */}
+            {/* 2. Satılık Ürünler */}
             <button 
               onClick={() => handleNav('urunler')}
               style={{
@@ -653,7 +578,7 @@ export default function Navbar({
               Sayfalar & Hizmetler
             </div>
             <MobileNavLink label="Ana Sayfa" onClick={() => handleNav('home')} />
-            <MobileNavLink label="Cihaz Sat & Teklif Al" onClick={() => handleNav('degerleme')} highlight />
+            <MobileNavLink label="Cihaz Sat" onClick={() => handleNav('degerleme')} highlight />
             <MobileNavLink label="Satılık İkinci El Ürünler" onClick={() => handleNav('urunler')} />
             <MobileNavLink label="Bilgisayar Teknik Servisi" onClick={() => handleNav('hizmetler')} />
             <MobileNavLink label="Blog & Teknoloji Rehberi" onClick={() => handleNav('blog')} />

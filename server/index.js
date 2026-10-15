@@ -13,12 +13,29 @@ const PORT = process.env.PORT || 5001;
 app.use(cors());
 app.use(express.json());
 
+// Serverless uyumluluğu için URL normalizasyonu (Vercel /api prefixini kırparsa tamamlar)
+app.use((req, res, next) => {
+  if (!req.url.startsWith('/api') && !req.url.startsWith('/assets') && req.url !== '/' && !req.url.includes('.')) {
+    const apiRoutes = ['products', 'blogs', 'valuations', 'services', 'settings', 'stats', 'auth'];
+    const firstSegment = req.url.replace(/^\/+/, '').split('/')[0]?.split('?')[0];
+    if (apiRoutes.includes(firstSegment)) {
+      req.url = '/api' + (req.url.startsWith('/') ? req.url : '/' + req.url);
+    }
+  }
+  next();
+});
+
 const DATA_DIR = path.join(__dirname, 'data');
 
 // Yardımcı dosya okuma / yazma fonksiyonları
 function readJson(filename) {
-  const filePath = path.join(DATA_DIR, filename);
-  if (!fs.existsSync(filePath)) {
+  const pathsToTry = [
+    path.join(DATA_DIR, filename),
+    path.join(process.cwd(), 'server', 'data', filename),
+    path.join(process.cwd(), 'data', filename)
+  ];
+  const filePath = pathsToTry.find(p => fs.existsSync(p));
+  if (!filePath) {
     return [];
   }
   try {
@@ -31,7 +48,11 @@ function readJson(filename) {
 }
 
 function writeJson(filename, data) {
-  const filePath = path.join(DATA_DIR, filename);
+  const pathsToTry = [
+    path.join(DATA_DIR, filename),
+    path.join(process.cwd(), 'server', 'data', filename)
+  ];
+  const filePath = pathsToTry.find(p => fs.existsSync(p)) || pathsToTry[0];
   try {
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
     return true;
@@ -407,6 +428,24 @@ app.get('/api/stats', (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`[Konya Bilgisayar API Server] Running on http://localhost:${PORT}`);
-});
+// ==========================================
+// 7. STATİK DOSYALAR & SPA WILDCARD ROUTING
+// ==========================================
+const distPath = path.join(__dirname, '..', 'dist');
+if (fs.existsSync(distPath)) {
+  app.use(express.static(distPath));
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api')) return next();
+    res.sendFile(path.join(distPath, 'index.html'));
+  });
+}
+
+const isDirectRun = process.argv[1] && path.resolve(process.argv[1]) === path.resolve(__filename);
+
+if (isDirectRun && !process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`[Konya Bilgisayar API Server] Running on http://localhost:${PORT}`);
+  });
+}
+
+export default app;

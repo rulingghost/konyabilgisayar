@@ -102,7 +102,7 @@ export default function Footer({ navigate, settings }) {
             <ul style={{ display: 'flex', flexDirection: 'column', gap: '9px', fontSize: '0.88rem' }}>
               <li><button onClick={() => navigate('hizmetler')} style={footerBtnStyle}>Teknik Servis & Bakım</button></li>
               <li><button onClick={() => navigate('kargo')} style={footerBtnStyle}>Kargoyla Cihaz Sat (81 İl)</button></li>
-              <li><button onClick={() => navigate('degerleme')} style={footerBtnStyle}>Ne Kadar Eder Hesaplayıcı</button></li>
+              <li><button onClick={() => navigate('degerleme')} style={footerBtnStyle}>Cihaz Değerleme & Fiyat Teklifi</button></li>
               <li><button onClick={() => navigate('ozellikleri-ogrenin')} style={footerBtnStyle}>Cihaz Özelliklerini Öğrenin</button></li>
               <li><button onClick={() => navigate('iletisim')} style={footerBtnStyle}>Konum & Yol Tarifi</button></li>
             </ul>

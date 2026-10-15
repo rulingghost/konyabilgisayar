@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Laptop, 
   Monitor, 
@@ -17,6 +17,10 @@ import {
   HelpCircle, 
   ChevronRight,
   ChevronLeft,
+  ChevronDown,
+  ChevronUp,
+  CreditCard,
+  X,
   Bookmark, 
   Scale, 
   BookOpen, 
@@ -75,8 +79,156 @@ export default function HomePage({
   const [simConsoleModel, setSimConsoleModel] = useState('ps5-slim-disk');
   const [simTabletModel, setSimTabletModel] = useState('ipad-10');
 
-  // Donanım Yelpazesi Sekmesi
-  const [hardwareTab, setHardwareTab] = useState('intel');
+  // Modern Hero Slider State
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isSliderPaused, setIsSliderPaused] = useState(false);
+
+  const heroSlides = [
+    {
+      id: 'nakit-alim',
+      badge: '⚡ 15 Dakikada Hızlı Test & Anında Nakit / FAST',
+      title: 'İkinci El Bilgisayar, Laptop ve Cihazınızı Değerinde Satın!',
+      titleHighlight: 'Değerinde Nakit Alıyoruz',
+      desc: 'Gaming laptop, masaüstü oyuncu kasası, Apple MacBook ve donanım parçalarınızı Selçuklu mağazamızda 15 dakikada test edip anında nakit veya FAST ile ödüyor; Türkiye genelinden anlaşmalı kargo ile teslim alıyoruz.',
+      bullets: [
+        '15 Dakikada Hızlı Test & Ekspertiz',
+        'Anında Nakit / FAST ile Ödeme',
+        'Selçuklu Mağazamıza Elden Teslim',
+        'Türkiye Geneli Ücretsiz Kargo'
+      ],
+      primaryBtn: {
+        text: 'Cihazını Sat & WhatsApp Fiyat Teklifi Al ↓',
+        scrollTo: 'canli-degerleme',
+        icon: 'zap'
+      },
+      secondaryBtn: {
+        text: 'Satılık Ürünleri İncele',
+        route: 'urunler'
+      },
+      hasPhone: true,
+      image: '/images/hero_tech.jpg',
+      badgeTop: '🏆 Konya’nın Güvenilir 2. El Merkezi',
+      statVal: '15 Dk',
+      statLabel: 'Hızlı Test & Peşin Nakit',
+      statSub: '10.000+ Başarılı Alım'
+    },
+    {
+      id: 'cihaz-takasi',
+      badge: '🔄 Değerinde Takas & Kolay Değişim',
+      title: 'Eski Bilgisayarını Getir, Yeni Nesil Oyuncu Sistemine Geç!',
+      titleHighlight: 'Adil Takas Avantajı',
+      desc: 'Eski masaüstü kasanızı, laptopunuzu veya konsolunuzu piyasa değerinde sayıyoruz. Mağazamızdaki RTX 4060/4070 hazır sistemler veya MacBook modelleriyle kolayca takas edin, sadece aradaki farkı ödeyin.',
+      bullets: [
+        'Eski Donanımınız Değerinde Sayılır',
+        'Mağazamızdaki Tüm Ürünlerle Takas',
+        'Farkı İster Nakit Al, İster Öde',
+        'Verileriniz Yeni Cihaza Ücretsiz Aktarılır'
+      ],
+      primaryBtn: {
+        text: 'Takas Seçeneklerini Gör →',
+        route: 'takas',
+        icon: 'refresh'
+      },
+      secondaryBtn: {
+        text: 'WhatsApp Takas Danışmanı',
+        wa: 'Merhaba Konya Bilgisayar, elimdeki eski cihazımı takasa verip yeni bir ürün almak istiyorum. Takas şartları hakkında bilgi alabilir miyim?'
+      },
+      hasPhone: false,
+      image: '/images/trade_in.jpg',
+      badgeTop: '✨ RTX 4060 / 4070 Sistem Takası',
+      statVal: 'Anında',
+      statLabel: 'Değerinde Takas & Mahsup',
+      statSub: 'Aynı Gün Yeni Sisteme Geçiş'
+    },
+    {
+      id: 'garantili-urunler',
+      badge: '🛡️ Konya Bilgisayar Mağaza Garantisi',
+      title: '20+ Aşamalı Stres Testinden Geçmiş Güvenilir Cihazlar',
+      titleHighlight: 'Mağaza Garantisiyle',
+      desc: 'Tüm ikinci el cihazlarımız FurMark, MemTest ve CrystalDiskInfo testlerinden tam not almıştır. Termal bakımı ve kozmetik temizliği yapılmış, sıfır ayarında garantili gaming kasalar ve dizüstü bilgisayarlar.',
+      bullets: [
+        'Konya Bilgisayar Mağaza Garantili',
+        '20+ Aşamalı Sıcaklık & Donanım Testi',
+        'Faturalı & Belgeli Teslimat',
+        'Konya İçi Hemen Teslim / Aynı Gün Kargo'
+      ],
+      primaryBtn: {
+        text: 'Garantili Ürünleri Keşfet →',
+        route: 'urunler',
+        icon: 'shield'
+      },
+      secondaryBtn: {
+        text: 'WhatsApp ile Ürün Sor',
+        wa: 'Merhaba Konya Bilgisayar, satılık ikinci el bilgisayar ve laptop stoklarınız hakkında bilgi alabilir miyim?'
+      },
+      hasPhone: false,
+      image: '/images/categories/cat_desktop.png',
+      badgeTop: '⭐ FurMark & MemTest Onaylı',
+      statVal: '20+ Test',
+      statLabel: 'Eksiksiz Donanım Kontrolü',
+      statSub: 'Güvenli & Garantili Alışveriş'
+    },
+    {
+      id: 'kurumsal-alim',
+      badge: '🏢 Kurumsal Çözümler & Toplu Alım',
+      title: 'Şirketinizin Bilişim Envanterini Değerinde Nakite Çevirin',
+      titleHighlight: 'Tek Kalemde Toplu Alım',
+      desc: 'Ofis bilgisayarları, çağrı merkezi sistemleri, mimarlık iş istasyonları ve şirket laptop filolarını yerinde ekspertiz ile değerinde ve tek seferde nakit satın alıyoruz.',
+      bullets: [
+        'Konya ve Çevre İllerde Yerinde Ekspertiz',
+        'Resmi Sözleşme & Kurumsal Fatura',
+        'Toplu Nakit & Şirket Hesabına FAST/Havale',
+        'US DoD 5220.22-M Standardında Güvenli Veri İmhası'
+      ],
+      primaryBtn: {
+        text: 'Kurumsal Departman →',
+        route: 'kurumsal',
+        icon: 'sparkles'
+      },
+      secondaryBtn: {
+        text: '0551 045 42 55 (Kurumsal)',
+        tel: '05510454255'
+      },
+      hasPhone: true,
+      image: '/images/corporate_buyback.jpg',
+      badgeTop: '💼 Kurumsal & Toplu Alım Hizmeti',
+      statVal: '5-500 Adet',
+      statLabel: 'Yerinde Ekspertiz & Nakit',
+      statSub: 'Resmi Fatura & Hızlı Ödeme'
+    }
+  ];
+
+  // Otomatik Slider Geçişi (6.5 saniye)
+  useEffect(() => {
+    if (isSliderPaused) return;
+    const timer = setInterval(() => {
+      setCurrentSlide(prev => (prev + 1) % heroSlides.length);
+    }, 6500);
+    return () => clearInterval(timer);
+  }, [isSliderPaused, heroSlides.length]);
+
+  const nextHeroSlide = () => {
+    setCurrentSlide(prev => (prev + 1) % heroSlides.length);
+  };
+
+  const prevHeroSlide = () => {
+    setCurrentSlide(prev => (prev - 1 + heroSlides.length) % heroSlides.length);
+  };
+
+  const [copiedMessage, setCopiedMessage] = useState(false);
+
+  // Kategori Başlığı Yardımcısı
+  const getSimCategoryTitle = () => {
+    switch (simCategory) {
+      case 'laptop': return 'Laptop & Dizüstü Bilgisayar';
+      case 'masaustu': return 'Masaüstü Bilgisayar (Oyuncu Kasası)';
+      case 'macbook': return 'Apple MacBook';
+      case 'iphone': return 'Apple iPhone / Akıllı Telefon';
+      case 'tablet': return 'iPad & Tablet';
+      case 'konsol': return 'PlayStation & Oyun Konsolu';
+      default: return 'Cihaz';
+    }
+  };
 
   const getSimDetailSummary = () => {
     if (simCategory === 'laptop' || simCategory === 'masaustu') {
@@ -90,16 +242,44 @@ export default function HomePage({
     return 'Standart Donanım';
   };
 
-  const simWaMessage = `Merhaba Konya Bilgisayar (0551 045 42 55),
-Aşağıdaki cihazım için değerinde nakit fiyat teklifi almak istiyorum:
+  // WhatsApp'a Doğrudan Düşecek Hazır Mesaj Oluşturucu
+  const getFullSimWaMessage = () => {
+    let msg = `Merhaba Konya Bilgisayar (0551 045 42 55),\n`;
+    msg += `Web siteniz üzerinden cihazımın özelliklerini seçtim. Bu özellikler için nakit alım veya takas fiyat teklifi almak istiyorum:\n\n`;
+    msg += `📌 Cihaz Türü: ${getSimCategoryTitle()}\n`;
 
-📌 Cihaz Türü: ${simCategory === 'laptop' ? 'Laptop & Dizüstü' : simCategory === 'masaustu' ? 'Masaüstü Bilgisayar / Kasa' : simCategory === 'macbook' ? 'Apple MacBook' : simCategory === 'iphone' ? 'Apple iPhone' : simCategory === 'tablet' ? 'iPad / Tablet' : 'Oyun Konsolu'}
-⚙️ Seçilen Özellikler: ${getSimDetailSummary()}
-📍 Konum: Konya / Selçuklu mağazanıza elden teslim edebilirim.
+    if (simCategory === 'laptop' || simCategory === 'masaustu') {
+      msg += `• Marka: ${simBrand}\n`;
+      msg += `• Model / Seri: ${simSeries || 'Standart Seri'}\n`;
+      msg += `• İşlemci (CPU): ${getHardwareLabel('cpu', simCpu)}\n`;
+      msg += `• Ekran Kartı (GPU): ${getHardwareLabel('gpu', simGpu)}\n`;
+      msg += `• RAM Bellek: ${getHardwareLabel('ram', simRam)} RAM\n`;
+      msg += `• Depolama (SSD/HDD): ${getHardwareLabel('storage', simStorage)}\n`;
+    } else if (simCategory === 'macbook') {
+      msg += `• Model & Kasa: ${simSeries || 'Apple MacBook'}\n`;
+      msg += `• Apple Çipi: ${getHardwareLabel('appleChip', simAppleChip)}\n`;
+      msg += `• Ekran: Orijinal Retina Ekran\n`;
+    } else if (simCategory === 'iphone') {
+      msg += `• Model: ${simPhoneModel.replace('iphone', 'iPhone ').toUpperCase()}\n`;
+    } else if (simCategory === 'tablet') {
+      msg += `• Model: ${simTabletModel.toUpperCase()}\n`;
+    } else if (simCategory === 'konsol') {
+      msg += `• Konsol Modeli: ${simConsoleModel.toUpperCase()}\n`;
+    }
 
-Bu donanım için en yüksek nakit alım veya takas fiyat teklifinizi alabilir miyim?`;
+    msg += `\n📍 Teslimat / Konum: Konya Selçuklu mağazanıza elden teslim edebilirim (veya Türkiye geneli ücretsiz kargoyla gönderim).\n`;
+    msg += `📸 İsterseniz cihazımın fotoğraflarını da gönderebilirim.\n`;
+    msg += `Bu özelliklerdeki cihazım için verebileceğiniz en güncel peşin nakit alım veya takas fiyat teklifiniz nedir?`;
+    return msg;
+  };
 
+  const simWaMessage = getFullSimWaMessage();
   const simWaLink = `https://wa.me/905510454255?text=${encodeURIComponent(simWaMessage)}`;
+
+  // SSS Arama, Kategori Filtre & Kompakt Görünüm Durumları
+  const [faqCategory, setFaqCategory] = useState('all');
+  const [faqSearch, setFaqSearch] = useState('');
+  const [showAllFaqs, setShowAllFaqs] = useState(false);
 
   const reviews = [
     {
@@ -119,28 +299,166 @@ Bu donanım için en yüksek nakit alım veya takas fiyat teklifinizi alabilir m
     }
   ];
 
+  const faqCategories = [
+    { id: 'all', label: 'Tüm Sorular', icon: HelpCircle },
+    { id: 'degerleme', label: 'Cihaz Alımı & Fiyat', icon: Zap },
+    { id: 'odeme', label: 'Ödeme & Test', icon: Banknote },
+    { id: 'takas', label: 'Takas & Değişim', icon: RefreshCw },
+    { id: 'kargo', label: 'Kargo & İl Dışı', icon: Truck },
+    { id: 'guvenlik', label: 'Güvenlik & Garanti', icon: ShieldCheck }
+  ];
+
   const faqs = [
     {
-      q: "Cihazımı satmak için nereden fiyat alabilirim?",
-      a: "Sitemizdeki 'Ne Kadar Eder?' sihirbazını kullanarak saniyeler içinde anlık tahmini fiyat alabilir veya doğrudan WhatsApp hattımızdan fotoğraf ve model göndererek ön teklif alabilirsiniz."
+      id: 1,
+      category: 'degerleme',
+      categoryName: 'Cihaz Alımı & Fiyat',
+      color: 'blue',
+      q: "Cihazımı satmak için en doğru fiyat teklifini nasıl alabilirim?",
+      a: "Anasayfamızdaki 'Cihaz Özelliklerini Seçin' bölümünden işlemci, ekran kartı ve RAM gibi bilgileri seçtiğinizde size özel bir WhatsApp mesajı otomatik hazırlanır. 'WhatsApp'a Gönder' butonuna tıkladığınızda uzman danışmanımıza tek tıkla ulaşabilir veya doğrudan 0551 045 42 55 numaramıza cihazınızın fotoğraflarını ve özelliklerini iletebilirsiniz. Ekibimiz 5-10 dakika içinde en yüksek güncel piyasa nakit teklifini sunar.",
+      highlight: "WhatsApp üzerinden 5-10 dakikada şeffaf ön fiyat teklifi alabilirsiniz."
     },
     {
-      q: "Ödeme ne zaman ve nasıl yapılıyor?",
-      a: "Konya mağazamızda cihazınızın kontrolleri tamamlandıktan sonra (ortalama 15 dakika) ödemeniz anında Nakit, Havale, FAST veya EFT seçenekleriyle hesabınıza aktarılır."
+      id: 2,
+      category: 'degerleme',
+      categoryName: 'Cihaz Alımı & Fiyat',
+      color: 'blue',
+      q: "Hangi cihaz türlerini ve donanım parçalarını değerinde alıyorsunuz?",
+      a: "Gaming oyuncu kasaları, iş istasyonları, oyuncu laptopları (RTX 40/30 serileri vb.), ofis dizüstü bilgisayarları, Apple MacBook (M1, M2, M3, M4 ve Intel), iMac, Mac Mini, iPhone ve akıllı telefonlar, iPad & tabletler, PlayStation 5/4 Pro & Xbox konsolları, 144Hz-360Hz oyuncu monitörleri ve harici ekran kartı / işlemci gibi tekil donanım bileşenlerini güncel piyasa değerinde satın alıyoruz.",
+      highlight: "Tekil donanım parçalarından komple sistemlere kadar geniş alım kapsamı."
     },
     {
-      q: "Konya dışından kargoyla satış yapabilir miyim?",
-      a: "Evet! Türkiye'nin 81 ilinden ve Konya'nın tüm ilçelerinden anlaşmalı Yurtiçi Kargo kodumuzla ücretsiz gönderim yapabilirsiniz. Cihaz mağazamıza ulaştığı gün kontrolleri yapılıp ödemeniz banka hesabınıza gönderilir."
+      id: 3,
+      category: 'degerleme',
+      categoryName: 'Cihaz Alımı & Fiyat',
+      color: 'blue',
+      q: "Kutusu, faturası veya garantisi bitmiş cihazları da satın alıyor musunuz?",
+      a: "Evet! Cihazınızın kutusu veya faturasının olması zorunlu değildir. Donanım ve kozmetik testlerini başarıyla geçen tüm cihazları değerinde nakit alıyoruz. Ancak kutusu, faturası ve devam eden distribütör garantisi bulunan ürünler ekstra fiyat avantajı sağlamaktadır.",
+      highlight: "Kutu ve fatura olmasa dahi cihazınızın gerçek donanım değerini ödüyoruz."
     },
     {
-      q: "İkinci el ürünleriniz garantili mi?",
-      a: "Tüm ikinci el cihazlarımız 20+ aşamalı teknik kontrolden ve stres testlerinden geçirilir. Tüm ürünlerimize Konya Bilgisayar Mağaza Garantisi verilmektedir."
+      id: 4,
+      category: 'degerleme',
+      categoryName: 'Cihaz Alımı & Fiyat',
+      color: 'blue',
+      q: "Kısmi arızalı, bataryası bitik veya kasasında çizik olan cihazları alıyor musunuz?",
+      a: "Evet. Batarya ömrü azalmış, klavyesinde tek tük tuş çalışmayan veya kasasında hafif kozmetik kusurları olan cihazları da değerlendiriyoruz. Ayrıca yedek parça olarak değerlendirilebilecek donanımları da parça değeri üzerinden satın alabiliyoruz. WhatsApp'tan cihaz durumunu açıkça belirtmeniz yeterlidir.",
+      highlight: "Kusurlu veya parça amaçlı donanımlarınız için de anında nakit teklif verilir."
     },
     {
-      q: "Eski bilgisayarımı verip yeni bir ürünle takas edebilir miyim?",
-      a: "Evet. 'Cihaz Takası' sistemimiz sayesinde eski bilgisayarınızı değerinde sayıyor, almak istediğiniz mağazamızdaki ürünün fiyatından düşerek sadece aradaki farkı ödüyorsunuz."
+      id: 5,
+      category: 'odeme',
+      categoryName: 'Ödeme & Test Süreci',
+      color: 'green',
+      q: "Konya Selçuklu mağazanızda test ve ödeme süreci ne kadar sürer?",
+      a: "Mağazamızda ortalama test ve ekspertiz süremiz sadece 15 dakikadır. Cihazınızı getirdiğinizde gözünüzün önünde FurMark (ekran kartı ısı & stres), MemTest / Prime95 (RAM & işlemci stabilitesi) ve CrystalDiskInfo (SSD/HDD sağlık & ömür) testleri şeffafça yapılır. Test bitiminde belirlenen tutar derhal ödenir.",
+      highlight: "Gözünüzün önünde 15 dakikalık şeffaf donanım testi ve anında sonuç."
+    },
+    {
+      id: 6,
+      category: 'odeme',
+      categoryName: 'Ödeme & Test Süreci',
+      color: 'green',
+      q: "Ödememi nakit elden mi yoksa banka hesabıma FAST ile mi alıyorum?",
+      a: "Ödeme şekli tamamen sizin tercihinize bağlıdır! İster mağazamızda elden nakit peşin para olarak, ister IBAN numaranıza 7/24 saniyeler içinde FAST / Havale ile alabilirsiniz. Para hesabınıza geçmeden hiçbir teslim veya alım evrakı tamamlanmaz.",
+      highlight: "Elden peşin nakit veya FAST ile anında hesaba transfer seçeneği."
+    },
+    {
+      id: 7,
+      category: 'odeme',
+      categoryName: 'Ödeme & Test Süreci',
+      color: 'green',
+      q: "Mağazaya gelmeden önce randevu almam gerekir mi?",
+      a: "Hayır, randevu almanıza gerek yoktur. Feritpaşa Mahallesi Ahmet Hilmi Nalçacı Caddesi'ndeki Selçuklu mağazamıza haftanın 7 günü 09:00 - 20:00 çalışma saatleri içinde dilediğiniz an çat kapı gelebilirsiniz.",
+      highlight: "Haftanın 7 günü 09:00 - 20:00 arası randevusuz elden teslim imkanı."
+    },
+    {
+      id: 8,
+      category: 'takas',
+      categoryName: 'Takas & Değişim',
+      color: 'amber',
+      q: "Eski bilgisayarımı verip yeni nesil Gaming PC veya MacBook ile takas edebilir miyim?",
+      a: "Evet! Konya Bilgisayar 'Değerinde Takas' sistemi tam olarak bunun içindir. Eski kasanızı, laptopunuzu veya PlayStation konsolunuzu değerinde sayıyoruz; mağazamızdaki garantili RTX 4060/4070 hazır sistemler, gaming laptoplar veya Apple Silicon MacBook modelleriyle kolayca takas edebiliyorsunuz.",
+      highlight: "Eski cihazınızı peşinat sayıp son teknoloji sistemlere kolayca geçiş yapın."
+    },
+    {
+      id: 9,
+      category: 'takas',
+      categoryName: 'Takas & Değişim',
+      color: 'amber',
+      q: "Takasta fiyat farkı nasıl hesaplanır? Üstüne para alabilir miyim?",
+      a: "Cihazınızın değeri almak istediğiniz üründen daha yüksekse, aradaki farkı anında size nakit veya FAST ile ödüyoruz! Eğer almak istediğiniz ürün daha yüksekse sadece kalan farkı nakit, havale veya kredi kartıyla ödeyebilirsiniz.",
+      highlight: "Farkı ister nakit alın, ister ödeyin; esnek ve adil mahsuplaşma."
+    },
+    {
+      id: 10,
+      category: 'takas',
+      categoryName: 'Takas & Değişim',
+      color: 'amber',
+      q: "Takas yaptığımda eski cihazımdaki kişisel verilerim yeni cihaza aktarılır mı?",
+      a: "Evet! Takas sürecinde uzman teknik personelimiz eski bilgisayarınızdaki fotoğraf, belge, oyun ve özel dosyalarınızı yeni cihazınıza eksiksiz ve ücretsiz olarak aktarır. Ardından eski cihazınız kalıcı olarak sıfırlanır.",
+      highlight: "Ücretsiz veri aktarımı ve yeni sisteme sıfır kayıpla geçiş desteği."
+    },
+    {
+      id: 11,
+      category: 'kargo',
+      categoryName: 'Kargo & İl Dışı',
+      color: 'purple',
+      q: "Konya dışından veya uzak ilçelerden kargoyla cihaz satışı nasıl yapılır?",
+      a: "Türkiye'nin 81 ilinden ve Konya'nın tüm çevre ilçelerinden anlaşmalı Yurtiçi Kargo kodumuzla cihazınızı güvenle gönderebilirsiniz. WhatsApp üzerinden model ve fotoğrafları iletip ön teklifimizi onayladıktan sonra size özel ücretsiz kargo kodunuz iletilir.",
+      highlight: "Türkiye'nin her yerinden anlaşmalı Yurtiçi Kargo ile 1-2 iş gününde teslim."
+    },
+    {
+      id: 12,
+      category: 'kargo',
+      categoryName: 'Kargo & İl Dışı',
+      color: 'purple',
+      q: "Kargo ücretini kim karşılıyor? Kargo sürecinde ürün güvenliği nasıl sağlanır?",
+      a: "Anlaşmalı kargo gönderimlerimizde kargo ücreti tamamen bize aittir, sizden 1 TL dahi ücret talep edilmez. Kargonuz mağazamıza ulaştığı an kutu açılışı güvenlik kamerası altında kayda alınır. 15 dakikalık donanım testi sonrası ödemeniz anında banka hesabınıza FAST ile aktarılır.",
+      highlight: "%100 ücretsiz kargo ve güvenlik kamerası kaydıyla şeffaf kutu açılışı."
+    },
+    {
+      id: 13,
+      category: 'guvenlik',
+      categoryName: 'Veri Güvenliği & Garanti',
+      color: 'sky',
+      q: "Cihazımı satarken kişisel verilerim, fotoğraflarım ve hesaplarım nasıl korunur?",
+      a: "Kişisel verilerinizin gizliliği bizim için en öncelikli kuraldır. Cihazınızı teslim aldıktan sonra veya test sürecinde tüm diskler DoD ve NIST veri silme standartlarına uygun biçimde kalıcı olarak sıfırlanır. Geri döndürülemez format işlemi uygulanarak cihaz fabrika ayarlarına getirilir.",
+      highlight: "Geri getirilemez kalıcı disk sıfırlama ile %100 veri gizliliği güvencesi."
+    },
+    {
+      id: 14,
+      category: 'guvenlik',
+      categoryName: 'Veri Güvenliği & Garanti',
+      color: 'sky',
+      q: "Cihaz satışı yaparken resmi bir tutanak veya sözleşme düzenleniyor mu?",
+      a: "Evet. Güvenli ticaret ilkemiz ve yasal mevzuat gereğince ikinci el cihaz alımlarında karşılıklı imzalı 'İkinci El Cihaz Alım-Satım Sözleşmesi' düzenlenir. Cihazın seri numarası, satıcı kimlik beyanı ve ödenen meblağ resmi olarak kayıt altına alınarak bir nüshası size verilir.",
+      highlight: "Her iki tarafın haklarını koruyan resmi imzalı alım tutanağı."
+    },
+    {
+      id: 15,
+      category: 'guvenlik',
+      categoryName: 'Veri Güvenliği & Garanti',
+      color: 'sky',
+      q: "Mağazanızdan satın aldığım ikinci el bilgisayar veya laptop garantili mi?",
+      a: "Evet! Mağazamızda satışa sunulan tüm 2. el masaüstü sistemler, gaming laptoplar ve Apple cihazları 20+ aşamalı stres testinden geçmiş, termal macunları yenilenmiş ve donanım kontrolü yapılmıştır. Tüm cihazlarımıza Konya Bilgisayar Mağaza Garantisi verilmektedir.",
+      highlight: "Mağaza garantili, stres testleri tamamlanmış güvenilir ikinci el cihazlar."
     }
   ];
+
+  const filteredFaqs = faqs.filter(faq => {
+    const matchesCat = faqCategory === 'all' || faq.category === faqCategory;
+    if (!matchesCat) return false;
+    if (!faqSearch.trim()) return true;
+    const term = faqSearch.toLowerCase();
+    return faq.q.toLowerCase().includes(term) || faq.a.toLowerCase().includes(term);
+  });
+
+  // Kompakt Görünüm Formülü: Sayfayı uzatmamak için 'Tümü' ve arama yokken varsayılan ilk 6 soru gösterilir
+  const isCompactMode = faqCategory === 'all' && !faqSearch.trim();
+  const displayedFaqs = (isCompactMode && !showAllFaqs)
+    ? filteredFaqs.slice(0, 6)
+    : filteredFaqs;
 
   const filteredProducts = activeCategoryTab === 'all'
     ? products.slice(0, 8)
@@ -148,184 +466,335 @@ Bu donanım için en yüksek nakit alım veya takas fiyat teklifinizi alabilir m
 
   return (
     <div>
-      {/* 1. KURUMSAL AYDINLIK HERO BÖLÜMÜ (Kalender Bilgisayar Teması) */}
-      <section className="hero-kalender" style={{ padding: '60px 0 65px' }}>
-        <div className="container" style={{ position: 'relative', zIndex: 2 }}>
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-            alignItems: 'center',
-            gap: '40px'
-          }}>
-            {/* Sol: Metin, Vurgular & Doğrudan İletişim */}
-            <div>
-              <div style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '7px 16px',
-                borderRadius: 'var(--radius-full)',
-                background: 'rgba(0, 102, 204, 0.08)',
-                border: '1px solid rgba(0, 102, 204, 0.2)',
-                color: '#0066cc',
-                fontSize: '0.84rem',
-                fontWeight: 800,
-                marginBottom: '18px'
-              }}>
-                <span className="pulse-online" />
-                <span>Konya'da İkinci El Cihaz ve Teknoloji Mağazası</span>
-              </div>
+      {/* 1. BAĞIMSIZ VE MODERN HERO SLIDER (Tam Genişlik & Carousel) */}
+      <section 
+        className="hero-slider-wrapper"
+        onMouseEnter={() => setIsSliderPaused(true)}
+        onMouseLeave={() => setIsSliderPaused(false)}
+      >
+        {/* Sol & Sağ Navigasyon Okları */}
+        <button 
+          type="button"
+          onClick={prevHeroSlide}
+          className="slider-arrow-btn prev"
+          aria-label="Önceki Slayt"
+        >
+          <ChevronLeft size={24} />
+        </button>
 
-              <h1 style={{
-                fontSize: 'clamp(2.3rem, 4.4vw, 3.4rem)',
-                fontWeight: 900,
-                lineHeight: 1.18,
-                color: '#0a2540',
-                letterSpacing: '-0.03em',
-                marginBottom: '18px'
-              }}>
-                İkinci El Bilgisayar, Laptop ve Cihazınızı <span style={{ color: '#0066cc' }}>Değerinde Nakit Alıyoruz</span>
-              </h1>
+        <button 
+          type="button"
+          onClick={nextHeroSlide}
+          className="slider-arrow-btn next"
+          aria-label="Sonraki Slayt"
+        >
+          <ChevronRight size={24} />
+        </button>
 
-              <p style={{
-                fontSize: '1.08rem',
-                color: '#475569',
-                lineHeight: 1.7,
-                marginBottom: '28px',
-                maxWidth: '560px'
-              }}>
-                Masaüstü oyuncu kasası, gaming laptop, MacBook, iPhone, oyun konsolu ve donanım parçalarınızı Selçuklu mağazamızda anında test edip nakit ödüyoruz. Şehir dışından anlaşmalı ücretsiz kargo imkanı.
-              </p>
+        <div className="container hero-slider-container">
+          {heroSlides.map((slide, idx) => {
+            if (idx !== currentSlide) return null;
+            return (
+              <div key={slide.id} className="hero-slide">
+                {/* Sol Taraf: İçerik, Başlık, Vurgular & Butonlar */}
+                <div>
+                  <div className="hero-slide-badge">
+                    <span className="pulse-online" />
+                    <span>{slide.badge}</span>
+                  </div>
 
-              {/* Hızlı Eylem Düğmeleri */}
-              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '28px' }}>
-                <button 
-                  onClick={() => navigate('degerleme')}
-                  className="btn btn-navy"
-                  style={{ fontSize: '1rem', padding: '14px 28px' }}
-                >
-                  <Zap size={18} /> Cihazını Sat & Değerini Öğren →
-                </button>
+                  <h1 className="hero-slide-title">
+                    {slide.title.replace(slide.titleHighlight, '')}
+                    <span style={{ color: '#0066cc', display: 'inline-block' }}>
+                      {slide.titleHighlight}
+                    </span>
+                  </h1>
 
-                <button 
-                  onClick={() => navigate('urunler')}
-                  className="btn btn-outline"
-                  style={{ fontSize: '0.98rem', padding: '14px 24px', fontWeight: 700 }}
-                >
-                  Satılık Ürünleri İncele
-                </button>
+                  <p className="hero-slide-desc">
+                    {slide.desc}
+                  </p>
 
-                <a 
-                  href="tel:05510454255"
-                  className="btn"
-                  style={{
-                    background: '#ffffff',
-                    color: '#0a2540',
-                    border: '1.5px solid var(--border)',
-                    padding: '14px 20px',
-                    fontSize: '0.96rem',
-                    fontWeight: 800,
-                    boxShadow: 'var(--shadow-xs)'
-                  }}
-                >
-                  <Phone size={17} color="#0066cc" /> 0551 045 42 55
-                </a>
-              </div>
+                  {/* Bullet Vurguları */}
+                  <div className="hero-slide-bullets">
+                    {slide.bullets.map((bullet, bIdx) => (
+                      <div key={bIdx} className="hero-slide-bullet-item">
+                        <CheckCircle2 size={16} color="#16a34a" />
+                        <span>{bullet}</span>
+                      </div>
+                    ))}
+                  </div>
 
-              {/* Güven Rozetleri Listesi */}
-              <div style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: '16px',
-                paddingTop: '20px',
-                borderTop: '1px solid var(--border)',
-                fontSize: '0.86rem',
-                fontWeight: 700,
-                color: '#334155'
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <CheckCircle2 size={16} color="#16a34a" />
-                  <span>15 Dakikada Hızlı Test & Anında Nakit</span>
+                  {/* Eylem Düğmeleri */}
+                  <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
+                    {slide.primaryBtn.scrollTo ? (
+                      <button 
+                        type="button"
+                        onClick={() => {
+                          const el = document.getElementById(slide.primaryBtn.scrollTo);
+                          if (el) el.scrollIntoView({ behavior: 'smooth' });
+                        }}
+                        className="btn btn-navy"
+                        style={{ fontSize: '1rem', padding: '14px 28px' }}
+                      >
+                        <Zap size={18} /> {slide.primaryBtn.text}
+                      </button>
+                    ) : (
+                      <button 
+                        type="button"
+                        onClick={() => navigate(slide.primaryBtn.route)}
+                        className="btn btn-navy"
+                        style={{ fontSize: '1rem', padding: '14px 28px' }}
+                      >
+                        {slide.primaryBtn.icon === 'refresh' && <RefreshCw size={18} />}
+                        {slide.primaryBtn.icon === 'shield' && <ShieldCheck size={18} />}
+                        {slide.primaryBtn.icon === 'sparkles' && <Sparkles size={18} />}
+                        <span>{slide.primaryBtn.text}</span>
+                      </button>
+                    )}
+
+                    {slide.secondaryBtn && (
+                      slide.secondaryBtn.wa ? (
+                        <a 
+                          href={`https://wa.me/905510454255?text=${encodeURIComponent(slide.secondaryBtn.wa)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn btn-wa"
+                          style={{ fontSize: '0.96rem', padding: '14px 22px', fontWeight: 800 }}
+                        >
+                          <WhatsAppIcon size={17} /> {slide.secondaryBtn.text}
+                        </a>
+                      ) : slide.secondaryBtn.tel ? (
+                        <a 
+                          href={`tel:${slide.secondaryBtn.tel}`}
+                          className="btn"
+                          style={{
+                            background: '#ffffff',
+                            color: '#0a2540',
+                            border: '1.5px solid var(--border)',
+                            padding: '14px 22px',
+                            fontSize: '0.96rem',
+                            fontWeight: 800
+                          }}
+                        >
+                          <Phone size={17} color="#0066cc" /> {slide.secondaryBtn.text}
+                        </a>
+                      ) : (
+                        <button 
+                          type="button"
+                          onClick={() => navigate(slide.secondaryBtn.route)}
+                          className="btn btn-outline"
+                          style={{ fontSize: '0.96rem', padding: '14px 22px', fontWeight: 700 }}
+                        >
+                          {slide.secondaryBtn.text}
+                        </button>
+                      )
+                    )}
+
+                    {slide.hasPhone && (
+                      <a 
+                        href="tel:05510454255"
+                        className="btn"
+                        style={{
+                          background: '#ffffff',
+                          color: '#0a2540',
+                          border: '1.5px solid var(--border)',
+                          padding: '14px 20px',
+                          fontSize: '0.96rem',
+                          fontWeight: 800,
+                          boxShadow: 'var(--shadow-xs)'
+                        }}
+                      >
+                        <Phone size={17} color="#0066cc" /> 0551 045 42 55
+                      </a>
+                    )}
+                  </div>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <CheckCircle2 size={16} color="#16a34a" />
-                  <span>20 Aşamalı Donanım Testi</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <CheckCircle2 size={16} color="#16a34a" />
-                  <span>Selçuklu Mağazamıza Elden Teslim</span>
+
+                {/* Sağ Taraf: Büyüleyici Görsel Vitrini & Canlı İstatistik Rozetleri */}
+                <div className="hero-slide-visual">
+                  <div className="hero-visual-card">
+                    <img 
+                      src={slide.image} 
+                      alt={slide.title} 
+                      loading="eager"
+                    />
+                    <div className="hero-visual-overlay" />
+                    
+                    <div className="hero-visual-badge-top">
+                      <span>{slide.badgeTop}</span>
+                    </div>
+
+                    <div className="hero-visual-stat-card">
+                      <div>
+                        <div style={{ fontSize: '1.35rem', fontWeight: 900, color: '#38bdf8', lineHeight: 1 }}>
+                          {slide.statVal}
+                        </div>
+                        <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#f1f5f9' }}>
+                          {slide.statLabel}
+                        </div>
+                      </div>
+                      <div style={{ textAlign: 'right' }}>
+                        <span style={{ fontSize: '0.74rem', background: 'rgba(56, 189, 248, 0.2)', color: '#7dd3fc', padding: '4px 10px', borderRadius: '12px', fontWeight: 800 }}>
+                          {slide.statSub}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
+            );
+          })}
+        </div>
+
+        {/* Alt Slayt Noktaları (Pagination) ve Sayaç */}
+        <div style={{ paddingBottom: '20px' }}>
+          <div className="slider-dots-wrapper">
+            <span style={{ fontSize: '0.8rem', fontWeight: 800, color: '#64748b', marginRight: '6px' }}>
+              0{currentSlide + 1} / 0{heroSlides.length}
+            </span>
+            {heroSlides.map((_, dotIdx) => (
+              <button
+                key={dotIdx}
+                type="button"
+                onClick={() => setCurrentSlide(dotIdx)}
+                className={`slider-dot-btn ${dotIdx === currentSlide ? 'active' : ''}`}
+                aria-label={`Slayt ${dotIdx + 1}`}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 2. CİHAZ ÖZELLİKLERİ VE WHATSAPP FİYAT TEKLİFİ BÖLÜMÜ */}
+      <section id="canli-degerleme" className="valuation-section">
+        <div className="container">
+          {/* Başlık & Açıklama */}
+          <div style={{ textAlign: 'center', maxWidth: '780px', margin: '0 auto 36px' }}>
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '6px 16px',
+              borderRadius: 'var(--radius-full)',
+              background: 'rgba(21, 128, 61, 0.08)',
+              border: '1px solid rgba(21, 128, 61, 0.25)',
+              color: '#15803d',
+              fontSize: '0.84rem',
+              fontWeight: 800,
+              marginBottom: '14px'
+            }}>
+              <WhatsAppIcon size={16} />
+              <span>WhatsApp ile Hızlı Fiyat Teklifi</span>
             </div>
 
-            {/* Sağ: İnteraktif Canlı Donanım & Fiyat Simülatörü */}
-            <div>
-              <div className="light-calc-card">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <Sparkles size={18} color="#0066cc" />
-                    <span style={{ fontWeight: 800, fontSize: '0.98rem', color: '#0a2540' }}>
-                      Canlı Değerleme & Fiyat Hesaplayıcı
-                    </span>
-                  </div>
-                  <span className="badge badge-blue">
-                    Anlık Hesaplama
-                  </span>
+            <h2 style={{
+              fontSize: 'clamp(2rem, 3.5vw, 2.7rem)',
+              fontWeight: 900,
+              color: '#0a2540',
+              lineHeight: 1.2,
+              letterSpacing: '-0.02em',
+              marginBottom: '14px'
+            }}>
+              Cihazınızın Özelliklerini Seçin, <span style={{ color: '#15803d' }}>WhatsApp'tan Anında Fiyat Alın</span>
+            </h2>
+
+            <p style={{
+              fontSize: '1.04rem',
+              color: 'var(--text-muted)',
+              lineHeight: 1.65
+            }}>
+              Satmak veya takas etmek istediğiniz laptop, masaüstü bilgisayar, MacBook, telefon veya konsolunuzun donanımını belirtin; otomatik oluşturulan mesajla WhatsApp uzmanımıza iletip en yüksek nakit teklifimizi alın.
+            </p>
+          </div>
+
+          {/* Ana Değerleme Kartı */}
+          <div className="valuation-card-main">
+            {/* 6 Kategori Seçim Butonları (Geniş & Modern Butonlar) */}
+            <div className="val-cat-grid">
+              <button 
+                type="button"
+                className={`val-cat-btn ${simCategory === 'laptop' ? 'active' : ''}`}
+                onClick={() => setSimCategory('laptop')}
+              >
+                <Laptop size={22} />
+                <span>Laptop & Dizüstü</span>
+              </button>
+
+              <button 
+                type="button"
+                className={`val-cat-btn ${simCategory === 'masaustu' ? 'active' : ''}`}
+                onClick={() => setSimCategory('masaustu')}
+              >
+                <Monitor size={22} />
+                <span>Masaüstü PC</span>
+              </button>
+
+              <button 
+                type="button"
+                className={`val-cat-btn ${simCategory === 'macbook' ? 'active' : ''}`}
+                onClick={() => setSimCategory('macbook')}
+              >
+                <Cpu size={22} />
+                <span>Apple MacBook</span>
+              </button>
+
+              <button 
+                type="button"
+                className={`val-cat-btn ${simCategory === 'iphone' ? 'active' : ''}`}
+                onClick={() => setSimCategory('iphone')}
+              >
+                <Smartphone size={22} />
+                <span>iPhone / Telefon</span>
+              </button>
+
+              <button 
+                type="button"
+                className={`val-cat-btn ${simCategory === 'tablet' ? 'active' : ''}`}
+                onClick={() => setSimCategory('tablet')}
+              >
+                <Tablet size={22} />
+                <span>iPad & Tablet</span>
+              </button>
+
+              <button 
+                type="button"
+                className={`val-cat-btn ${simCategory === 'konsol' ? 'active' : ''}`}
+                onClick={() => setSimCategory('konsol')}
+              >
+                <Gamepad2 size={22} />
+                <span>PlayStation & Konsol</span>
+              </button>
+            </div>
+
+            {/* 2 Sütunlu Hesaplama Alanı: Sol Seçimler, Sağ Canlı Değer & Teklif */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+              gap: '32px',
+              alignItems: 'start'
+            }}>
+              {/* Sol: Donanım Seçim Alanı */}
+              <div>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  marginBottom: '18px',
+                  paddingBottom: '12px',
+                  borderBottom: '1px solid var(--border)'
+                }}>
+                  <Zap size={18} color="#0066cc" />
+                  <h3 style={{ fontSize: '1.05rem', fontWeight: 800, color: 'var(--heading)' }}>
+                    Cihaz Donanım Özelliklerini Seçin
+                  </h3>
                 </div>
 
-                {/* Kategori Seçim Butonları */}
-                <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '18px' }}>
-                  <button 
-                    type="button"
-                    className={`calc-chip-btn ${simCategory === 'laptop' ? 'active' : ''}`}
-                    onClick={() => setSimCategory('laptop')}
-                  >
-                    <Laptop size={14} /> Laptop
-                  </button>
-                  <button 
-                    type="button"
-                    className={`calc-chip-btn ${simCategory === 'masaustu' ? 'active' : ''}`}
-                    onClick={() => setSimCategory('masaustu')}
-                  >
-                    <Monitor size={14} /> Kasa / PC
-                  </button>
-                  <button 
-                    type="button"
-                    className={`calc-chip-btn ${simCategory === 'macbook' ? 'active' : ''}`}
-                    onClick={() => setSimCategory('macbook')}
-                  >
-                    <Laptop size={14} /> MacBook
-                  </button>
-                  <button 
-                    type="button"
-                    className={`calc-chip-btn ${simCategory === 'iphone' ? 'active' : ''}`}
-                    onClick={() => setSimCategory('iphone')}
-                  >
-                    <Smartphone size={14} /> iPhone
-                  </button>
-                  <button 
-                    type="button"
-                    className={`calc-chip-btn ${simCategory === 'tablet' ? 'active' : ''}`}
-                    onClick={() => setSimCategory('tablet')}
-                  >
-                    <Tablet size={14} /> Tablet
-                  </button>
-                  <button 
-                    type="button"
-                    className={`calc-chip-btn ${simCategory === 'konsol' ? 'active' : ''}`}
-                    onClick={() => setSimCategory('konsol')}
-                  >
-                    <Gamepad2 size={14} /> Konsol
-                  </button>
-                </div>
-
-                {/* Form Alanları (Kategoriye Göre Dinamik) */}
                 {(simCategory === 'laptop' || simCategory === 'masaustu') && (
-                  <div style={{ marginBottom: '16px' }}>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '10px' }}>
+                  <div>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', marginBottom: '14px' }}>
                       <div>
-                        <label style={{ fontSize: '0.76rem', fontWeight: 700, color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>
-                          Marka
+                        <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--heading)', display: 'block', marginBottom: '6px' }}>
+                          Cihaz Markası
                         </label>
                         <select 
                           value={simBrand} 
@@ -336,21 +805,21 @@ Bu donanım için en yüksek nakit alım veya takas fiyat teklifinizi alabilir m
                             if (series && series.length > 0) setSimSeries(series[0]);
                           }}
                           className="form-control"
-                          style={{ padding: '8px 10px', fontSize: '0.84rem' }}
+                          style={{ padding: '10px 12px', fontSize: '0.88rem' }}
                         >
                           {BRAND_OPTIONS}
                         </select>
                       </div>
 
                       <div>
-                        <label style={{ fontSize: '0.76rem', fontWeight: 700, color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>
+                        <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--heading)', display: 'block', marginBottom: '6px' }}>
                           Model / Seri
                         </label>
                         <select 
                           value={simSeries} 
                           onChange={e => setSimSeries(e.target.value)}
                           className="form-control"
-                          style={{ padding: '8px 10px', fontSize: '0.84rem' }}
+                          style={{ padding: '10px 12px', fontSize: '0.88rem' }}
                         >
                           {(POPULAR_SERIES_BY_BRAND[simBrand] || ['Standart Model']).map((seri, idx) => (
                             <option key={idx} value={seri}>{seri}</option>
@@ -359,58 +828,60 @@ Bu donanım için en yüksek nakit alım veya takas fiyat teklifinizi alabilir m
                       </div>
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px', marginBottom: '14px' }}>
                       <div>
-                        <label style={{ fontSize: '0.76rem', fontWeight: 700, color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>
-                          İşlemci (CPU)
+                        <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--heading)', display: 'block', marginBottom: '6px' }}>
+                          İşlemci Modeli (CPU)
                         </label>
                         <select 
                           value={simCpu} 
                           onChange={e => setSimCpu(e.target.value)}
                           className="form-control"
-                          style={{ padding: '8px 10px', fontSize: '0.84rem' }}
+                          style={{ padding: '10px 12px', fontSize: '0.88rem' }}
                         >
                           {CPU_OPTIONS_GROUPED}
                         </select>
                       </div>
 
                       <div>
-                        <label style={{ fontSize: '0.76rem', fontWeight: 700, color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>
+                        <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--heading)', display: 'block', marginBottom: '6px' }}>
                           Ekran Kartı (GPU)
                         </label>
                         <select 
                           value={simGpu} 
                           onChange={e => setSimGpu(e.target.value)}
                           className="form-control"
-                          style={{ padding: '8px 10px', fontSize: '0.84rem' }}
+                          style={{ padding: '10px 12px', fontSize: '0.88rem' }}
                         >
                           {GPU_OPTIONS_GROUPED}
                         </select>
                       </div>
+                    </div>
 
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
                       <div>
-                        <label style={{ fontSize: '0.76rem', fontWeight: 700, color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>
+                        <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--heading)', display: 'block', marginBottom: '6px' }}>
                           RAM Bellek
                         </label>
                         <select 
                           value={simRam} 
                           onChange={e => setSimRam(e.target.value)}
                           className="form-control"
-                          style={{ padding: '8px 10px', fontSize: '0.84rem' }}
+                          style={{ padding: '10px 12px', fontSize: '0.88rem' }}
                         >
                           {RAM_OPTIONS}
                         </select>
                       </div>
 
                       <div>
-                        <label style={{ fontSize: '0.76rem', fontWeight: 700, color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>
+                        <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--heading)', display: 'block', marginBottom: '6px' }}>
                           SSD / Depolama
                         </label>
                         <select 
                           value={simStorage} 
                           onChange={e => setSimStorage(e.target.value)}
                           className="form-control"
-                          style={{ padding: '8px 10px', fontSize: '0.84rem' }}
+                          style={{ padding: '10px 12px', fontSize: '0.88rem' }}
                         >
                           {STORAGE_OPTIONS}
                         </select>
@@ -420,31 +891,32 @@ Bu donanım için en yüksek nakit alım veya takas fiyat teklifinizi alabilir m
                 )}
 
                 {simCategory === 'macbook' && (
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '16px' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
                     <div>
-                      <label style={{ fontSize: '0.76rem', fontWeight: 700, color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>
-                        MacBook Serisi
+                      <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--heading)', display: 'block', marginBottom: '6px' }}>
+                        MacBook Modeli & Kasası
                       </label>
                       <select 
                         value={simSeries} 
                         onChange={e => setSimSeries(e.target.value)}
                         className="form-control"
-                        style={{ padding: '8px 10px', fontSize: '0.84rem' }}
+                        style={{ padding: '10px 12px', fontSize: '0.88rem' }}
                       >
                         {(POPULAR_SERIES_BY_BRAND['Apple'] || []).map((seri, idx) => (
                           <option key={idx} value={seri}>{seri}</option>
                         ))}
                       </select>
                     </div>
+
                     <div>
-                      <label style={{ fontSize: '0.76rem', fontWeight: 700, color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>
-                        Apple Çipi
+                      <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--heading)', display: 'block', marginBottom: '6px' }}>
+                        Apple Çipi (İşlemci)
                       </label>
                       <select 
                         value={simAppleChip} 
                         onChange={e => setSimAppleChip(e.target.value)}
                         className="form-control"
-                        style={{ padding: '8px 10px', fontSize: '0.84rem' }}
+                        style={{ padding: '10px 12px', fontSize: '0.88rem' }}
                       >
                         {APPLE_CHIP_OPTIONS}
                       </select>
@@ -453,15 +925,15 @@ Bu donanım için en yüksek nakit alım veya takas fiyat teklifinizi alabilir m
                 )}
 
                 {simCategory === 'iphone' && (
-                  <div style={{ marginBottom: '16px' }}>
-                    <label style={{ fontSize: '0.76rem', fontWeight: 700, color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>
-                      iPhone Modeli
+                  <div>
+                    <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--heading)', display: 'block', marginBottom: '6px' }}>
+                      Telefon Modeli
                     </label>
                     <select 
                       value={simPhoneModel} 
                       onChange={e => setSimPhoneModel(e.target.value)}
                       className="form-control"
-                      style={{ padding: '8px 10px', fontSize: '0.84rem' }}
+                      style={{ padding: '10px 12px', fontSize: '0.88rem' }}
                     >
                       {IPHONE_OPTIONS}
                     </select>
@@ -469,15 +941,15 @@ Bu donanım için en yüksek nakit alım veya takas fiyat teklifinizi alabilir m
                 )}
 
                 {simCategory === 'tablet' && (
-                  <div style={{ marginBottom: '16px' }}>
-                    <label style={{ fontSize: '0.76rem', fontWeight: 700, color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>
+                  <div>
+                    <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--heading)', display: 'block', marginBottom: '6px' }}>
                       Tablet Modeli
                     </label>
                     <select 
                       value={simTabletModel} 
                       onChange={e => setSimTabletModel(e.target.value)}
                       className="form-control"
-                      style={{ padding: '8px 10px', fontSize: '0.84rem' }}
+                      style={{ padding: '10px 12px', fontSize: '0.88rem' }}
                     >
                       <optgroup label="Apple iPad Modelleri">
                         <option value="ipad-pro-m4">Apple iPad Pro M4 (2024 - 11"/13")</option>
@@ -499,65 +971,194 @@ Bu donanım için en yüksek nakit alım veya takas fiyat teklifinizi alabilir m
                 )}
 
                 {simCategory === 'konsol' && (
-                  <div style={{ marginBottom: '16px' }}>
-                    <label style={{ fontSize: '0.76rem', fontWeight: 700, color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>
-                      Konsol Modeli
+                  <div>
+                    <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--heading)', display: 'block', marginBottom: '6px' }}>
+                      Oyun Konsolu Modeli
                     </label>
                     <select 
                       value={simConsoleModel} 
                       onChange={e => setSimConsoleModel(e.target.value)}
                       className="form-control"
-                      style={{ padding: '8px 10px', fontSize: '0.84rem' }}
+                      style={{ padding: '10px 12px', fontSize: '0.88rem' }}
                     >
                       {CONSOLE_OPTIONS}
                     </select>
                   </div>
                 )}
+              </div>
 
-                {/* Seçilen Donanım Özeti & Uzman Teklifi Kutusu */}
+              {/* Sağ: Seçilen Donanım Özeti & WhatsApp Hazır Mesaj Önizlemesi */}
+              <div>
                 <div style={{
-                  background: 'linear-gradient(135deg, rgba(0, 102, 204, 0.05) 0%, rgba(10, 37, 64, 0.03) 100%)',
-                  border: '1.5px solid rgba(0, 102, 204, 0.22)',
-                  borderRadius: '12px',
-                  padding: '16px',
-                  marginBottom: '16px'
+                  background: 'linear-gradient(135deg, rgba(21, 128, 61, 0.04) 0%, rgba(10, 37, 64, 0.03) 100%)',
+                  border: '1.5px solid rgba(21, 128, 61, 0.28)',
+                  borderRadius: '16px',
+                  padding: '24px',
+                  boxShadow: 'var(--shadow-sm)'
                 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-                    <span style={{ fontSize: '0.76rem', fontWeight: 800, color: '#0066cc', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                      ✓ Donanım Özellikleri Seçildi
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                    <span style={{ fontSize: '0.78rem', fontWeight: 800, color: '#15803d', textTransform: 'uppercase', letterSpacing: '0.5px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <CheckCircle2 size={15} color="#15803d" />
+                      Seçilen Donanım Özeti
                     </span>
-                    <span style={{ fontSize: '0.72rem', background: '#e0f2fe', color: '#0369a1', fontWeight: 800, padding: '2px 8px', borderRadius: '10px' }}>
-                      Şeffaf Ekspertiz
+                    <span style={{ fontSize: '0.74rem', background: '#dcfce7', color: '#166534', fontWeight: 800, padding: '3px 10px', borderRadius: '12px' }}>
+                      Mesaja Eklendi
                     </span>
                   </div>
-                  <div style={{ fontSize: '0.88rem', fontWeight: 800, color: '#0a2540', lineHeight: 1.45, marginBottom: '8px' }}>
+
+                  <div style={{ fontSize: '0.98rem', fontWeight: 800, color: '#0a2540', lineHeight: 1.5, marginBottom: '16px' }}>
                     {getSimDetailSummary()}
                   </div>
-                  <div style={{ fontSize: '0.74rem', color: '#64748b' }}>
-                    *Cihazınızın kozmetik durumu, batarya sağlığı ve FurMark testine göre uzmanımızdan en yüksek nakit/FAST teklifi verilir.
+
+                  {/* WhatsApp Hazır Mesaj Önizleme Kutusu (Chat Balonu Görünümünde) */}
+                  <div style={{
+                    background: '#ffffff',
+                    border: '1.5px solid #bbf7d0',
+                    borderRadius: '14px',
+                    padding: '16px 18px',
+                    marginBottom: '18px',
+                    position: 'relative',
+                    boxShadow: '0 4px 16px rgba(22, 163, 74, 0.08)'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px', borderBottom: '1px solid #f0fdf4', paddingBottom: '6px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.76rem', fontWeight: 800, color: '#15803d' }}>
+                        <WhatsAppIcon size={15} />
+                        <span>0551 045 42 55 Hattına Gönderilecek Hazır Mesaj:</span>
+                      </div>
+                      <span style={{ fontSize: '0.7rem', color: '#94a3b8', fontWeight: 600 }}>Önizleme</span>
+                    </div>
+
+                    <div style={{
+                      fontSize: '0.82rem',
+                      color: '#1e293b',
+                      lineHeight: 1.55,
+                      whiteSpace: 'pre-line',
+                      maxHeight: '145px',
+                      overflowY: 'auto',
+                      padding: '4px 2px',
+                      fontFamily: 'inherit'
+                    }}>
+                      {simWaMessage}
+                    </div>
+                  </div>
+
+                  {/* Güven Vurguları */}
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr',
+                    gap: '10px',
+                    fontSize: '0.78rem',
+                    fontWeight: 700,
+                    color: '#334155',
+                    marginBottom: '20px'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <CheckCircle2 size={14} color="#16a34a" />
+                      <span>15 Dk Hızlı Test</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <CheckCircle2 size={14} color="#16a34a" />
+                      <span>Peşin Nakit / FAST</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <CheckCircle2 size={14} color="#16a34a" />
+                      <span>Selçuklu Mağaza</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <CheckCircle2 size={14} color="#16a34a" />
+                      <span>Ücretsiz Kargo</span>
+                    </div>
+                  </div>
+
+                  {/* Aksiyon Düğmeleri */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <a 
+                      href={simWaLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-wa"
+                      style={{
+                        width: '100%',
+                        fontSize: '1rem',
+                        padding: '16px 20px',
+                        fontWeight: 800,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '10px',
+                        boxShadow: '0 8px 24px rgba(21, 128, 61, 0.3)'
+                      }}
+                    >
+                      <WhatsAppIcon size={22} />
+                      <span>WhatsApp'a Gönder & Fiyat Al</span>
+                    </a>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: '10px' }}>
+                      <button 
+                        type="button"
+                        onClick={() => {
+                          navigator.clipboard.writeText(simWaMessage);
+                          setCopiedMessage(true);
+                          setTimeout(() => setCopiedMessage(false), 2500);
+                        }}
+                        className="btn btn-outline"
+                        style={{ fontSize: '0.82rem', padding: '11px 12px', fontWeight: 800, justifyContent: 'center' }}
+                      >
+                        {copiedMessage ? '✓ Kopyalandı!' : '📋 Mesajı Kopyala'}
+                      </button>
+
+                      <button 
+                        type="button"
+                        onClick={() => navigate('degerleme', { category: simCategory })}
+                        className="btn btn-navy"
+                        style={{ fontSize: '0.82rem', padding: '11px 12px', fontWeight: 800, justifyContent: 'center' }}
+                      >
+                        Detaylı Form →
+                      </button>
+                    </div>
                   </div>
                 </div>
+              </div>
+            </div>
 
-                {/* Aksiyon Düğmeleri */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1.3fr 1fr', gap: '10px' }}>
-                  <a 
-                    href={simWaLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn btn-wa"
-                    style={{ fontSize: '0.84rem', padding: '12px 10px', fontWeight: 800 }}
-                  >
-                    <WhatsAppIcon size={16} /> WhatsApp Teklif Al
-                  </a>
+            {/* Alt Süreç Adımları (15 Dk Güvencesi) */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+              gap: '16px',
+              marginTop: '32px',
+              paddingTop: '28px',
+              borderTop: '1px solid var(--border)'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#0a2540', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.85rem', flexShrink: 0 }}>1</div>
+                <div>
+                  <div style={{ fontWeight: 800, fontSize: '0.88rem', color: 'var(--heading)', marginBottom: '3px' }}>Donanımını Seç</div>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Cihazının modelini ve parçalarını listeden belirt.</div>
+                </div>
+              </div>
 
-                  <button 
-                    type="button"
-                    onClick={() => navigate('degerleme', { category: simCategory })}
-                    className="btn btn-navy"
-                    style={{ fontSize: '0.84rem', padding: '12px 10px', fontWeight: 800 }}
-                  >
-                    Detaylı Sihirbaz →
-                  </button>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#15803d', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.85rem', flexShrink: 0 }}>2</div>
+                <div>
+                  <div style={{ fontWeight: 800, fontSize: '0.88rem', color: 'var(--heading)', marginBottom: '3px' }}>WhatsApp'tan Fiyat Al</div>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Hazır mesajla tüm özellikler iletilsin, anında nakit teklifi gelsin.</div>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#0a2540', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.85rem', flexShrink: 0 }}>3</div>
+                <div>
+                  <div style={{ fontWeight: 800, fontSize: '0.88rem', color: 'var(--heading)', marginBottom: '3px' }}>15 Dk Test</div>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Selçuklu mağazamızda gözünüzün önünde şeffaf ekspertiz.</div>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#16a34a', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: '0.85rem', flexShrink: 0 }}>4</div>
+                <div>
+                  <div style={{ fontWeight: 800, fontSize: '0.88rem', color: 'var(--heading)', marginBottom: '3px' }}>Anında Nakit / FAST</div>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>Fiyat onayınızla birlikte paranız anında elden veya bankada.</div>
                 </div>
               </div>
             </div>
@@ -565,135 +1166,6 @@ Bu donanım için en yüksek nakit alım veya takas fiyat teklifinizi alabilir m
         </div>
       </section>
 
-      {/* 2. HIZLI KATEGORİ BANTLARI */}
-      <section style={{ background: '#ffffff', borderBottom: '1px solid var(--border)', padding: '16px 0' }}>
-        <div className="container">
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '10px',
-            flexWrap: 'wrap'
-          }}>
-            {[
-              { id: 'masaustu', label: 'Masaüstü PC', icon: <Monitor size={15} /> },
-              { id: 'laptop', label: 'Laptop & Notebook', icon: <Laptop size={15} /> },
-              { id: 'macbook', label: 'MacBook & iMac', icon: <Cpu size={15} /> },
-              { id: 'iphone', label: 'iPhone & Telefon', icon: <Smartphone size={15} /> },
-              { id: 'konsol', label: 'PlayStation & Konsol', icon: <Gamepad2 size={15} /> },
-              { id: 'ekran_karti', label: 'Ekran Kartı & Parça', icon: <Cpu size={15} /> },
-              { id: 'monitor', label: 'Monitör & Ekipman', icon: <Monitor size={15} /> },
-              { id: 'tablet', label: 'iPad & Tablet', icon: <Tablet size={15} /> }
-            ].map(cat => (
-              <button
-                key={cat.id}
-                type="button"
-                onClick={() => { setSimCategory(cat.id); navigate('degerleme', { category: cat.id }); }}
-                className="calc-chip-btn"
-                style={{ fontSize: '0.84rem', padding: '8px 16px', borderRadius: 'var(--radius-full)' }}
-              >
-                {cat.icon} {cat.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 3. CİHAZINIZI DEĞERİNDE SATIN (6 BÜYÜK VİTRİN KARTI) */}
-      <section style={{ padding: '64px 0', background: 'var(--bg)', borderBottom: '1px solid var(--border)' }}>
-        <div className="container">
-          <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 42px' }}>
-            <span className="badge badge-blue" style={{ marginBottom: '10px' }}>
-              Değerinde Nakit Alım
-            </span>
-            <h2 style={{ fontSize: '2.2rem', fontWeight: 900, color: '#0a2540', marginBottom: '12px', letterSpacing: '-0.5px' }}>
-              Hangi Cihazınızı Satmak İstiyorsunuz?
-            </h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: 1.6 }}>
-              Konya Selçuklu mağazamızda 15 dakikalık şeffaf donanım testi sonrası anında elden nakit veya banka hesabınıza FAST ile ödeme yapıyoruz.
-            </p>
-          </div>
-
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
-            gap: '24px'
-          }}>
-            <CatShowcaseCard 
-              tag="Gaming & Ofis Kasaları"
-              title="Masaüstü Bilgisayar"
-              desc="Toplama oyun bilgisayarları, iş istasyonları ve hazır sistem kasalarınızı güncel donanım değerinde nakit alıyoruz."
-              image="/images/categories/cat_desktop.png"
-              onClick={() => navigate('degerleme', { category: 'masaustu' })}
-            />
-
-            <CatShowcaseCard 
-              tag="RTX & Ofis Laptopları"
-              title="Laptop & Dizüstü Bilgisayar"
-              desc="Gaming laptoplar (RTX serisi), ofis ve ultrabook modellerinizi 15 dakikalık donanım ve batarya testiyle anında nakit alıyoruz."
-              image="/images/categories/cat_laptop.png"
-              onClick={() => navigate('degerleme', { category: 'laptop' })}
-            />
-
-            <CatShowcaseCard 
-              tag="M1, M2, M3, M4 & Intel"
-              title="MacBook & Apple Cihazlar"
-              desc="Apple Silicon chipli veya Intel işlemcili MacBook Air, MacBook Pro, Mac Mini ve iMac cihazlarınızı değerinde alıyoruz."
-              image="/images/categories/cat_macbook.png"
-              onClick={() => navigate('degerleme', { category: 'macbook' })}
-            />
-
-            <CatShowcaseCard 
-              tag="Tüm iPhone Modelleri"
-              title="iPhone & Akıllı Telefon"
-              desc="iPhone 11'den 16 Pro Max'e kadar pil sağlığı ve kozmetik kondisyonuna göre değerinde nakit veya takas imkanı."
-              image="/images/categories/cat_iphone.png"
-              onClick={() => navigate('degerleme', { category: 'iphone' })}
-            />
-
-            <CatShowcaseCard 
-              tag="PS5, PS4 Pro & Xbox"
-              title="PlayStation & Oyun Konsolu"
-              desc="PlayStation 5 Pro/Slim, PS4 Pro ve Xbox Series X/S konsollarınızı kolları ve orijinal oyunlarıyla birlikte nakit alıyoruz."
-              image="/images/categories/cat_console.png"
-              onClick={() => navigate('degerleme', { category: 'konsol' })}
-            />
-
-            <CatShowcaseCard 
-              tag="RTX 40/30 & AMD RX"
-              title="Ekran Kartı & Donanım Parçası"
-              desc="NVIDIA RTX 40/30/20 serisi ve AMD Radeon ekran kartları, işlemci, RAM ve SSD parçalarınızı tek tek veya toplu alıyoruz."
-              image="/images/categories/cat_gpu.png"
-              onClick={() => navigate('degerleme', { category: 'ekran_karti' })}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* 4. MARKA VE EKOSİSTEM BANDI */}
-      <section style={{ padding: '24px 0', background: '#ffffff', borderBottom: '1px solid var(--border)' }}>
-        <div className="container">
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexWrap: 'wrap',
-            gap: '20px',
-            opacity: 0.85
-          }}>
-            <span style={{ fontSize: '0.8rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-              Desteklenen Markalar:
-            </span>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '28px', flexWrap: 'wrap' }}>
-              {['ASUS ROG / TUF', 'APPLE', 'MSI GAMING', 'LENOVO LEGION', 'DELL ALIENWARE', 'HP OMEN & VICTUS', 'MONSTER TULPAR', 'GIGABYTE AORUS', 'SONY PLAYSTATION'].map((brand, i) => (
-                <span key={i} style={{ fontSize: '0.88rem', fontWeight: 800, color: '#334155', letterSpacing: '0.3px' }}>
-                  {brand}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* 5. MAĞAZAMIZDAKİ GÜNCEL ÜRÜNLER (Canlı Vitrin) */}
       <section style={{ padding: '70px 0', background: 'var(--bg)', borderBottom: '1px solid var(--border)' }}>
@@ -998,253 +1470,6 @@ Bu donanım için en yüksek nakit alım veya takas fiyat teklifinizi alabilir m
         </div>
       </section>
 
-      {/* 8. GENİŞ DONANIM YELPAZESİ & İŞLEMCİ MATRİKSİ */}
-      <section style={{ padding: '54px 0', background: '#ffffff', borderBottom: '1px solid var(--border)' }}>
-        <div className="container">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '24px' }}>
-            <div>
-              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: 'var(--primary-bright)', fontWeight: 800, fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                <Cpu size={16} /> Donanım Destek Veritabanı
-              </div>
-              <h2 style={{ fontSize: '1.75rem', fontWeight: 900, color: '#0a2540', marginTop: '4px' }}>
-                Bütün İşlemci & Ekran Kartı Çeşitleri Listelendi
-              </h2>
-              <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem' }}>
-                En yeni Intel Core Ultra'dan eski nesillere, AMD Ryzen 9000'den APU'lara tüm donanımları seçip değerinde nakit satabilirsiniz.
-              </p>
-            </div>
-
-            {/* Donanım Ailesi Sekmeleri */}
-            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-              <button 
-                className={`btn btn-sm ${hardwareTab === 'intel' ? 'btn-navy' : 'btn-outline'}`}
-                onClick={() => setHardwareTab('intel')}
-                style={{ fontWeight: 800 }}
-              >
-                Intel Core & Ultra (50+ CPU)
-              </button>
-              <button 
-                className={`btn btn-sm ${hardwareTab === 'amd' ? 'btn-navy' : 'btn-outline'}`}
-                onClick={() => setHardwareTab('amd')}
-                style={{ fontWeight: 800 }}
-              >
-                AMD Ryzen (Tüm Seriler)
-              </button>
-              <button 
-                className={`btn btn-sm ${hardwareTab === 'gpu' ? 'btn-navy' : 'btn-outline'}`}
-                onClick={() => setHardwareTab('gpu')}
-                style={{ fontWeight: 800 }}
-              >
-                NVIDIA & AMD GPU
-              </button>
-              <button 
-                className={`btn btn-sm ${hardwareTab === 'apple' ? 'btn-navy' : 'btn-outline'}`}
-                onClick={() => setHardwareTab('apple')}
-                style={{ fontWeight: 800 }}
-              >
-                Apple Silicon (M1-M4)
-              </button>
-            </div>
-          </div>
-
-          {/* Donanım Çipleri Izgarası */}
-          <div style={{
-            background: '#f8fafc',
-            borderRadius: 'var(--radius-lg)',
-            padding: '24px',
-            border: '1.5px solid var(--border)'
-          }}>
-            {hardwareTab === 'intel' && (
-              <div>
-                <div style={{ fontSize: '0.82rem', fontWeight: 800, color: '#64748b', marginBottom: '12px', textTransform: 'uppercase' }}>
-                  Intel Core Ultra & 14./13./12./11./10. Nesil Seçenekleri:
-                </div>
-                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                  {[
-                    { label: "Core Ultra 9 / 7 / 5 (AI NPU)", val: "ultra7" },
-                    { label: "i9 14900K / 14900HX", val: "i9-14" },
-                    { label: "i7 14700K / 14700HX", val: "i7-14" },
-                    { label: "i5 14400F / 14600K", val: "i5-14" },
-                    { label: "i9 13900K / 13980HX", val: "i9-13" },
-                    { label: "i7 13700H / 13700K", val: "i7-13" },
-                    { label: "i5 13400F / 13500H", val: "i5-13" },
-                    { label: "i7 12700H / 12700K", val: "i7-12" },
-                    { label: "i5 12400F / 12450H", val: "i5-12" },
-                    { label: "i7 11800H / 11700K", val: "i7-11" },
-                    { label: "i5 11400H / 11400F", val: "i5-11" },
-                    { label: "i7 / i5 10. Nesil (10750H / 10400F)", val: "i7-10" },
-                    { label: "i7 / i5 9. Nesil (9750H / 9400F)", val: "i7-9" },
-                    { label: "i7 / i5 8. Nesil (8750H / 8400)", val: "i7-8" },
-                    { label: "i7 / i5 4. - 7. Nesil", val: "i7-7" },
-                    { label: "Intel Xeon İş İstasyonu", val: "xeon" },
-                    { label: "Pentium Gold & Celeron", val: "pentium" }
-                  ].map((item, i) => (
-                    <button
-                      key={i}
-                      type="button"
-                      onClick={() => { setSimCpu(item.val); navigate('degerleme', { category: 'laptop' }); }}
-                      style={{
-                        padding: '7px 14px',
-                        background: '#ffffff',
-                        border: '1px solid var(--border)',
-                        borderRadius: 'var(--radius-full)',
-                        fontSize: '0.82rem',
-                        fontWeight: 700,
-                        color: 'var(--heading)',
-                        cursor: 'pointer',
-                        transition: 'all 0.2s',
-                        boxShadow: 'var(--shadow-xs)'
-                      }}
-                      onMouseEnter={e => { e.currentTarget.style.borderColor = '#0066cc'; e.currentTarget.style.color = '#0066cc'; }}
-                      onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--heading)'; }}
-                    >
-                      ⚡ {item.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {hardwareTab === 'amd' && (
-              <div>
-                <div style={{ fontSize: '0.82rem', fontWeight: 800, color: '#64748b', marginBottom: '12px', textTransform: 'uppercase' }}>
-                  AMD Ryzen 9000, 7000, 5000, 3000 & X3D Serileri:
-                </div>
-                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                  {[
-                    { label: "Ryzen 9 9950X / 9900X", val: "r9-9" },
-                    { label: "Ryzen 7 9700X / 8700G", val: "r7-9" },
-                    { label: "Ryzen 7 7800X3D (Efsane Oyuncu)", val: "r7-7" },
-                    { label: "Ryzen 9 7950X / 7900X", val: "r9-7" },
-                    { label: "Ryzen 5 7600X / 7500F", val: "r5-7" },
-                    { label: "Ryzen 7 5800X3D / 5700X", val: "r7-5" },
-                    { label: "Ryzen 5 5600 / 5600X / 5500", val: "r5-5" },
-                    { label: "Ryzen 7 4800H / 3700X", val: "r7-3" },
-                    { label: "Ryzen 5 3600 / 3500X", val: "r5-3" },
-                    { label: "Ryzen 5 2600 / 1600 AF", val: "r5-2" },
-                    { label: "AMD Athlon & Giriş Seviye", val: "athlon" }
-                  ].map((item, i) => (
-                    <button
-                      key={i}
-                      type="button"
-                      onClick={() => { setSimCpu(item.val); navigate('degerleme', { category: 'masaustu' }); }}
-                      style={{
-                        padding: '7px 14px',
-                        background: '#ffffff',
-                        border: '1px solid var(--border)',
-                        borderRadius: 'var(--radius-full)',
-                        fontSize: '0.82rem',
-                        fontWeight: 700,
-                        color: 'var(--heading)',
-                        cursor: 'pointer',
-                        transition: 'all 0.2s',
-                        boxShadow: 'var(--shadow-xs)'
-                      }}
-                      onMouseEnter={e => { e.currentTarget.style.borderColor = '#0066cc'; e.currentTarget.style.color = '#0066cc'; }}
-                      onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--heading)'; }}
-                    >
-                      🚀 {item.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {hardwareTab === 'gpu' && (
-              <div>
-                <div style={{ fontSize: '0.82rem', fontWeight: 800, color: '#64748b', marginBottom: '12px', textTransform: 'uppercase' }}>
-                  NVIDIA GeForce RTX 40/30/20, GTX & AMD Radeon Ekran Kartları:
-                </div>
-                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                  {[
-                    { label: "RTX 4090 (24GB) / RTX 4080", val: "rtx4090" },
-                    { label: "RTX 4070 Ti / Super (12GB)", val: "rtx4070s" },
-                    { label: "RTX 4070 (8GB/12GB)", val: "rtx4070" },
-                    { label: "RTX 4060 Ti (8GB/16GB)", val: "rtx4060ti" },
-                    { label: "RTX 4060 (8GB)", val: "rtx4060" },
-                    { label: "RTX 4050 (6GB F/P)", val: "rtx4050" },
-                    { label: "RTX 3080 / 3080 Ti / 3090", val: "rtx3080" },
-                    { label: "RTX 3070 / 3070 Ti", val: "rtx3070" },
-                    { label: "RTX 3060 / 3060 Ti", val: "rtx3060" },
-                    { label: "RTX 3050 / 3050 Ti", val: "rtx3050" },
-                    { label: "GTX 1660 Super / Ti", val: "gtx1660s" },
-                    { label: "GTX 1650 (4GB)", val: "gtx1650" },
-                    { label: "Radeon RX 7900 / 7800 XT", val: "rx7800" },
-                    { label: "Intel Arc A770 / A750", val: "arc-a770" }
-                  ].map((item, i) => (
-                    <button
-                      key={i}
-                      type="button"
-                      onClick={() => { setSimGpu(item.val); navigate('degerleme', { category: 'laptop' }); }}
-                      style={{
-                        padding: '7px 14px',
-                        background: '#ffffff',
-                        border: '1px solid var(--border)',
-                        borderRadius: 'var(--radius-full)',
-                        fontSize: '0.82rem',
-                        fontWeight: 700,
-                        color: 'var(--heading)',
-                        cursor: 'pointer',
-                        transition: 'all 0.2s',
-                        boxShadow: 'var(--shadow-xs)'
-                      }}
-                      onMouseEnter={e => { e.currentTarget.style.borderColor = '#0066cc'; e.currentTarget.style.color = '#0066cc'; }}
-                      onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--heading)'; }}
-                    >
-                      🎮 {item.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {hardwareTab === 'apple' && (
-              <div>
-                <div style={{ fontSize: '0.82rem', fontWeight: 800, color: '#64748b', marginBottom: '12px', textTransform: 'uppercase' }}>
-                  Apple Silicon M1 - M4 & iPhone A-Bionic Cihazlar:
-                </div>
-                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                  {[
-                    { label: "Apple M4 / M4 Pro / M4 Max", val: "m4" },
-                    { label: "Apple M3 Pro / M3 Max", val: "m3pro" },
-                    { label: "Apple M3 (Air & Pro)", val: "m3" },
-                    { label: "Apple M2 Pro / M2 Max", val: "m2pro" },
-                    { label: "Apple M2 (Air 13 / 15)", val: "m2" },
-                    { label: "Apple M1 Pro / M1 Max", val: "m1pro" },
-                    { label: "Apple M1 (Air / Pro 13)", val: "m1" },
-                    { label: "iPhone 16 Pro Max / 16 Pro", val: "iphone16promax" },
-                    { label: "iPhone 15 Pro Max / 15", val: "iphone15promax" },
-                    { label: "iPhone 14 / 13 / 12 Serisi", val: "iphone14" },
-                    { label: "PlayStation 5 Pro & Slim", val: "ps5-pro" }
-                  ].map((item, i) => (
-                    <button
-                      key={i}
-                      type="button"
-                      onClick={() => navigate('degerleme', { category: 'macbook' })}
-                      style={{
-                        padding: '7px 14px',
-                        background: '#ffffff',
-                        border: '1px solid var(--border)',
-                        borderRadius: 'var(--radius-full)',
-                        fontSize: '0.82rem',
-                        fontWeight: 700,
-                        color: 'var(--heading)',
-                        cursor: 'pointer',
-                        transition: 'all 0.2s',
-                        boxShadow: 'var(--shadow-xs)'
-                      }}
-                      onMouseEnter={e => { e.currentTarget.style.borderColor = '#0066cc'; e.currentTarget.style.color = '#0066cc'; }}
-                      onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.color = 'var(--heading)'; }}
-                    >
-                      🍏 {item.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
 
       {/* 9. SİZE NASIL YARDIMCI OLABİLİRİZ? (Hizmetler) */}
       <section style={{ padding: '70px 0', background: 'var(--bg)', borderBottom: '1px solid var(--border)' }}>
@@ -1560,7 +1785,7 @@ Bu donanım için en yüksek nakit alım veya takas fiyat teklifinizi alabilir m
               className="btn btn-primary"
               style={{ padding: '14px 32px', fontSize: '1.05rem', fontWeight: 800 }}
             >
-              Cihazınızın Değerini Hemen Hesaplayın →
+              Cihazınız İçin Nakit Fiyat Teklifi Alın →
             </button>
           </div>
         </div>
@@ -1685,56 +1910,225 @@ Bu donanım için en yüksek nakit alım veya takas fiyat teklifinizi alabilir m
         </div>
       </section>
 
-      {/* 9. SSS BÖLÜMÜ (Accordion) */}
-      <section style={{ padding: '70px 0', background: 'var(--bg)' }}>
-        <div className="container" style={{ maxWidth: '840px' }}>
-          <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-            <span className="badge badge-blue" style={{ marginBottom: '8px' }}>Merak Edilenler</span>
-            <h2 style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--heading)' }}>
+      {/* 9. GELİŞMİŞ & MODERN SSS BÖLÜMÜ */}
+      <section id="sss" className="modern-faq-section">
+        <div className="container" style={{ maxWidth: '960px' }}>
+          {/* Başlık Alanı */}
+          <div style={{ textAlign: 'center', marginBottom: '36px' }}>
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '6px 16px',
+              borderRadius: 'var(--radius-full)',
+              background: 'rgba(0, 102, 204, 0.08)',
+              border: '1px solid rgba(0, 102, 204, 0.2)',
+              color: '#0066cc',
+              fontSize: '0.84rem',
+              fontWeight: 800,
+              marginBottom: '14px'
+            }}>
+              <HelpCircle size={16} />
+              <span>Aklınıza Takılan Her Şey</span>
+            </div>
+            <h2 style={{
+              fontSize: 'clamp(2rem, 3.5vw, 2.6rem)',
+              fontWeight: 900,
+              color: 'var(--heading)',
+              letterSpacing: '-0.02em',
+              marginBottom: '12px'
+            }}>
               Sıkça Sorulan Sorular
             </h2>
+            <p style={{ color: 'var(--text-muted)', fontSize: '1.02rem', maxWidth: '640px', margin: '0 auto', lineHeight: 1.6 }}>
+              Cihazınızı satarken, takas yaparken veya kargoyla gönderirken bilmeniz gereken tüm detayları şeffaflıkla derledik.
+            </p>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            {faqs.map((faq, idx) => (
-              <div 
-                key={idx}
+          {/* Hızlı Arama Çubuğu */}
+          <div className="faq-search-box">
+            <Search size={20} style={{ position: 'absolute', left: '18px', top: '50%', transform: 'translateY(-50%)', color: '#64748b' }} />
+            <input 
+              type="text"
+              value={faqSearch}
+              onChange={e => setFaqSearch(e.target.value)}
+              placeholder="Sorunuzu arayın (ör: nakit, FAST, kargo, test, format, takas)..."
+              className="faq-search-input"
+            />
+            {faqSearch && (
+              <button 
+                type="button"
+                onClick={() => setFaqSearch('')}
                 style={{
-                  background: '#ffffff',
-                  border: '1px solid var(--border)',
-                  borderRadius: 'var(--radius-md)',
-                  overflow: 'hidden'
+                  position: 'absolute',
+                  right: '16px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  color: '#94a3b8',
+                  display: 'flex',
+                  alignItems: 'center',
+                  padding: '4px'
                 }}
+                aria-label="Aramayı Temizle"
               >
-                <button 
-                  onClick={() => setActiveFaq(activeFaq === idx ? null : idx)}
-                  style={{
-                    width: '100%',
-                    padding: '18px 22px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    background: 'transparent',
-                    border: 'none',
-                    textAlign: 'left',
-                    fontWeight: 700,
-                    fontSize: '1rem',
-                    color: 'var(--heading)',
-                    cursor: 'pointer'
+                <X size={18} />
+              </button>
+            )}
+          </div>
+
+          {/* Kategori Filtre Butonları */}
+          <div className="faq-cat-nav">
+            {faqCategories.map(cat => {
+              const IconComp = cat.icon;
+              const count = cat.id === 'all' 
+                ? faqs.length 
+                : faqs.filter(f => f.category === cat.id).length;
+
+              return (
+                <button
+                  key={cat.id}
+                  type="button"
+                  onClick={() => { 
+                    setFaqCategory(cat.id); 
+                    setActiveFaq(null); 
+                    setShowAllFaqs(false); 
                   }}
+                  className={`faq-cat-button ${faqCategory === cat.id ? 'active' : ''}`}
                 >
-                  <span>{faq.q}</span>
-                  <span style={{ fontSize: '1.2rem', color: 'var(--primary-bright)' }}>
-                    {activeFaq === idx ? '−' : '+'}
-                  </span>
+                  <IconComp size={15} />
+                  <span>{cat.label}</span>
+                  <span className="faq-cat-badge">{count}</span>
                 </button>
-                {activeFaq === idx && (
-                  <div style={{ padding: '0 22px 20px', color: 'var(--text-muted)', fontSize: '0.94rem', lineHeight: 1.65 }}>
-                    {faq.a}
-                  </div>
-                )}
+              );
+            })}
+          </div>
+
+          {/* Soru Listesi (2 Sütunlu Kompakt Accordion) */}
+          {filteredFaqs.length === 0 ? (
+            <div style={{
+              textAlign: 'center',
+              padding: '40px 24px',
+              background: '#ffffff',
+              borderRadius: 'var(--radius-lg)',
+              border: '1.5px dashed var(--border)'
+            }}>
+              <p style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--heading)', marginBottom: '8px' }}>
+                "{faqSearch}" ile eşleşen soru bulunamadı.
+              </p>
+              <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', marginBottom: '18px' }}>
+                Aradığınız sorunun cevabını bulamadıysanız WhatsApp uzmanımıza anında danışabilirsiniz.
+              </p>
+              <button 
+                type="button" 
+                onClick={() => { setFaqSearch(''); setFaqCategory('all'); }}
+                className="btn btn-outline btn-sm"
+              >
+                Filtreleri Temizle
+              </button>
+            </div>
+          ) : (
+            <div>
+              <div className="faq-grid-2col">
+                {displayedFaqs.map((faq) => {
+                  const isOpen = activeFaq === faq.id;
+                  return (
+                    <div 
+                      key={faq.id}
+                      className={`faq-item-card ${isOpen ? 'is-open' : ''}`}
+                    >
+                      <button 
+                        type="button"
+                        onClick={() => setActiveFaq(isOpen ? null : faq.id)}
+                        className="faq-trigger-btn"
+                        aria-expanded={isOpen}
+                      >
+                        <div style={{ flex: 1, paddingRight: '8px' }}>
+                          <span className={`faq-tag-chip ${faq.color}`}>
+                            {faq.categoryName}
+                          </span>
+                          <h3 className="faq-q-title">
+                            {faq.q}
+                          </h3>
+                        </div>
+                        <div className="faq-chevron-icon">
+                          <ChevronDown size={18} />
+                        </div>
+                      </button>
+
+                      {isOpen && (
+                        <div className="faq-content-body">
+                          <p style={{ margin: 0 }}>
+                            {faq.a}
+                          </p>
+                          {faq.highlight && (
+                            <div className="faq-tips-box">
+                              <CheckCircle2 size={16} color="#0066cc" style={{ minWidth: '16px', marginTop: '2px' }} />
+                              <span><strong>Önemli Not:</strong> {faq.highlight}</span>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
-            ))}
+
+              {/* Kompakt Görünüm Aç/Kapat Butonu (Sayfayı Uzatmayan Formül) */}
+              {isCompactMode && filteredFaqs.length > 6 && (
+                <div style={{ textAlign: 'center', marginTop: '22px' }}>
+                  <button 
+                    type="button"
+                    onClick={() => setShowAllFaqs(!showAllFaqs)}
+                    className="faq-toggle-all-btn"
+                  >
+                    <span>
+                      {showAllFaqs 
+                        ? 'Daha Az Soru Göster' 
+                        : `Diğer Tüm Soruları Gör (+${filteredFaqs.length - 6} Soru)`}
+                    </span>
+                    {showAllFaqs ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Alt Bilgi & İletişim Kartı */}
+          <div className="faq-cta-banner">
+            <div>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem', fontWeight: 800, color: '#38bdf8', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '6px' }}>
+                <Sparkles size={16} /> 7/24 Kesintisiz Destek
+              </div>
+              <h3 style={{ fontSize: '1.4rem', fontWeight: 900, margin: '0 0 6px 0' }}>
+                Farklı bir sorunuz veya cihazınız mı var?
+              </h3>
+              <p style={{ margin: 0, opacity: 0.9, fontSize: '0.94rem', maxWidth: '520px', lineHeight: 1.5 }}>
+                Uzman donanım danışmanlarımız WhatsApp hattında sorularınızı anında yanıtlamak ve cihazınıza en yüksek nakit teklifini vermek için bekliyor.
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+              <a 
+                href={`https://wa.me/${settings?.whatsapp || '905510454255'}?text=${encodeURIComponent('Merhaba Konya Bilgisayar, web sitenizdeki SSS bölümünü inceledim. Cihazım hakkında bir soru sormak istiyorum.')}`}
+                target="_blank"
+                rel="noreferrer"
+                className="btn btn-wa"
+                style={{ padding: '12px 22px', fontWeight: 800 }}
+              >
+                <WhatsAppIcon size={18} />
+                <span>WhatsApp Danışmanı</span>
+              </a>
+              <a 
+                href={`tel:${settings?.phoneRaw || '905510454255'}`}
+                className="btn"
+                style={{ background: 'rgba(255, 255, 255, 0.15)', color: '#ffffff', border: '1px solid rgba(255, 255, 255, 0.25)', fontWeight: 800, padding: '12px 20px' }}
+              >
+                📞 {settings?.phone || '0551 045 42 55'}
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -2012,71 +2406,3 @@ function TabBtn({ label, active, onClick }) {
   );
 }
 
-function CatShowcaseCard({ title, desc, image, tag, onClick }) {
-  return (
-    <div 
-      className="cat-showcase-card"
-      onClick={onClick}
-    >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px' }}>
-        <div style={{ flex: 1, minWidth: '160px' }}>
-          {tag && (
-            <span style={{
-              display: 'inline-block',
-              fontSize: '0.72rem',
-              fontWeight: 800,
-              textTransform: 'uppercase',
-              color: '#0066cc',
-              letterSpacing: '0.5px',
-              marginBottom: '6px'
-            }}>
-              {tag}
-            </span>
-          )}
-          <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#0a2540', marginBottom: '8px', lineHeight: 1.3 }}>
-            {title}
-          </h3>
-          <p style={{ fontSize: '0.86rem', color: '#64748b', lineHeight: 1.55, marginBottom: '14px' }}>
-            {desc}
-          </p>
-          <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '6px',
-            color: '#0066cc',
-            fontWeight: 800,
-            fontSize: '0.86rem'
-          }}>
-            Değerini Hesapla <ArrowRight size={14} />
-          </div>
-        </div>
-
-        <div style={{
-          width: '135px',
-          height: '115px',
-          flexShrink: 0,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: 'radial-gradient(circle, rgba(0, 102, 204, 0.05) 0%, transparent 70%)',
-          borderRadius: '12px',
-          padding: '4px'
-        }}>
-          <img 
-            src={image} 
-            alt={title}
-            style={{
-              maxWidth: '100%',
-              maxHeight: '100%',
-              objectFit: 'contain',
-              filter: 'drop-shadow(0 6px 12px rgba(10, 37, 64, 0.12))',
-              transition: 'transform 0.25s ease'
-            }}
-            onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.08)'}
-            onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
-          />
-        </div>
-      </div>
-    </div>
-  );
-}

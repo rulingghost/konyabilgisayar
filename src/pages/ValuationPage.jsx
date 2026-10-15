@@ -19,7 +19,10 @@ import {
   Clock,
   MapPin,
   Camera,
-  AlertCircle
+  AlertCircle,
+  Truck,
+  Zap,
+  Banknote
 } from 'lucide-react';
 import WhatsAppIcon from '../components/WhatsAppIcon';
 import { 
@@ -1149,202 +1152,282 @@ export default function ValuationPage({ initialCategory = 'laptop', settings, na
           </div>
         </div>
 
-        {/* 4. ADIM: CANLI DONANIM ÖZETİ, ŞEFFAF DEĞERLEME VE TEKLİF ALMA MERKEZİ */}
-        <div style={{
-          background: 'linear-gradient(135deg, #0a2540 0%, #0059bf 100%)',
-          color: '#ffffff',
+        {/* 4. ADIM: CANLI DONANIM ÖZETİ, ŞEFFAF DEĞERLEME VE WHATSAPP HAZIR MESAJ MERKEZİ */}
+        <div id="teklif-alani" style={{
+          background: '#ffffff',
           borderRadius: '24px',
-          padding: '40px 32px',
-          boxShadow: '0 20px 40px rgba(0, 89, 191, 0.25)',
-          textAlign: 'center',
-          position: 'relative',
-          overflow: 'hidden'
+          padding: '36px 32px',
+          boxShadow: '0 12px 36px rgba(10, 37, 64, 0.08)',
+          border: '1.5px solid var(--border)',
+          marginTop: '32px'
         }}>
-          {/* Rozet */}
-          <span style={{
-            background: 'rgba(255, 255, 255, 0.18)',
-            backdropFilter: 'blur(10px)',
-            padding: '8px 20px',
-            borderRadius: 'var(--radius-full)',
-            fontSize: '0.88rem',
-            fontWeight: 800,
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '6px',
-            marginBottom: '16px'
-          }}>
-            <Sparkles size={16} /> Cihaz Özellikleriniz Eksiksiz Derlendi
-          </span>
+          {/* Üst Başlık & Rozet */}
+          <div style={{ textAlign: 'center', maxWidth: '780px', margin: '0 auto 32px' }}>
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '6px 16px',
+              borderRadius: 'var(--radius-full)',
+              background: 'rgba(21, 128, 61, 0.08)',
+              border: '1px solid rgba(21, 128, 61, 0.25)',
+              color: '#15803d',
+              fontSize: '0.84rem',
+              fontWeight: 800,
+              marginBottom: '14px'
+            }}>
+              <WhatsAppIcon size={16} />
+              <span>4. Adım: Cihaz Özellikleri Hazır • WhatsApp Fiyat Teklifi</span>
+            </div>
 
-          {/* Ana Başlık */}
-          <h3 style={{
-            fontSize: 'clamp(1.6rem, 4vw, 2.3rem)',
-            fontWeight: 900,
-            letterSpacing: '-0.02em',
-            color: '#ffffff',
-            marginBottom: '12px'
-          }}>
-            En Yüksek Nakit Fiyat Teklifini Alın
-          </h3>
+            <h3 style={{
+              fontSize: 'clamp(1.6rem, 3.5vw, 2.2rem)',
+              fontWeight: 900,
+              letterSpacing: '-0.02em',
+              color: 'var(--heading)',
+              marginBottom: '10px'
+            }}>
+              Seçilen Özellikler Derlendi, <span style={{ color: '#15803d' }}>WhatsApp'tan Anında Fiyat Alın</span>
+            </h3>
 
-          {/* Şeffaf Değerleme Açıklama Kutusu */}
+            <p style={{
+              color: 'var(--text-muted)',
+              fontSize: '0.98rem',
+              lineHeight: 1.6,
+              margin: '0 auto'
+            }}>
+              Seçtiğiniz tüm donanım ve durum bilgileri otomatik olarak hazır bir WhatsApp teklif mesajına dönüştürüldü. Aşağıdaki butona tıklayarak doğrudan uzmanımıza iletebilir ve en yüksek nakit teklifimizi alabilirsiniz.
+            </p>
+          </div>
+
+          {/* 2 Sütunlu Değerleme Alanı: Sol Donanım Listesi, Sağ WhatsApp Hazır Mesaj & Eylem Kutusu */}
           <div style={{
-            maxWidth: '720px',
-            margin: '0 auto 28px',
-            padding: '16px 22px',
-            background: 'rgba(255, 255, 255, 0.1)',
-            borderRadius: '16px',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-            fontSize: '0.92rem',
-            lineHeight: 1.6,
-            textAlign: 'left',
-            color: 'rgba(255, 255, 255, 0.95)'
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+            gap: '28px',
+            alignItems: 'start'
           }}>
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-              <ShieldCheck size={22} color="#60a5fa" style={{ flexShrink: 0, marginTop: '2px' }} />
-              <div>
-                <strong>Neye göre fiyat teklifi veriliyor?</strong> İkinci el bilgisayar ve teknoloji ürünlerinde otomatik afaki fiyat üretmek müşteriyi yanıltır. Konya Bilgisayar olarak; işlemcinizin tam nesline, ekran kartınızın FurMark yük altındaki termal derecelerine, SSD sağlık yüzdesine, pil döngüsüne ve kutu/fatura durumuna göre <strong>piyasanın en yüksek reel nakit teklifini</strong> sunuyoruz.
+            {/* SOL: Canlı Seçilen Donanım Özeti Grid */}
+            <div style={{
+              background: '#f8fafc',
+              borderRadius: '16px',
+              padding: '24px',
+              border: '1.5px solid var(--border)'
+            }}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                marginBottom: '16px',
+                paddingBottom: '12px',
+                borderBottom: '1px solid var(--border)'
+              }}>
+                <span style={{ fontSize: '0.84rem', fontWeight: 800, color: '#0066cc', textTransform: 'uppercase', letterSpacing: '0.5px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <Sparkles size={16} />
+                  Seçilen Donanım Özeti
+                </span>
+                <span style={{ fontSize: '0.74rem', background: '#e0f2fe', color: '#0369a1', fontWeight: 800, padding: '3px 10px', borderRadius: '12px' }}>
+                  {getSpecsSummaryList().length} Özellik Seçildi
+                </span>
+              </div>
+
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+                gap: '8px',
+                marginBottom: '20px'
+              }}>
+                {getSpecsSummaryList().map((item, idx) => (
+                  <div 
+                    key={idx}
+                    style={{
+                      background: '#ffffff',
+                      padding: '10px 12px',
+                      borderRadius: '8px',
+                      border: '1px solid var(--border)',
+                      boxShadow: 'var(--shadow-xs)'
+                    }}
+                  >
+                    <div style={{ fontSize: '0.72rem', color: '#64748b', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.3px' }}>
+                      {item.label}
+                    </div>
+                    <div style={{ fontSize: '0.84rem', fontWeight: 800, color: 'var(--heading)', marginTop: '2px', wordBreak: 'break-word' }}>
+                      {item.value}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Bilgilendirme Notu */}
+              <div style={{
+                padding: '12px 14px',
+                background: '#ffffff',
+                borderRadius: '10px',
+                border: '1px solid #e2e8f0',
+                fontSize: '0.82rem',
+                color: '#475569',
+                lineHeight: 1.55,
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '8px'
+              }}>
+                <ShieldCheck size={18} color="#0066cc" style={{ flexShrink: 0, marginTop: '2px' }} />
+                <span>
+                  <strong>Şeffaf Ekspertiz:</strong> Cihazınız mağazamıza geldiğinde gözünüzün önünde 15 dakikalık şeffaf donanım testi yapılır ve tutar anında nakit veya FAST ile ödenir.
+                </span>
+              </div>
+            </div>
+
+            {/* SAĞ: WhatsApp Hazır Mesaj Önizlemesi & Aksiyon Kutusu (Anasayfadaki Alan Gibi) */}
+            <div style={{
+              background: 'linear-gradient(135deg, rgba(21, 128, 61, 0.04) 0%, rgba(10, 37, 64, 0.03) 100%)',
+              border: '1.5px solid rgba(21, 128, 61, 0.28)',
+              borderRadius: '16px',
+              padding: '24px',
+              boxShadow: 'var(--shadow-sm)'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                <span style={{ fontSize: '0.82rem', fontWeight: 800, color: '#15803d', textTransform: 'uppercase', letterSpacing: '0.5px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <CheckCircle2 size={16} color="#15803d" />
+                  WhatsApp Hazır Teklif Mesajı
+                </span>
+                <span style={{ fontSize: '0.74rem', background: '#dcfce7', color: '#166534', fontWeight: 800, padding: '3px 10px', borderRadius: '12px' }}>
+                  Gönderime Hazır
+                </span>
+              </div>
+
+              {/* WhatsApp Chat Balonu Görünümünde Mesaj Önizleme Kutusu */}
+              <div style={{
+                background: '#ffffff',
+                border: '1.5px solid #bbf7d0',
+                borderRadius: '14px',
+                padding: '16px 18px',
+                marginBottom: '18px',
+                position: 'relative',
+                boxShadow: '0 4px 16px rgba(22, 163, 74, 0.08)'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px', borderBottom: '1px solid #f0fdf4', paddingBottom: '6px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.78rem', fontWeight: 800, color: '#15803d' }}>
+                    <WhatsAppIcon size={15} />
+                    <span>0551 045 42 55 Hattına Gönderilecek Hazır Mesaj:</span>
+                  </div>
+                  <span style={{ fontSize: '0.7rem', color: '#94a3b8', fontWeight: 600 }}>Önizleme</span>
+                </div>
+
+                <div style={{
+                  fontSize: '0.82rem',
+                  color: '#1e293b',
+                  lineHeight: 1.55,
+                  whiteSpace: 'pre-line',
+                  maxHeight: '160px',
+                  overflowY: 'auto',
+                  padding: '4px 2px',
+                  fontFamily: 'inherit'
+                }}>
+                  {generateMessageText()}
+                </div>
+              </div>
+
+              {/* Güven Vurguları 4'lü Grid */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr',
+                gap: '8px',
+                fontSize: '0.78rem',
+                fontWeight: 700,
+                color: '#334155',
+                marginBottom: '18px'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <CheckCircle2 size={14} color="#16a34a" />
+                  <span>15 Dk Hızlı Test</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <CheckCircle2 size={14} color="#16a34a" />
+                  <span>Peşin Nakit / FAST</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <CheckCircle2 size={14} color="#16a34a" />
+                  <span>Selçuklu Mağaza</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <CheckCircle2 size={14} color="#16a34a" />
+                  <span>Ücretsiz Kargo</span>
+                </div>
+              </div>
+
+              {/* Aksiyon Düğmeleri */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {/* 1. BÜYÜK WHATSAPP BUTONU */}
+                <a 
+                  href={`https://wa.me/${whatsappNum}?text=${encodeURIComponent(generateMessageText())}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-wa"
+                  style={{
+                    width: '100%',
+                    fontSize: '1.02rem',
+                    padding: '16px 20px',
+                    fontWeight: 900,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '10px',
+                    boxShadow: '0 8px 24px rgba(21, 128, 61, 0.3)'
+                  }}
+                >
+                  <WhatsAppIcon size={22} />
+                  <span>WhatsApp'a Gönder & Fiyat Al (0551 045 42 55)</span>
+                </a>
+
+                {/* 2. KOPYALA & DİREKT ARA BUTONLARI */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: '10px' }}>
+                  <button 
+                    type="button"
+                    onClick={handleCopyMessage}
+                    className="btn btn-outline"
+                    style={{ fontSize: '0.84rem', padding: '11px 12px', fontWeight: 800, justifyContent: 'center' }}
+                  >
+                    {copied ? <Check size={16} color="#16a34a" /> : <Copy size={16} />}
+                    <span>{copied ? '✓ Kopyalandı!' : '📋 Mesajı Kopyala'}</span>
+                  </button>
+
+                  <a 
+                    href={`tel:${phoneRaw}`}
+                    className="btn btn-outline"
+                    style={{ fontSize: '0.84rem', padding: '11px 12px', fontWeight: 800, justifyContent: 'center' }}
+                  >
+                    <Phone size={15} />
+                    <span>Ara: {phoneFormatted}</span>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Canlı Seçilen Donanım Özeti Grid */}
+          {/* Form ile İletişim (Yönetim Paneline Kaydet - Opsiyonel İletişim) */}
           <div style={{
-            maxWidth: '780px',
-            margin: '0 auto 32px',
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-            gap: '10px',
-            textAlign: 'left'
-          }}>
-            {getSpecsSummaryList().map((item, idx) => (
-              <div 
-                key={idx}
-                style={{
-                  background: 'rgba(0, 0, 0, 0.22)',
-                  backdropFilter: 'blur(6px)',
-                  padding: '10px 14px',
-                  borderRadius: '10px',
-                  border: '1px solid rgba(255, 255, 255, 0.12)'
-                }}
-              >
-                <div style={{ fontSize: '0.74rem', opacity: 0.75, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                  {item.label}
-                </div>
-                <div style={{ fontSize: '0.88rem', fontWeight: 800, color: '#93c5fd', marginTop: '2px' }}>
-                  {item.value}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* BÜYÜK EYLEM BUTONLARI (WHATSAPP VE DİREKT ARAMA) */}
-          <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '24px' }}>
-            {/* 1. WHATSAPP TEKLİF BUTONU (OTOMATİK TÜM ÖZELLİKLERİ DOLDURARAK YÖNLENDİRİR) */}
-            <button 
-              onClick={handleOpenWhatsApp}
-              style={{
-                background: '#25D366',
-                color: '#ffffff',
-                border: 'none',
-                borderRadius: 'var(--radius-full)',
-                padding: '16px 36px',
-                fontSize: '1.15rem',
-                fontWeight: 900,
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                cursor: 'pointer',
-                boxShadow: '0 8px 24px rgba(37, 211, 102, 0.4)',
-                transition: 'transform 0.15s ease'
-              }}
-              onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'}
-              onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
-            >
-              <WhatsAppIcon size={24} />
-              <span>WhatsApp'tan Teklif Al (0551 045 42 55)</span>
-            </button>
-
-            {/* 2. DİREKT TELEFONLA ARA BUTONU */}
-            <a 
-              href={`tel:${phoneRaw}`}
-              style={{
-                background: 'linear-gradient(135deg, #16a34a, #15803d)',
-                color: '#ffffff',
-                textDecoration: 'none',
-                borderRadius: 'var(--radius-full)',
-                padding: '16px 32px',
-                fontSize: '1.12rem',
-                fontWeight: 800,
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px',
-                boxShadow: '0 8px 24px rgba(22, 163, 74, 0.4)',
-                transition: 'transform 0.15s ease'
-              }}
-              onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'}
-              onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
-            >
-              <Phone size={22} />
-              <span>Hemen Ara: {phoneFormatted}</span>
-            </a>
-
-            {/* 3. KOPYALA BUTONU */}
-            <button 
-              onClick={handleCopyMessage}
-              style={{
-                background: 'rgba(255, 255, 255, 0.15)',
-                color: '#ffffff',
-                border: '1px solid rgba(255, 255, 255, 0.25)',
-                borderRadius: 'var(--radius-full)',
-                padding: '16px 24px',
-                fontSize: '0.98rem',
-                fontWeight: 700,
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                cursor: 'pointer',
-                backdropFilter: 'blur(10px)'
-              }}
-            >
-              {copied ? <Check size={20} color="#4ade80" /> : <Copy size={20} />}
-              <span>{copied ? 'Özellikler Kopyalandı!' : 'Özellikleri Kopyala'}</span>
-            </button>
-          </div>
-
-          <div style={{ fontSize: '0.86rem', opacity: 0.9, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', flexWrap: 'wrap' }}>
-            <Camera size={16} />
-            <span>WhatsApp üzerinden cihazınızın ön/arka ve çalışan fotoğraflarını iletirseniz 5 dakikada net nakit teklif verilir.</span>
-          </div>
-
-          <div style={{ marginTop: '12px', fontSize: '0.82rem', opacity: 0.8, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
-            <MapPin size={15} />
-            <span>Konya Selçuklu Mağazamıza elden getirdiğinizde 15 dakikalık hızlı testin ardından anında nakit veya IBAN ile ödeme yapılır.</span>
-          </div>
-
-          {/* Form ile İletişim (Yönetim Paneline Kaydet) */}
-          <div style={{
-            marginTop: '36px',
-            paddingTop: '28px',
-            borderTop: '1px solid rgba(255, 255, 255, 0.15)',
+            marginTop: '32px',
+            paddingTop: '24px',
+            borderTop: '1px solid var(--border)',
             textAlign: 'left',
-            maxWidth: '640px',
-            margin: '36px auto 0'
+            maxWidth: '680px',
+            margin: '32px auto 0'
           }}>
-            <h4 style={{ fontSize: '1.08rem', fontWeight: 800, marginBottom: '6px', color: '#ffffff' }}>
+            <h4 style={{ fontSize: '1.02rem', fontWeight: 800, marginBottom: '6px', color: 'var(--heading)' }}>
               Numaranızı Bırakın, Biz Sizi Arayalım:
             </h4>
-            <p style={{ fontSize: '0.84rem', opacity: 0.82, marginBottom: '16px' }}>
-              Formu gönderdiğinizde bilgiler yönetim panelimize anında iletilir; uzmanımız sizi arar.
+            <p style={{ fontSize: '0.84rem', color: 'var(--text-muted)', marginBottom: '16px' }}>
+              Formu gönderdiğinizde seçtiğiniz donanım detayları yönetim panelimize iletilir; uzmanımız teklifle sizi arar.
             </p>
 
             {submitted ? (
               <div style={{
-                background: 'rgba(16, 185, 129, 0.2)',
+                background: 'rgba(16, 185, 129, 0.1)',
                 border: '1px solid #10b981',
                 padding: '16px 20px',
                 borderRadius: '12px',
-                color: '#ffffff',
+                color: '#15803d',
                 fontWeight: 600,
                 display: 'flex',
                 flexDirection: 'column',
@@ -1359,9 +1442,9 @@ export default function ValuationPage({ initialCategory = 'laptop', settings, na
                     type="button"
                     onClick={() => { setSubmitted(false); setCustomerName(''); setCustomerPhone(''); }}
                     style={{
-                      background: 'rgba(255,255,255,0.15)',
-                      border: '1px solid rgba(255,255,255,0.3)',
-                      color: '#ffffff',
+                      background: '#ffffff',
+                      border: '1px solid #10b981',
+                      color: '#15803d',
                       padding: '6px 14px',
                       borderRadius: '8px',
                       fontSize: '0.82rem',
@@ -1396,10 +1479,8 @@ export default function ValuationPage({ initialCategory = 'laptop', settings, na
                 <button 
                   type="submit" 
                   disabled={submitting}
-                  className="btn"
+                  className="btn btn-navy"
                   style={{
-                    background: '#ffffff',
-                    color: 'var(--primary)',
                     width: '100%',
                     fontWeight: 800,
                     padding: '13px'
@@ -1413,7 +1494,7 @@ export default function ValuationPage({ initialCategory = 'laptop', settings, na
         </div>
 
         {/* Bilgilendirme 3'lü Kartlar (Süreç nasıl işler?) */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '20px', marginTop: '40px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '20px', marginTop: '36px' }}>
           <div style={{ background: '#ffffff', padding: '24px', borderRadius: '16px', border: '1px solid var(--border)' }}>
             <div style={{ color: 'var(--primary-bright)', marginBottom: '10px' }}><Clock size={28} /></div>
             <h4 style={{ fontWeight: 800, fontSize: '1.05rem', color: 'var(--heading)', marginBottom: '6px' }}>15 Dakikada Ekspertiz</h4>
@@ -1434,54 +1515,6 @@ export default function ValuationPage({ initialCategory = 'laptop', settings, na
             <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', lineHeight: 1.5 }}>
               Nalçacı Caddesi üzerindeki mağazamıza gelip çayımızı içerken cihazınızı nakit satabilir veya takas edebilirsiniz.
             </p>
-          </div>
-        </div>
-
-        {/* Canlı Değerleme Kayan Özet Çubuğu */}
-        <div style={{
-          position: 'sticky',
-          bottom: '20px',
-          zIndex: 90,
-          background: 'rgba(15, 23, 42, 0.95)',
-          backdropFilter: 'blur(16px)',
-          borderRadius: '16px',
-          padding: '14px 24px',
-          boxShadow: '0 12px 36px rgba(0,0,0,0.3)',
-          border: '1px solid rgba(255,255,255,0.12)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: '12px',
-          marginTop: '32px'
-        }}>
-          <div>
-            <div style={{ fontSize: '0.75rem', textTransform: 'uppercase', color: '#93c5fd', fontWeight: 800, letterSpacing: '0.04em' }}>
-              ⚡ Seçilen Cihaz Yapılandırması:
-            </div>
-            <div style={{ fontSize: '1.05rem', fontWeight: 800, color: '#ffffff', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-              <span style={{ color: '#60a5fa' }}>{brand} {selectedSeries || ''}</span>
-              <span style={{ opacity: 0.6 }}>•</span>
-              <span style={{ fontSize: '0.9rem', color: '#cbd5e1' }}>{getHardwareLabel('cpu', cpu)}</span>
-              <span style={{ opacity: 0.6 }}>•</span>
-              <span style={{ fontSize: '0.9rem', color: '#cbd5e1' }}>{getHardwareLabel('gpu', gpu)}</span>
-            </div>
-          </div>
-          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
-            <button
-              onClick={handleOpenWhatsApp}
-              className="btn btn-wa btn-sm"
-              style={{ fontWeight: 800, padding: '10px 18px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
-            >
-              <WhatsAppIcon size={17} /> WhatsApp Teklif Al
-            </button>
-            <a
-              href={`tel:${phoneRaw}`}
-              className="btn btn-sm"
-              style={{ background: '#16a34a', color: '#ffffff', fontWeight: 800, padding: '10px 16px', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
-            >
-              <Phone size={16} /> Ara: {phoneFormatted}
-            </a>
           </div>
         </div>
 

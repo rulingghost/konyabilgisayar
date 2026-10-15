@@ -24,13 +24,92 @@ import AboutPage from './pages/AboutPage';
 import PoliciesPage from './pages/PoliciesPage';
 import QuickContactWidget from './components/QuickContactWidget';
 import CookieBanner from './components/CookieBanner';
+import initialProducts from '../server/data/products.json';
+import initialBlogs from '../server/data/blogs.json';
+
+const ROUTE_ALIASES = {
+  'laptopum-ne-kadar-eder': { route: 'degerleme', params: { category: 'laptop' } },
+  'bilgisayarim-ne-kadar-eder': { route: 'degerleme', params: { category: 'masaustu' } },
+  'macbook-alan-yerler': { route: 'degerleme', params: { category: 'macbook' } },
+  'oyun-konsolu-alan-yerler': { route: 'degerleme', params: { category: 'konsol' } },
+  'ekran-karti-alan-yerler': { route: 'degerleme', params: { category: 'ekran_karti' } },
+  'monitor-alan-yerler': { route: 'degerleme', params: { category: 'monitor' } },
+  'telefon-alan-yerler': { route: 'degerleme', params: { category: 'iphone' } },
+  'tablet-alan-yerler': { route: 'degerleme', params: { category: 'tablet' } },
+  'ikinci-el-satilik-urunler': { route: 'urunler', params: {} },
+  'turkiye-laptop-alim-merkezi': { route: 'kargo', params: {} },
+  'kargo-cihaz-sat': { route: 'kargo', params: {} },
+  'toplu-bilgisayar-alan-yerler': { route: 'toplu-alim', params: {} },
+  'bilgisayarinizin-ozelliklerini-ogrenin': { route: 'ozellikleri-ogrenin', params: {} },
+  'bilgisayar-takas': { route: 'takas', params: {} },
+  'servis': { route: 'hizmetler', params: {} },
+  'teknik-servis': { route: 'hizmetler', params: {} },
+  'kvkk': { route: 'politikalar', params: { tab: 'kvkk' } },
+  'cerez-politikasi': { route: 'politikalar', params: { tab: 'cerez' } },
+  'iade-kosullari': { route: 'politikalar', params: { tab: 'iade' } },
+  'kargo-politikasi': { route: 'politikalar', params: { tab: 'kargo' } }
+};
+
+const VALID_ROUTES = [
+  'home', 'degerleme', 'urunler', 'urun-detay', 'hizmetler', 'takas', 
+  'kargo', 'toplu-alim', 'ozellikleri-ogrenin', 'iletisim', 'blog', 
+  'blog-detay', 'musteri-hikayeleri', 'hakkimizda', 'politikalar', 'admin'
+];
+
+// URL'den temiz rota ve parametreleri çözümleme (HTML5 History API)
+function parseCurrentPath() {
+  if (typeof window === 'undefined') {
+    return { route: 'home', params: {} };
+  }
+
+  // Eski hash yapısıyla (/#/...) gelen ziyaretçileri temiz URL'e yükselt
+  if (window.location.hash && window.location.hash.length > 1) {
+    const hashClean = window.location.hash.replace(/^#\/?/, '').trim();
+    if (hashClean) {
+      const upgradePath = '/' + hashClean;
+      window.history.replaceState(null, '', upgradePath);
+    }
+  }
+
+  const pathname = window.location.pathname.replace(/^\/+/, '').replace(/\/+$/, '').trim();
+  const searchParams = new URLSearchParams(window.location.search);
+  const queryParams = Object.fromEntries(searchParams.entries());
+
+  if (!pathname) {
+    return { route: 'home', params: queryParams };
+  }
+
+  if (ROUTE_ALIASES[pathname]) {
+    return { 
+      route: ROUTE_ALIASES[pathname].route, 
+      params: { ...(ROUTE_ALIASES[pathname].params || {}), ...queryParams } 
+    };
+  }
+
+  if (pathname.startsWith('urun/')) {
+    const id = pathname.split('/')[1];
+    return { route: 'urun-detay', params: { id, ...queryParams } };
+  }
+
+  if (pathname.startsWith('blog/')) {
+    const slug = pathname.split('/')[1];
+    return { route: 'blog-detay', params: { slug, ...queryParams } };
+  }
+
+  if (VALID_ROUTES.includes(pathname)) {
+    return { route: pathname, params: queryParams };
+  }
+
+  return { route: 'home', params: queryParams };
+}
 
 export default function App() {
-  const [currentRoute, setCurrentRoute] = useState('home');
-  const [routeParams, setRouteParams] = useState({});
+  const initialResolved = parseCurrentPath();
+  const [currentRoute, setCurrentRoute] = useState(initialResolved.route);
+  const [routeParams, setRouteParams] = useState(initialResolved.params);
 
-  const [products, setProducts] = useState([]);
-  const [blogs, setBlogs] = useState([]);
+  const [products, setProducts] = useState(initialProducts || []);
+  const [blogs, setBlogs] = useState(initialBlogs || []);
   const [settings, setSettings] = useState({
     storeName: 'Konya Bilgisayar',
     phone: '0551 045 42 55',
@@ -103,80 +182,42 @@ export default function App() {
     fetchSettings();
   }, []);
 
-  // Hash route takibi
+  // Temiz URL (HTML5 History API) takibi & popstate
   useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash.replace('#/', '').replace('#', '').trim();
-
-      const routeAliases = {
-        'laptopum-ne-kadar-eder': { route: 'degerleme', params: { category: 'laptop' } },
-        'bilgisayarim-ne-kadar-eder': { route: 'degerleme', params: { category: 'masaustu' } },
-        'macbook-alan-yerler': { route: 'degerleme', params: { category: 'macbook' } },
-        'oyun-konsolu-alan-yerler': { route: 'degerleme', params: { category: 'konsol' } },
-        'ekran-karti-alan-yerler': { route: 'degerleme', params: { category: 'ekran_karti' } },
-        'monitor-alan-yerler': { route: 'degerleme', params: { category: 'monitor' } },
-        'telefon-alan-yerler': { route: 'degerleme', params: { category: 'iphone' } },
-        'tablet-alan-yerler': { route: 'degerleme', params: { category: 'tablet' } },
-        'ikinci-el-satilik-urunler': { route: 'urunler', params: {} },
-        'turkiye-laptop-alim-merkezi': { route: 'kargo', params: {} },
-        'kargo-cihaz-sat': { route: 'kargo', params: {} },
-        'toplu-bilgisayar-alan-yerler': { route: 'toplu-alim', params: {} },
-        'bilgisayarinizin-ozelliklerini-ogrenin': { route: 'ozellikleri-ogrenin', params: {} },
-        'bilgisayar-takas': { route: 'takas', params: {} },
-        'servis': { route: 'hizmetler', params: {} },
-        'teknik-servis': { route: 'hizmetler', params: {} },
-        'kvkk': { route: 'politikalar', params: { tab: 'kvkk' } },
-        'cerez-politikasi': { route: 'politikalar', params: { tab: 'cerez' } },
-        'iade-kosullari': { route: 'politikalar', params: { tab: 'iade' } },
-        'kargo-politikasi': { route: 'politikalar', params: { tab: 'kargo' } }
-      };
-
-      if (routeAliases[hash]) {
-        setCurrentRoute(routeAliases[hash].route);
-        setRouteParams(routeAliases[hash].params || {});
-      } else if (hash.startsWith('urun/')) {
-        const id = hash.split('/')[1];
-        setCurrentRoute('urun-detay');
-        setRouteParams({ id });
-      } else if (hash.startsWith('blog/')) {
-        const slug = hash.split('/')[1];
-        setCurrentRoute('blog-detay');
-        setRouteParams({ slug });
-      } else if (hash) {
-        const validRoutes = [
-          'home', 'degerleme', 'urunler', 'urun-detay', 'hizmetler', 'takas', 
-          'kargo', 'toplu-alim', 'ozellikleri-ogrenin', 'iletisim', 'blog', 
-          'blog-detay', 'musteri-hikayeleri', 'hakkimizda', 'politikalar', 'admin'
-        ];
-        if (validRoutes.includes(hash)) {
-          setCurrentRoute(hash);
-        } else {
-          setCurrentRoute('home');
-        }
-      } else {
-        setCurrentRoute('home');
-      }
+    const handlePopState = () => {
+      const { route, params } = parseCurrentPath();
+      setCurrentRoute(route);
+      setRouteParams(params);
       window.scrollTo(0, 0);
     };
 
-    window.addEventListener('hashchange', handleHashChange);
-    handleHashChange();
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
-  // Navigasyon Yönlendirici
+  // Modern HTML5 Navigasyon Yönlendirici (Temiz URL - No Hash #)
   const navigate = (route, params = {}) => {
+    let targetPath = '/';
+    const queryParams = { ...params };
+
+    if (route === 'home') {
+      targetPath = '/';
+    } else if (route === 'urun-detay' && params.id) {
+      targetPath = `/urun/${encodeURIComponent(params.id)}`;
+      delete queryParams.id;
+    } else if (route === 'blog-detay' && params.slug) {
+      targetPath = `/blog/${encodeURIComponent(params.slug)}`;
+      delete queryParams.slug;
+    } else {
+      targetPath = `/${route}`;
+    }
+
+    const searchStr = new URLSearchParams(queryParams).toString();
+    const fullUrl = searchStr ? `${targetPath}?${searchStr}` : targetPath;
+
+    window.history.pushState(params, '', fullUrl);
     setCurrentRoute(route);
     setRouteParams(params);
-    if (route === 'urun-detay' && params.id) {
-      window.location.hash = `#/urun/${params.id}`;
-    } else if (route === 'blog-detay' && params.slug) {
-      window.location.hash = `#/blog/${params.slug}`;
-    } else if (route === 'home') {
-      window.location.hash = '#/';
-    } else {
-      window.location.hash = `#/${route}`;
-    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 

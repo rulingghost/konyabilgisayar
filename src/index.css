@@ -659,3 +659,710 @@ select.form-control option {
   pointer-events: none;
 }
 
+/* ========================================================
+   MODERN HERO SLIDER (Tam Genişlik & Bağımsız Slider)
+   ======================================================== */
+.hero-slider-wrapper {
+  position: relative;
+  width: 100%;
+  background: linear-gradient(180deg, #f0f7ff 0%, #f8fafc 60%, #ffffff 100%);
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+}
+
+[data-theme="dark"] .hero-slider-wrapper {
+  background: linear-gradient(180deg, #070d18 0%, #0a1324 60%, #0f172a 100%);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.hero-slider-container {
+  position: relative;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  padding: 48px 0 60px;
+}
+
+.hero-slide {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  align-items: center;
+  gap: 48px;
+  width: 100%;
+  animation: slideFadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-slide-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 18px;
+  border-radius: var(--radius-full);
+  background: rgba(0, 102, 204, 0.08);
+  border: 1px solid rgba(0, 102, 204, 0.22);
+  color: #0066cc;
+  font-size: 0.86rem;
+  font-weight: 800;
+  margin-bottom: 18px;
+}
+
+[data-theme="dark"] .hero-slide-badge {
+  background: rgba(0, 102, 204, 0.2);
+  border-color: rgba(56, 189, 248, 0.35);
+  color: #38bdf8;
+}
+
+.hero-slide-title {
+  font-size: clamp(2.1rem, 4vw, 3.2rem);
+  font-weight: 900;
+  line-height: 1.16;
+  color: #0a2540;
+  letter-spacing: -0.03em;
+  margin-bottom: 18px;
+}
+
+[data-theme="dark"] .hero-slide-title {
+  color: #f8fafc;
+}
+
+.hero-slide-desc {
+  font-size: 1.06rem;
+  color: #475569;
+  line-height: 1.7;
+  margin-bottom: 24px;
+  max-width: 600px;
+}
+
+[data-theme="dark"] .hero-slide-desc {
+  color: #94a3b8;
+}
+
+.hero-slide-bullets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  margin-bottom: 28px;
+}
+
+.hero-slide-bullet-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: #1e293b;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+
+[data-theme="dark"] .hero-slide-bullet-item {
+  color: #e2e8f0;
+  background: rgba(15, 23, 42, 0.6);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Slider Görsel Alanı ve Kartı */
+.hero-slide-visual {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-visual-card {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  height: 380px;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(10, 37, 64, 0.14);
+  border: 1.5px solid rgba(0, 102, 204, 0.15);
+  background: #0f172a;
+}
+
+.hero-visual-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-visual-card:hover img {
+  transform: scale(1.04);
+}
+
+.hero-visual-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10, 37, 64, 0.15) 0%, rgba(10, 37, 64, 0.75) 100%);
+  pointer-events: none;
+}
+
+.hero-visual-badge-top {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #0a2540;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 2;
+}
+
+.hero-visual-stat-card {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 14px 18px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  z-index: 2;
+}
+
+/* Slider Butonları (Oklar & Noktalar) */
+.slider-arrow-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1.5px solid var(--border);
+  color: #0a2540;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s ease;
+  box-shadow: 0 6px 18px rgba(10, 37, 64, 0.12);
+}
+
+[data-theme="dark"] .slider-arrow-btn {
+  background: rgba(15, 23, 42, 0.85);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #f8fafc;
+}
+
+.slider-arrow-btn:hover {
+  background: #0066cc;
+  color: #ffffff;
+  border-color: #0066cc;
+  transform: translateY(-50%) scale(1.08);
+  box-shadow: 0 8px 24px rgba(0, 102, 204, 0.35);
+}
+
+.slider-arrow-btn.prev {
+  left: 18px;
+}
+
+.slider-arrow-btn.next {
+  right: 18px;
+}
+
+.slider-dots-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.slider-dot-btn {
+  width: 12px;
+  height: 12px;
+  border-radius: 12px;
+  background: #cbd5e1;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 0;
+}
+
+[data-theme="dark"] .slider-dot-btn {
+  background: #334155;
+}
+
+.slider-dot-btn.active {
+  width: 36px;
+  background: linear-gradient(90deg, #0066cc 0%, #2563eb 100%);
+  box-shadow: 0 2px 10px rgba(0, 102, 204, 0.35);
+}
+
+/* ========================================================
+   CANLI DEĞERLEME & FİYAT HESAPLAYICI BÖLÜMÜ (ÖZEL ALAN)
+   ======================================================== */
+.valuation-section {
+  padding: 68px 0 76px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 50%, #f1f5f9 100%);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+[data-theme="dark"] .valuation-section {
+  background: linear-gradient(180deg, #0b1120 0%, #080d19 100%);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.valuation-card-main {
+  background: #ffffff;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 36px 32px;
+  box-shadow: 0 18px 50px rgba(10, 37, 64, 0.07);
+}
+
+[data-theme="dark"] .valuation-card-main {
+  background: #0f172a;
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.4);
+}
+
+.val-cat-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+@media (max-width: 900px) {
+  .val-cat-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .val-cat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.val-cat-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 16px 12px;
+  background: #f8fafc;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--heading);
+  font-size: 0.86rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-theme="dark"] .val-cat-btn {
+  background: rgba(30, 41, 59, 0.6);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+}
+
+.val-cat-btn:hover {
+  background: #ffffff;
+  border-color: #0066cc;
+  color: #0066cc;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 102, 204, 0.12);
+}
+
+[data-theme="dark"] .val-cat-btn:hover {
+  background: #1e293b;
+  border-color: #38bdf8;
+  color: #38bdf8;
+}
+
+.val-cat-btn.active {
+  background: #0a2540;
+  border-color: #0a2540;
+  color: #ffffff;
+  box-shadow: 0 6px 20px rgba(10, 37, 64, 0.25);
+  transform: translateY(-2px);
+}
+
+[data-theme="dark"] .val-cat-btn.active {
+  background: #0284c7;
+  border-color: #38bdf8;
+  color: #ffffff;
+  box-shadow: 0 6px 20px rgba(2, 132, 199, 0.35);
+}
+
+@media (max-width: 900px) {
+  .hero-slide {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    text-align: center;
+  }
+  .hero-slide-bullets {
+    justify-content: center;
+  }
+  .hero-slide-desc {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .slider-arrow-btn {
+    display: none;
+  }
+}
+
+/* ============================================================
+   MODERN FAQ / SSS BİLEŞENİ (Kompakt & 2 Sütunlu Formül)
+   ============================================================ */
+.modern-faq-section {
+  padding: 50px 0;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+[data-theme="dark"] .modern-faq-section {
+  background: linear-gradient(180deg, #0f172a 0%, #090d16 100%);
+}
+
+.faq-search-box {
+  position: relative;
+  max-width: 580px;
+  margin: 0 auto 22px;
+}
+
+.faq-search-input {
+  width: 100%;
+  padding: 12px 42px 12px 42px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--border);
+  background: #ffffff;
+  font-size: 0.90rem;
+  color: var(--heading);
+  box-shadow: 0 4px 14px rgba(10, 37, 64, 0.04);
+  transition: all 0.25s ease;
+  outline: none;
+}
+
+[data-theme="dark"] .faq-search-input {
+  background: #1e293b;
+  color: #f1f5f9;
+  border-color: #334155;
+}
+
+.faq-search-input:focus {
+  border-color: #0066cc;
+  box-shadow: 0 6px 20px rgba(0, 102, 204, 0.12);
+}
+
+.faq-cat-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.faq-cat-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 15px;
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  font-weight: 700;
+  background: #ffffff;
+  border: 1.5px solid var(--border);
+  color: var(--heading);
+  cursor: pointer;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--shadow-xs);
+}
+
+[data-theme="dark"] .faq-cat-button {
+  background: #1e293b;
+  border-color: #334155;
+  color: #cbd5e1;
+}
+
+.faq-cat-button:hover {
+  border-color: #0066cc;
+  color: #0066cc;
+  transform: translateY(-1px);
+}
+
+.faq-cat-button.active {
+  background: #0a2540;
+  border-color: #0a2540;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(10, 37, 64, 0.25);
+}
+
+[data-theme="dark"] .faq-cat-button.active {
+  background: #0284c7;
+  border-color: #0284c7;
+  color: #ffffff;
+}
+
+.faq-cat-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: var(--radius-full);
+  font-size: 0.70rem;
+  font-weight: 800;
+  background: rgba(100, 116, 139, 0.12);
+  color: inherit;
+}
+
+.faq-cat-button.active .faq-cat-badge {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+/* 2 Sütunlu Kompakt Izgara */
+.faq-grid-2col {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+@media (max-width: 820px) {
+  .faq-grid-2col {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+.faq-item-card {
+  background: #ffffff;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: all 0.22s ease;
+  box-shadow: 0 2px 8px rgba(10, 37, 64, 0.03);
+}
+
+[data-theme="dark"] .faq-item-card {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.faq-item-card:hover {
+  border-color: rgba(0, 102, 204, 0.4);
+  box-shadow: 0 4px 16px rgba(0, 102, 204, 0.08);
+}
+
+.faq-item-card.is-open {
+  border-color: #0066cc;
+  box-shadow: 0 6px 20px rgba(0, 102, 204, 0.12);
+}
+
+[data-theme="dark"] .faq-item-card.is-open {
+  border-color: #38bdf8;
+  box-shadow: 0 6px 20px rgba(56, 189, 248, 0.15);
+}
+
+.faq-trigger-btn {
+  width: 100%;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.faq-q-title {
+  font-size: 0.94rem;
+  font-weight: 800;
+  color: var(--heading);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.faq-tag-chip {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  margin-bottom: 5px;
+}
+
+.faq-tag-chip.blue {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.faq-tag-chip.green {
+  background: #f0fdf4;
+  color: #15803d;
+}
+
+.faq-tag-chip.amber {
+  background: #fffbeb;
+  color: #b45309;
+}
+
+.faq-tag-chip.purple {
+  background: #faf5ff;
+  color: #7e22ce;
+}
+
+.faq-tag-chip.sky {
+  background: #f0f9ff;
+  color: #0369a1;
+}
+
+[data-theme="dark"] .faq-tag-chip {
+  opacity: 0.9;
+}
+
+.faq-chevron-icon {
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0a2540;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-theme="dark"] .faq-chevron-icon {
+  background: #334155;
+  color: #f1f5f9;
+}
+
+.faq-item-card.is-open .faq-chevron-icon {
+  transform: rotate(180deg);
+  background: #0066cc;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .faq-item-card.is-open .faq-chevron-icon {
+  background: #38bdf8;
+  color: #0f172a;
+}
+
+.faq-content-body {
+  padding: 0 18px 16px 18px;
+  font-size: 0.88rem;
+  color: var(--text);
+  line-height: 1.65;
+  border-top: 1px dashed var(--border);
+  padding-top: 14px;
+}
+
+.faq-tips-box {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: #f8fafc;
+  border-left: 3px solid #0066cc;
+  font-size: 0.82rem;
+  color: var(--heading);
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+[data-theme="dark"] .faq-tips-box {
+  background: #0f172a;
+  border-left-color: #38bdf8;
+}
+
+.faq-toggle-all-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  border-radius: var(--radius-full);
+  font-size: 0.88rem;
+  font-weight: 800;
+  background: #ffffff;
+  border: 1.5px solid var(--border);
+  color: var(--heading);
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(10, 37, 64, 0.05);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.faq-toggle-all-btn:hover {
+  border-color: #0066cc;
+  color: #0066cc;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 102, 204, 0.12);
+}
+
+[data-theme="dark"] .faq-toggle-all-btn {
+  background: #1e293b;
+  border-color: #334155;
+  color: #f1f5f9;
+}
+
+[data-theme="dark"] .faq-toggle-all-btn:hover {
+  border-color: #38bdf8;
+  color: #38bdf8;
+}
+
+.faq-cta-banner {
+  margin-top: 32px;
+  background: linear-gradient(135deg, #0a2540 0%, #004b99 100%);
+  border-radius: var(--radius-lg);
+  padding: 24px 28px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+  box-shadow: 0 12px 32px rgba(10, 37, 64, 0.2);
+}
+
+
+

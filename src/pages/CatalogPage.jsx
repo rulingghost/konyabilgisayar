@@ -35,6 +35,7 @@ export default function CatalogPage({
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('newest');
   const [priceRange, setPriceRange] = useState('all'); // all, 0-10000, 10000-25000, 25000-45000, 45000+
+  const [onlyAvailable, setOnlyAvailable] = useState(false);
 
   useEffect(() => {
     if (initialCategory) {
@@ -78,6 +79,9 @@ export default function CatalogPage({
     if (priceRange === '10k-25k' && (price < 10000 || price > 25000)) return false;
     if (priceRange === '25k-45k' && (price < 25000 || price > 45000)) return false;
     if (priceRange === 'above-45k' && price < 45000) return false;
+
+    // Sadece Stoktakiler
+    if (onlyAvailable && p.status === 'satildi') return false;
 
     // Arama
     if (searchQuery.trim()) {
@@ -221,8 +225,18 @@ export default function CatalogPage({
               )}
             </div>
 
-            {/* Sıralama */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+            {/* Sıralama & Stok Filtresi */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.86rem', fontWeight: 600, color: 'var(--text)', cursor: 'pointer', userSelect: 'none' }}>
+                <input 
+                  type="checkbox" 
+                  checked={onlyAvailable} 
+                  onChange={e => setOnlyAvailable(e.target.checked)} 
+                  style={{ accentColor: 'var(--primary-bright)', width: '15px', height: '15px', cursor: 'pointer' }}
+                />
+                <span>Sadece Stoktaki Ürünler</span>
+              </label>
+
               <select 
                 value={sortBy} 
                 onChange={e => setSortBy(e.target.value)}
