@@ -17,7 +17,7 @@ export default function ContactPage({ settings }) {
   };
 
   const storeAddress = settings?.address || 'Hüsamettin Çelebi Mah. Akabe Cad. Tüybek Çarşısı No: 9 G, Selçuklu / KONYA';
-  const mapUrl = settings?.mapEmbedUrl || 'https://maps.google.com/maps?q=H%C3%BCsamettin+%C3%87elebi+Mah.+Akabe+Cad.+T%C3%BCybek+%C3%87ar%C5%9F%C4%B1s%C4%B1+No:+9+G+Sel%C3%A7uklu+Konya&t=&z=16&ie=UTF8&iwloc=&output=embed';
+  const mapUrl = settings?.mapEmbedUrl || 'https://maps.google.com/maps?q=37.91163,32.49081+(Konya+Bilgisayar+-+T%C3%BCybek+%C3%87ar%C5%9F%C4%B1s%C4%B1+No:9G)&t=&z=18&ie=UTF8&iwloc=B&output=embed';
 
   return (
     <div style={{ padding: '50px 0 80px', background: 'var(--bg)' }}>
@@ -222,7 +222,7 @@ export default function ContactPage({ settings }) {
               </div>
             </div>
             <a
-              href="https://maps.google.com/?q=H%C3%BCsamettin+%C3%87elebi+Mah.+Akabe+Cad.+T%C3%BCybek+%C3%87ar%C5%9F%C4%B1s%C4%B1+No:+9+G+Sel%C3%A7uklu+Konya"
+              href="https://maps.google.com/?q=37.91163,32.49081+(Konya+Bilgisayar+-+T%C3%BCybek+%C3%87ar%C5%9F%C4%B1s%C4%B1+No:9G)"
               target="_blank"
               rel="noreferrer"
               className="btn btn-outline btn-sm"

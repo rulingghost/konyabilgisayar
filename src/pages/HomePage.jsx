@@ -2236,7 +2236,7 @@ export default function HomePage({
               height: '340px'
             }}>
               <iframe 
-                src={settings?.mapEmbedUrl || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d100770.83538965876!2d32.4178788448373!3d37.87834524792622!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14d08568d71221bd%3A0x897914eec5f524f7!2sKonya!5e0!3m2!1str!2str"}
+                src={settings?.mapEmbedUrl || "https://maps.google.com/maps?q=37.91163,32.49081+(Konya+Bilgisayar+-+T%C3%BCybek+%C3%87ar%C5%9F%C4%B1s%C4%B1+No:9G)&t=&z=18&ie=UTF8&iwloc=B&output=embed"}
                 width="100%" 
                 height="100%" 
                 style={{ border: 0 }} 

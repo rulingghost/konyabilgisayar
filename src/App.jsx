@@ -117,7 +117,7 @@ export default function App() {
     phoneRaw: '905510454255',
     whatsapp: '905510454255',
     address: 'Hüsamettin Çelebi Mah. Akabe Cad. Tüybek Çarşısı No: 9 G, Selçuklu / KONYA',
-    mapEmbedUrl: 'https://maps.google.com/maps?q=H%C3%BCsamettin+%C3%87elebi+Mah.+Akabe+Cad.+T%C3%BCybek+%C3%87ar%C5%9F%C4%B1s%C4%B1+No:+9+G+Sel%C3%A7uklu+Konya&t=&z=16&ie=UTF8&iwloc=&output=embed',
+    mapEmbedUrl: 'https://maps.google.com/maps?q=37.91163,32.49081+(Konya+Bilgisayar+-+T%C3%BCybek+%C3%87ar%C5%9F%C4%B1s%C4%B1+No:9G)&t=&z=18&ie=UTF8&iwloc=B&output=embed',
     workingHours: 'Pazartesi - Cumartesi: 09:00 - 20:00 (Lütfen Gelmeden Önce Randevu Alınız)',
     announcementText: "Konya Selçuklu Tüybek Çarşısı mağazamızda randevulu anında nakit alım! Türkiye'nin her yerinden anlaşmalı kargo ile cihaz alıyoruz.",
     announcementActive: true
