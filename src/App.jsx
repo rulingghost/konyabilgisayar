@@ -42,8 +42,9 @@ const ROUTE_ALIASES = {
   'toplu-bilgisayar-alan-yerler': { route: 'toplu-alim', params: {} },
   'bilgisayarinizin-ozelliklerini-ogrenin': { route: 'ozellikleri-ogrenin', params: {} },
   'bilgisayar-takas': { route: 'takas', params: {} },
-  'servis': { route: 'hizmetler', params: {} },
-  'teknik-servis': { route: 'hizmetler', params: {} },
+  'admin': { route: 'edmin', params: {} },
+  'servis': { route: 'home', params: {} },
+  'teknik-servis': { route: 'home', params: {} },
   'kvkk': { route: 'politikalar', params: { tab: 'kvkk' } },
   'cerez-politikasi': { route: 'politikalar', params: { tab: 'cerez' } },
   'iade-kosullari': { route: 'politikalar', params: { tab: 'iade' } },
@@ -51,9 +52,9 @@ const ROUTE_ALIASES = {
 };
 
 const VALID_ROUTES = [
-  'home', 'degerleme', 'urunler', 'urun-detay', 'hizmetler', 'takas', 
+  'home', 'degerleme', 'urunler', 'urun-detay', 'takas', 
   'kargo', 'toplu-alim', 'ozellikleri-ogrenin', 'iletisim', 'blog', 
-  'blog-detay', 'musteri-hikayeleri', 'hakkimizda', 'politikalar', 'admin'
+  'blog-detay', 'musteri-hikayeleri', 'hakkimizda', 'politikalar', 'edmin'
 ];
 
 // URL'den temiz rota ve parametreleri çözümleme (HTML5 History API)
@@ -201,6 +202,10 @@ export default function App() {
     let targetPath = '/';
     const queryParams = { ...params };
 
+    if (route === 'admin') {
+      route = 'edmin';
+    }
+
     if (route === 'home') {
       targetPath = '/';
     } else if (route === 'urun-detay' && params.id) {
@@ -329,10 +334,6 @@ export default function App() {
           />
         )}
 
-        {currentRoute === 'hizmetler' && (
-          <ServicePage settings={settings} />
-        )}
-
         {currentRoute === 'takas' && (
           <TradeInPage 
             products={products}
@@ -386,7 +387,7 @@ export default function App() {
           <PoliciesPage initialTab={routeParams.tab || 'kargo'} settings={settings} />
         )}
 
-        {currentRoute === 'admin' && (
+        {(currentRoute === 'edmin' || currentRoute === 'admin') && (
           <AdminPage 
             products={products}
             onRefreshProducts={fetchProducts}

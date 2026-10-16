@@ -1504,7 +1504,7 @@ export default function HomePage({
               Size Nasıl Yardımcı Olabiliriz?
             </h2>
             <p style={{ color: 'var(--text-muted)' }}>
-              İkinci el teknoloji alım satımından teknik servis ve takasa kadar Konya'daki tam kapsamlı çözüm ortağınız.
+              İkinci el teknoloji alım satımından cihaz takasına ve kargo ile alıma kadar Konya'daki güvenilir teknoloji merkeziniz.
             </p>
           </div>
 
@@ -1526,7 +1526,7 @@ export default function HomePage({
               image="/images/hero_tech.jpg"
               icon={<Laptop size={26} />}
               title="İkinci El Satılık Ürünler"
-              desc="Mağazamızdaki tüm ürünler detaylı testlerden geçmiş, termal bakımı yapılmış ve Konya Bilgisayar garantisi altındadır."
+              desc="Mağazamızdaki tüm ürünler detaylı testlerden geçmiş, temizlenmiş ve Konya Bilgisayar güvencesiyle sunulmaktadır."
               linkText="Satılık Ürünleri Görün →"
               onClick={() => navigate('urunler')}
             />
@@ -1534,10 +1534,10 @@ export default function HomePage({
             <ServiceCard 
               image="/images/service_diagnostics.jpg"
               icon={<Cpu size={26} />}
-              title="Bilgisayar Teknik Servisi"
-              desc="Termal macun yenileme, fan temizliği, ekran değişimi, format, donanım yükseltme ve özel sistem toplama hizmetleri."
-              linkText="Servis Hizmetlerini İnceleyin →"
-              onClick={() => navigate('hizmetler')}
+              title="Toplu & Kurumsal Alım"
+              desc="Şirket, ofis, internet kafe veya çağrı merkezlerindeki toplu bilgisayar ve monitörleri tek seferde nakit satın alıyoruz."
+              linkText="Toplu Satış Teklifi Alın →"
+              onClick={() => navigate('toplu-alim')}
             />
 
             <ServiceCard 

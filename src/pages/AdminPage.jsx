@@ -129,7 +129,7 @@ export default function AdminPage({
       localStorage.setItem('kb_admin_auth', 'true');
       setLoginError('');
     } else {
-      setLoginError('Hatalı şifre! (Varsayılan şifre: konya123)');
+      setLoginError('Hatalı şifre! Lütfen şifrenizi kontrol edip tekrar deneyiniz.');
     }
   };
 
@@ -429,9 +429,6 @@ export default function AdminPage({
             <button type="submit" className="btn btn-primary" style={{ width: '100%', fontWeight: 700, padding: '12px' }}>
               Giriş Yap
             </button>
-            <div style={{ marginTop: '16px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
-              (Varsayılan şifre: <code>konya123</code>)
-            </div>
           </form>
         </div>
       </div>
@@ -475,7 +472,6 @@ export default function AdminPage({
           <StatBox label="Kayıtlı Ürün" value={products.length} icon={<Package size={22} />} />
           <StatBox label="Blog Yazıları" value={blogs.length} icon={<BookOpen size={22} />} color="#8b5cf6" />
           <StatBox label="Değerleme Talebi" value={valuations.length} icon={<MessageSquare size={22} />} color="#0b63ce" />
-          <StatBox label="Servis Talebi" value={services.length} icon={<Wrench size={22} />} color="#f59e0b" />
         </div>
 
         {/* Sekme Butonları */}
@@ -489,7 +485,6 @@ export default function AdminPage({
           <TabButton active={activeTab === 'products'} onClick={() => setActiveTab('products')} icon={<Package size={18} />} label={`Ürünler (${products.length})`} />
           <TabButton active={activeTab === 'blogs'} onClick={() => setActiveTab('blogs')} icon={<BookOpen size={18} />} label={`Blog Yönetimi (${blogs.length})`} />
           <TabButton active={activeTab === 'valuations'} onClick={() => setActiveTab('valuations')} icon={<MessageSquare size={18} />} label={`Değerleme Talepleri (${valuations.length})`} />
-          <TabButton active={activeTab === 'services'} onClick={() => setActiveTab('services')} icon={<Wrench size={18} />} label={`Teknik Servis (${services.length})`} />
           <TabButton active={activeTab === 'settings'} onClick={() => setActiveTab('settings')} icon={<Settings size={18} />} label="Site & Mağaza Ayarları" />
         </div>
 
@@ -739,33 +734,6 @@ export default function AdminPage({
                       <div style={{ fontSize: '1.2rem', fontWeight: 900, color: 'var(--primary-bright)', marginBottom: '8px' }}>{v.estimatedPrice}</div>
                       <a href={`https://wa.me/${v.customerPhone?.replace(/[^0-9]/g, '')}`} target="_blank" rel="noreferrer" className="btn btn-wa btn-sm"><WhatsAppIcon size={16} /> WhatsApp</a>
                     </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* ==================== TAB 4: TEKNİK SERVİS ==================== */}
-        {activeTab === 'services' && (
-          <div>
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--heading)', marginBottom: '8px' }}>Gelen Teknik Servis Kayıtları</h3>
-            <p style={{ fontSize: '0.86rem', color: 'var(--text-muted)', marginBottom: '20px' }}>Arıza ve bakım talepleri.</p>
-            {services.length === 0 ? (
-              <div style={{ background: '#ffffff', padding: '40px', borderRadius: 'var(--radius-md)', textAlign: 'center', border: '1px solid var(--border)' }}>Servis talebi yok.</div>
-            ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-                {services.map(s => (
-                  <div key={s.id} style={{ background: '#ffffff', padding: '20px', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: '16px', alignItems: 'center' }}>
-                    <div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
-                        <span className="badge badge-amber">{s.deviceType?.toUpperCase()}</span>
-                        <strong style={{ fontSize: '1.05rem', color: 'var(--heading)' }}>{s.serviceType}</strong>
-                      </div>
-                      <p style={{ fontSize: '0.9rem', color: 'var(--text)', marginBottom: '6px' }}><strong>Cihaz:</strong> {s.brandModel} — <em>"{s.description}"</em></p>
-                      <div style={{ fontSize: '0.84rem', color: 'var(--heading)', fontWeight: 600 }}>Müşteri: {s.customerName} | Tel: <a href={`tel:${s.customerPhone}`} style={{ color: 'var(--primary-bright)' }}>{s.customerPhone}</a></div>
-                    </div>
-                    <a href={`https://wa.me/${s.customerPhone?.replace(/[^0-9]/g, '')}`} target="_blank" rel="noreferrer" className="btn btn-wa btn-sm"><WhatsAppIcon size={16} /> WhatsApp</a>
                   </div>
                 ))}
               </div>

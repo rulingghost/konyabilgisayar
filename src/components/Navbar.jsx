@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Laptop, 
   Monitor, 
@@ -32,6 +32,17 @@ export default function Navbar({
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setOpenDropdown(null);
+      }
+    };
+    document.addEventListener('click', handleOutsideClick);
+    return () => document.removeEventListener('click', handleOutsideClick);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -184,20 +195,26 @@ export default function Navbar({
                 lineHeight: 1.1,
                 whiteSpace: 'nowrap'
               }}>
-                2. El & Servis
+                2. El Alım & Satım
               </div>
             </div>
           </div>
 
           {/* Masaüstü Navigasyon - Tek Satır, Taşmayan & Kibar */}
           <nav className="desktop-nav" style={{ display: 'none', alignItems: 'center', gap: '3px', flexShrink: 0 }}>
-            {/* 1. Cihaz Sat Dropdown */}
+            {/* 1. Cihaz Sat Dropdown (Kesintisiz Hover Köprüsü & Tıklama Koruması) */}
             <div 
+              ref={dropdownRef}
               style={{ position: 'relative' }}
               onMouseEnter={() => setOpenDropdown('sell')}
               onMouseLeave={() => setOpenDropdown(null)}
             >
               <button 
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenDropdown(prev => prev === 'sell' ? null : 'sell');
+                }}
                 style={{
                   padding: '6px 10px',
                   fontWeight: 600,
@@ -215,37 +232,61 @@ export default function Navbar({
                 }}
               >
                 <span>Cihaz Sat</span>
-                <ChevronDown size={13} style={{ opacity: 0.65 }} />
+                <ChevronDown size={13} style={{ opacity: 0.65, transform: openDropdown === 'sell' ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s ease' }} />
               </button>
               {openDropdown === 'sell' && (
                 <div style={{
                   position: 'absolute',
-                  top: 'calc(100% + 4px)',
+                  top: '100%',
                   left: 0,
-                  width: '260px',
-                  background: '#ffffff',
-                  borderRadius: '12px',
-                  boxShadow: '0 12px 36px rgba(15, 23, 42, 0.12), 0 2px 8px rgba(15, 23, 42, 0.04)',
-                  border: '1px solid rgba(226, 232, 240, 0.9)',
-                  padding: '6px',
+                  paddingTop: '6px',
+                  width: '270px',
                   zIndex: 1100
                 }}>
-                  <div style={{ padding: '6px 10px 4px', fontSize: '0.68rem', fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                    Alım Kategorileri
+                  <div style={{
+                    background: '#ffffff',
+                    borderRadius: '14px',
+                    boxShadow: '0 16px 40px rgba(15, 23, 42, 0.16), 0 2px 8px rgba(15, 23, 42, 0.06)',
+                    border: '1px solid rgba(226, 232, 240, 0.95)',
+                    padding: '8px',
+                    animation: 'fadeIn 0.15s ease'
+                  }}>
+                    <div 
+                      onClick={() => handleNav('degerleme')}
+                      style={{
+                        padding: '8px 10px',
+                        background: 'linear-gradient(135deg, rgba(2, 132, 199, 0.1) 0%, rgba(2, 132, 199, 0.04) 100%)',
+                        borderRadius: '8px',
+                        marginBottom: '6px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        color: '#0284c7',
+                        fontWeight: 700,
+                        fontSize: '0.82rem'
+                      }}
+                    >
+                      <span>⚡ Cihazını Sat & Fiyat Al</span>
+                      <ArrowRight size={14} />
+                    </div>
+                    <div style={{ padding: '4px 10px 4px', fontSize: '0.68rem', fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                      Alım Kategorileri
+                    </div>
+                    <DropdownLink icon={<Laptop size={16} />} title="Laptop Sat" onClick={() => handleNav('degerleme', { category: 'laptop' })} />
+                    <DropdownLink icon={<Monitor size={16} />} title="Masaüstü Bilgisayar Sat" onClick={() => handleNav('degerleme', { category: 'masaustu' })} />
+                    <DropdownLink icon={<Laptop size={16} />} title="MacBook Sat" onClick={() => handleNav('degerleme', { category: 'macbook' })} />
+                    <DropdownLink icon={<Smartphone size={16} />} title="iPhone & Telefon Sat" onClick={() => handleNav('degerleme', { category: 'iphone' })} />
+                    <DropdownLink icon={<Cpu size={16} />} title="Ekran Kartı (GPU) Sat" onClick={() => handleNav('degerleme', { category: 'ekran_karti' })} />
+                    <DropdownLink icon={<Monitor size={16} />} title="Monitör Sat" onClick={() => handleNav('degerleme', { category: 'monitor' })} />
+                    <DropdownLink icon={<Tablet size={16} />} title="iPad & Tablet Sat" onClick={() => handleNav('degerleme', { category: 'tablet' })} />
+                    <DropdownLink icon={<Gamepad2 size={16} />} title="PlayStation & Konsol Sat" onClick={() => handleNav('degerleme', { category: 'konsol' })} />
+                    <div style={{ height: '1px', background: '#f1f5f9', margin: '4px 0' }} />
+                    <DropdownLink icon={<Truck size={16} />} title="Kargoyla Cihaz Sat" onClick={() => handleNav('kargo')} highlight />
+                    <DropdownLink icon={<RefreshCw size={16} />} title="Cihaz Takası" onClick={() => handleNav('takas')} />
+                    <DropdownLink icon={<Building2 size={16} />} title="Toplu & Kurumsal Alım" onClick={() => handleNav('toplu-alim')} />
+                    <DropdownLink icon={<HelpCircle size={16} />} title="Cihaz Özelliklerini Öğren" onClick={() => handleNav('ozellikleri-ogrenin')} />
                   </div>
-                  <DropdownLink icon={<Laptop size={16} />} title="Laptop Sat" onClick={() => handleNav('degerleme', { category: 'laptop' })} />
-                  <DropdownLink icon={<Monitor size={16} />} title="Masaüstü Bilgisayar Sat" onClick={() => handleNav('degerleme', { category: 'masaustu' })} />
-                  <DropdownLink icon={<Laptop size={16} />} title="MacBook Sat" onClick={() => handleNav('degerleme', { category: 'macbook' })} />
-                  <DropdownLink icon={<Smartphone size={16} />} title="iPhone & Telefon Sat" onClick={() => handleNav('degerleme', { category: 'iphone' })} />
-                  <DropdownLink icon={<Cpu size={16} />} title="Ekran Kartı (GPU) Sat" onClick={() => handleNav('degerleme', { category: 'ekran_karti' })} />
-                  <DropdownLink icon={<Monitor size={16} />} title="Monitör Sat" onClick={() => handleNav('degerleme', { category: 'monitor' })} />
-                  <DropdownLink icon={<Tablet size={16} />} title="iPad & Tablet Sat" onClick={() => handleNav('degerleme', { category: 'tablet' })} />
-                  <DropdownLink icon={<Gamepad2 size={16} />} title="PlayStation & Konsol Sat" onClick={() => handleNav('degerleme', { category: 'konsol' })} />
-                  <div style={{ height: '1px', background: '#f1f5f9', margin: '4px 0' }} />
-                  <DropdownLink icon={<Truck size={16} />} title="Kargoyla Cihaz Sat" onClick={() => handleNav('kargo')} highlight />
-                  <DropdownLink icon={<RefreshCw size={16} />} title="Cihaz Takası" onClick={() => handleNav('takas')} />
-                  <DropdownLink icon={<Building2 size={16} />} title="Toplu & Kurumsal Alım" onClick={() => handleNav('toplu-alim')} />
-                  <DropdownLink icon={<HelpCircle size={16} />} title="Cihaz Özelliklerini Öğren" onClick={() => handleNav('ozellikleri-ogrenin')} />
                 </div>
               )}
             </div>
@@ -273,31 +314,6 @@ export default function Navbar({
               }}
             >
               Satılık Ürünler
-            </button>
-
-            {/* 4. Teknik Servis */}
-            <button 
-              onClick={() => handleNav('hizmetler')}
-              style={{
-                padding: '6px 10px',
-                fontWeight: 600,
-                fontSize: '0.84rem',
-                color: currentRoute === 'hizmetler' ? '#0284c7' : '#334155',
-                background: currentRoute === 'hizmetler' ? 'rgba(2, 132, 199, 0.08)' : 'transparent',
-                border: 'none',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                whiteSpace: 'nowrap',
-                transition: 'all 0.15s ease'
-              }}
-              onMouseEnter={e => {
-                if (currentRoute !== 'hizmetler') e.currentTarget.style.background = 'rgba(2, 132, 199, 0.05)';
-              }}
-              onMouseLeave={e => {
-                if (currentRoute !== 'hizmetler') e.currentTarget.style.background = 'transparent';
-              }}
-            >
-              Teknik Servis
             </button>
 
             {/* 5. Blog */}
@@ -500,15 +516,15 @@ export default function Navbar({
 
             {/* Yönetim Paneli Butonu (Zarif Ghost Buton) */}
             <button
-              onClick={() => handleNav('admin')}
+              onClick={() => handleNav('edmin')}
               title="Yönetim Paneli"
               style={{
                 width: '30px',
                 height: '30px',
                 borderRadius: '8px',
                 border: 'none',
-                background: currentRoute === 'admin' ? '#0284c7' : 'transparent',
-                color: currentRoute === 'admin' ? '#ffffff' : '#94a3b8',
+                background: (currentRoute === 'edmin' || currentRoute === 'admin') ? '#0284c7' : 'transparent',
+                color: (currentRoute === 'edmin' || currentRoute === 'admin') ? '#ffffff' : '#94a3b8',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -517,13 +533,13 @@ export default function Navbar({
                 flexShrink: 0
               }}
               onMouseEnter={e => {
-                if (currentRoute !== 'admin') {
+                if (currentRoute !== 'edmin' && currentRoute !== 'admin') {
                   e.currentTarget.style.background = '#f1f5f9';
                   e.currentTarget.style.color = '#334155';
                 }
               }}
               onMouseLeave={e => {
-                if (currentRoute !== 'admin') {
+                if (currentRoute !== 'edmin' && currentRoute !== 'admin') {
                   e.currentTarget.style.background = 'transparent';
                   e.currentTarget.style.color = '#94a3b8';
                 }
@@ -580,14 +596,13 @@ export default function Navbar({
             <MobileNavLink label="Ana Sayfa" onClick={() => handleNav('home')} />
             <MobileNavLink label="Cihaz Sat" onClick={() => handleNav('degerleme')} highlight />
             <MobileNavLink label="Satılık İkinci El Ürünler" onClick={() => handleNav('urunler')} />
-            <MobileNavLink label="Bilgisayar Teknik Servisi" onClick={() => handleNav('hizmetler')} />
             <MobileNavLink label="Blog & Teknoloji Rehberi" onClick={() => handleNav('blog')} />
             <MobileNavLink label="Cihaz Özelliklerini Öğrenin" onClick={() => handleNav('ozellikleri-ogrenin')} />
             <MobileNavLink label="Toplu & Kurumsal Cihaz Alımı" onClick={() => handleNav('toplu-alim')} />
             <MobileNavLink label="Bilgisayar Takası" onClick={() => handleNav('takas')} />
             <MobileNavLink label="Kargoyla Cihaz Satışı (Türkiye Geneli)" onClick={() => handleNav('kargo')} />
             <MobileNavLink label="İletişim & Konum" onClick={() => handleNav('iletisim')} />
-            <MobileNavLink label="Yönetim Paneli" onClick={() => handleNav('admin')} />
+            <MobileNavLink label="Yönetim Paneli" onClick={() => handleNav('edmin')} />
 
             <div style={{ marginTop: '20px', paddingTop: '16px', borderTop: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <div style={{ fontSize: '0.84rem', color: '#64748b', textAlign: 'center' }}>

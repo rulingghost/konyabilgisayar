@@ -31,7 +31,7 @@ export default function AboutPage({ navigate, settings }) {
             Hakkımızda · Konya Bilgisayar
           </h1>
           <p style={{ color: 'var(--text-muted)', fontSize: '1.08rem', maxWidth: '720px', margin: '0 auto', lineHeight: 1.65 }}>
-            Konya Selçuklu merkezli teknoloji mağazamızda, ikinci el bilgisayar ve teknoloji alım-satımı ile profesyonel teknik servis hizmetlerini şeffaflık ve güven ilkeleriyle sunuyoruz.
+            Konya Selçuklu merkezli teknoloji mağazamızda, ikinci el bilgisayar, donanım ve teknoloji alım-satımını şeffaf ekspertiz ve güven ilkeleriyle sunuyoruz.
           </p>
         </div>
 
@@ -110,13 +110,13 @@ export default function AboutPage({ navigate, settings }) {
 
           <div className="card" style={{ padding: '28px' }}>
             <div style={{ width: '48px', height: '48px', borderRadius: '14px', background: 'var(--primary-glow)', color: 'var(--primary-bright)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
-              <Wrench size={26} />
+              <Sparkles size={26} />
             </div>
             <h3 style={{ fontSize: '1.15rem', fontWeight: 800, color: 'var(--heading)', marginBottom: '8px' }}>
-              Uzman Teknik Servis Desteği
+              Detaylı Test & Şeffaf Süreç
             </h3>
             <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', lineHeight: 1.6 }}>
-              Sadece alıp satmıyor, aynı zamanda termal bakım, macun değişimi, ekran onarımı ve parça yükseltme hizmetleriyle cihazlarınızı ilk günkü gücüne kavuşturuyoruz.
+              Alınan ve satılan her cihaz stres, ekran, pil ve donanım testlerinden geçirilir. Müşterilerimize her aşamada şeffaf raporlama ve güvenilir hizmet sunuyoruz.
             </p>
           </div>
         </div>

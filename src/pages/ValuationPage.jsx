@@ -149,6 +149,7 @@ export default function ValuationPage({ initialCategory = 'laptop', settings, na
     } else if (category === 'masaustu') {
       list.push({ label: 'Cihaz Türü', value: 'Masaüstü Bilgisayar (Oyuncu Kasası)' });
       if (desktopCase || brand || selectedSeries) list.push({ label: 'Kasa & Sistem', value: `${brand ? `${brand} ` : ''}${selectedSeries ? `(${selectedSeries}) ` : ''}${desktopCase ? `[${desktopCase}]` : ''}`.trim() });
+      if (modelName) list.push({ label: 'Özel Sistem / Model', value: modelName });
       if (cpu) list.push({ label: 'İşlemci (CPU)', value: getHardwareLabel('cpu', cpu) });
       if (gpu) list.push({ label: 'Ekran Kartı (GPU)', value: getHardwareLabel('gpu', gpu) });
       if (ram) list.push({ label: 'RAM Bellek', value: `${ram} GB` });
@@ -159,7 +160,8 @@ export default function ValuationPage({ initialCategory = 'laptop', settings, na
       if (thermalStatus) list.push({ label: 'Termal Durum', value: thermalStatus === 'serin' ? 'Serin / Sorunsuz Çalışıyor' : 'Normal Sıcaklıklar' });
     } else if (category === 'macbook') {
       list.push({ label: 'Cihaz Türü', value: 'Apple MacBook' });
-      if (macModel) list.push({ label: 'Model', value: macModel });
+      if (macModel) list.push({ label: 'Model', value: macModel === 'diger' ? 'Diğer MacBook Modeli' : macModel });
+      if (modelName) list.push({ label: 'Model / Özel Not', value: modelName });
       if (appleChip) list.push({ label: 'Çip', value: `Apple ${appleChip.toUpperCase()}` });
       if (appleRam) list.push({ label: 'Birleşik Bellek', value: `${appleRam} GB RAM` });
       if (appleDisk) list.push({ label: 'SSD Kapasitesi', value: `${appleDisk} GB SSD` });
@@ -167,21 +169,25 @@ export default function ValuationPage({ initialCategory = 'laptop', settings, na
     } else if (category === 'iphone') {
       list.push({ label: 'Cihaz Türü', value: 'Apple iPhone / Akıllı Telefon' });
       if (phoneModel) list.push({ label: 'Model', value: `${phoneModel.toUpperCase()} ${phoneStorage ? `(${phoneStorage} GB)` : ''}`.trim() });
+      if (modelName) list.push({ label: 'Model / Özel Not', value: modelName });
       if (phoneBattery) list.push({ label: 'Pil Sağlığı', value: `%${phoneBattery} Pil Sağlığı` });
       if (phoneScreenState) list.push({ label: 'Ekran Durumu', value: phoneScreenState === 'ciziksiz' ? 'Çiziksiz Orijinal' : phoneScreenState === 'cizikli' ? 'Kılcal Çizikler Var' : phoneScreenState === 'degisen' ? 'Ekran Değişmiş' : 'Kırık / Çatlak Var' });
       if (faceIdWorking) list.push({ label: 'Face ID', value: faceIdWorking === 'evet' ? 'Face ID Kusursuz Çalışıyor' : 'Face ID Arızalı' });
     } else if (category === 'konsol') {
       list.push({ label: 'Cihaz Türü', value: 'Oyun Konsolu' });
       if (consoleModel) list.push({ label: 'Konsol Modeli', value: consoleModel.toUpperCase() });
+      if (modelName) list.push({ label: 'Konsol / Model Notu', value: modelName });
       if (controllerCount) list.push({ label: 'Kol (Gamepad)', value: `${controllerCount} Adet Orijinal Kol` });
       if (consoleAccessories) list.push({ label: 'Aksesuarlar', value: consoleAccessories === 'tam' ? 'Kutulu Oyunlar & Tüm Kablolar Var' : consoleAccessories === 'sarj_istasyonu' ? 'Şarj İstasyonu / Kulaklık Dahil' : 'Yalnızca Konsol ve Kol' });
     } else if (category === 'ekran_karti') {
       list.push({ label: 'Cihaz Türü', value: 'Ekran Kartı (GPU)' });
       if (gpuModel) list.push({ label: 'Model', value: gpuModel.toUpperCase() });
       if (gpuBrand) list.push({ label: 'Marka & Seri', value: gpuBrand });
+      if (modelName) list.push({ label: 'Ek Not / Detay', value: modelName });
       if (sealStatus) list.push({ label: 'Güvenlik Bandrolü', value: sealStatus === 'orijinal' ? 'Açılmadı / Güvenlik Etiketi Üzerinde' : sealStatus === 'acildi' ? 'Termal Macun Değişimi İçin Açıldı' : 'Bakım İstiyor' });
     } else if (category === 'monitor') {
       list.push({ label: 'Cihaz Türü', value: 'Oyuncu Monitörü' });
+      if (modelName) list.push({ label: 'Marka & Model', value: modelName });
       if (monitorSize || monitorRes) list.push({ label: 'Boyut & Çözünürlük', value: `${monitorSize ? `${monitorSize} İnç` : ''} ${monitorRes ? monitorRes.toUpperCase() : ''}`.trim() });
       if (monitorHz) list.push({ label: 'Yenileme Hızı', value: monitorHz });
       if (monitorPanelType) list.push({ label: 'Panel Tipi', value: monitorPanelType.toUpperCase() });
@@ -189,6 +195,7 @@ export default function ValuationPage({ initialCategory = 'laptop', settings, na
     } else if (category === 'tablet') {
       list.push({ label: 'Cihaz Türü', value: 'iPad / Tablet' });
       if (tabletBrand || tabletModel) list.push({ label: 'Marka & Model', value: `${tabletBrand || ''} ${tabletModel ? tabletModel.toUpperCase() : ''}`.trim() });
+      if (modelName) list.push({ label: 'Özel Model / Not', value: modelName });
       if (tabletStorage) list.push({ label: 'Hafıza', value: `${tabletStorage} GB` });
       if (tabletCellular) list.push({ label: 'Bağlantı', value: tabletCellular === 'cellular' ? 'Wi-Fi + Cellular (SIM Kartlı)' : 'Sadece Wi-Fi' });
       if (tabletScreenCondition) list.push({ label: 'Ekran Camı', value: tabletScreenCondition === 'ciziksiz' ? 'Çiziksiz Orijinal' : 'Kılcal Çizikler Var' });
@@ -583,21 +590,27 @@ export default function ValuationPage({ initialCategory = 'laptop', settings, na
                 >
                   <option value="">-- Model Serisi Seçiniz --</option>
                   {brand && POPULAR_SERIES_BY_BRAND[brand] ? (
-                    POPULAR_SERIES_BY_BRAND[brand].map(ser => (
-                      <option key={ser} value={ser}>{ser}</option>
-                    ))
+                    <>
+                      {POPULAR_SERIES_BY_BRAND[brand].map(ser => (
+                        <option key={ser} value={ser}>{ser}</option>
+                      ))}
+                      <option value="Diğer / Listede Yok">Diğer / Listede Yok (Aşağıya Yazınız)</option>
+                    </>
                   ) : brand ? (
-                    <option value="Standart Seri">Standart Seri</option>
+                    <>
+                      <option value="Standart Seri">Standart Seri</option>
+                      <option value="Diğer / Listede Yok">Diğer / Listede Yok (Aşağıya Yazınız)</option>
+                    </>
                   ) : null}
                 </select>
               </div>
 
               <div className="form-group">
-                <label className="form-label">Tam Model Kodu (Varsa)</label>
+                <label className="form-label">Model Adı / Kodu veya Ek Notunuz</label>
                 <input 
                   type="text" 
                   className="form-control" 
-                  placeholder="Örn: FA507NV, 15IAH7, Abra A5 V20.3"
+                  placeholder="Örn: FA507NV, Abra A5 V20.3 veya listede olmayan model adı..."
                   value={modelName}
                   onChange={e => setModelName(e.target.value)}
                 />
@@ -673,7 +686,19 @@ export default function ValuationPage({ initialCategory = 'laptop', settings, na
                   <option value="standart">Standart Toplama Kasa (Siyah / Gri)</option>
                   <option value="ofis">Ofis / Mini ITX / Kompakt APU Kasa</option>
                   <option value="workstation">İş İstasyonu / Workstation Kasa</option>
+                  <option value="diger">Diğer / Özel Kasa Türü</option>
                 </select>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Kasa Modeli veya Ek Notunuz</label>
+                <input 
+                  type="text" 
+                  className="form-control" 
+                  placeholder="Örn: NZXT Akvaryum Kasa, 6 fanlı RGB, özel sistem detayları..."
+                  value={modelName}
+                  onChange={e => setModelName(e.target.value)}
+                />
               </div>
 
               <div className="form-group">
@@ -768,7 +793,19 @@ export default function ValuationPage({ initialCategory = 'laptop', settings, na
                   <option value="air13">MacBook Air 13 inç (M3 / M2 / M1 Retina)</option>
                   <option value="intel_pro">MacBook Pro (Intel Core i9 / i7 / i5)</option>
                   <option value="intel_air">MacBook Air (Intel Core i5 / i3)</option>
+                  <option value="diger">Diğer / Listede Olmayan Model (Aşağıya Yazınız)</option>
                 </select>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Model Detayı veya Ek Notunuz</label>
+                <input 
+                  type="text" 
+                  className="form-control" 
+                  placeholder="Örn: 2023 M2 Pro 14 inç 16GB/512GB Uzay Grisi..."
+                  value={modelName}
+                  onChange={e => setModelName(e.target.value)}
+                />
               </div>
 
               <div className="form-group">
@@ -823,7 +860,19 @@ export default function ValuationPage({ initialCategory = 'laptop', settings, na
                 <select className="form-control" value={phoneModel} onChange={e => setPhoneModel(e.target.value)}>
                   <option value="">-- iPhone Modeli Seçiniz --</option>
                   {IPHONE_OPTIONS}
+                  <option value="diger">Diğer / Listede Olmayan Model</option>
                 </select>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Model Adı / Kodu veya Ek Notunuz</label>
+                <input 
+                  type="text" 
+                  className="form-control" 
+                  placeholder="Örn: iPhone 14 Pro Max 256GB veya listede olmayan model..."
+                  value={modelName}
+                  onChange={e => setModelName(e.target.value)}
+                />
               </div>
 
               <div className="form-group">
@@ -880,7 +929,19 @@ export default function ValuationPage({ initialCategory = 'laptop', settings, na
                 <select className="form-control" value={consoleModel} onChange={e => setConsoleModel(e.target.value)}>
                   <option value="">-- Konsol Modeli Seçiniz --</option>
                   {CONSOLE_OPTIONS}
+                  <option value="diger">Diğer / Listede Olmayan Konsol</option>
                 </select>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Konsol Modeli veya Ek Notunuz</label>
+                <input 
+                  type="text" 
+                  className="form-control" 
+                  placeholder="Örn: PS5 Slim CD'li, 2. Kol orijinal DualSense ve şarj istasyonu..."
+                  value={modelName}
+                  onChange={e => setModelName(e.target.value)}
+                />
               </div>
 
               <div className="form-group">
@@ -953,6 +1014,17 @@ export default function ValuationPage({ initialCategory = 'laptop', settings, na
           {/* ========== 7. MONİTÖR ALANLARI ========== */}
           {category === 'monitor' && (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px' }}>
+              <div className="form-group">
+                <label className="form-label">Monitör Markası & Modeli veya Ek Not</label>
+                <input 
+                  type="text" 
+                  className="form-control" 
+                  placeholder="Örn: ASUS TUF VG27AQZ 27 inç 2K 165Hz..."
+                  value={modelName}
+                  onChange={e => setModelName(e.target.value)}
+                />
+              </div>
+
               <div className="form-group">
                 <label className="form-label">Ekran Boyutu</label>
                 <select className="form-control" value={monitorSize} onChange={e => setMonitorSize(e.target.value)}>
@@ -1053,6 +1125,17 @@ export default function ValuationPage({ initialCategory = 'laptop', settings, na
               </div>
 
               <div className="form-group">
+                <label className="form-label">Model Detayı veya Ek Notunuz</label>
+                <input 
+                  type="text" 
+                  className="form-control" 
+                  placeholder="Örn: iPad Pro M4 256GB Wi-Fi veya Samsung Galaxy Tab S9..."
+                  value={modelName}
+                  onChange={e => setModelName(e.target.value)}
+                />
+              </div>
+
+              <div className="form-group">
                 <label className="form-label">Hafıza Kapasitesi</label>
                 <select className="form-control" value={tabletStorage} onChange={e => setTabletStorage(e.target.value)}>
                   <option value="">-- Hafıza Seçiniz --</option>
@@ -1147,11 +1230,11 @@ export default function ValuationPage({ initialCategory = 'laptop', settings, na
           </div>
 
           <div className="form-group">
-            <label className="form-label">Eklemek İstediğiniz Not veya Açıklama (Opsiyonel)</label>
-            <input 
-              type="text" 
+            <label className="form-label">Eklemek İstediğiniz Notlar & Özel Durumlar (Opsiyonel)</label>
+            <textarea 
+              rows={2}
               className="form-control" 
-              placeholder="Örn: Yanında oyuncu faresi de verilecektir, ekranda koruyucu jelatin var vb."
+              placeholder="Örn: Cihazın yanında orijinal kutusu, çantası ve aksesuarları mevcuttur. Tüybek Çarşısı mağazanıza elden getirebilirim."
               value={extraNotes}
               onChange={e => setExtraNotes(e.target.value)}
             />

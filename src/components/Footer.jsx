@@ -100,7 +100,6 @@ export default function Footer({ navigate, settings }) {
               Hizmet & Teslimat
             </h4>
             <ul style={{ display: 'flex', flexDirection: 'column', gap: '9px', fontSize: '0.88rem' }}>
-              <li><button onClick={() => navigate('hizmetler')} style={footerBtnStyle}>Teknik Servis & Bakım</button></li>
               <li><button onClick={() => navigate('kargo')} style={footerBtnStyle}>Kargoyla Cihaz Sat (81 İl)</button></li>
               <li><button onClick={() => navigate('degerleme')} style={footerBtnStyle}>Cihaz Değerleme & Fiyat Teklifi</button></li>
               <li><button onClick={() => navigate('ozellikleri-ogrenin')} style={footerBtnStyle}>Cihaz Özelliklerini Öğrenin</button></li>
@@ -117,7 +116,7 @@ export default function Footer({ navigate, settings }) {
               <li><button onClick={() => navigate('hakkimizda')} style={footerBtnStyle}>Hakkımızda</button></li>
               <li><button onClick={() => navigate('musteri-hikayeleri')} style={footerBtnStyle}>Müşteri Hikayeleri</button></li>
               <li><button onClick={() => navigate('blog')} style={footerBtnStyle}>Blog & Donanım Rehberi</button></li>
-              <li><button onClick={() => navigate('admin')} style={footerBtnStyle}>Yönetim Paneli</button></li>
+              <li><button onClick={() => navigate('edmin')} style={footerBtnStyle}>Yönetim Paneli</button></li>
             </ul>
 
             <h4 style={{ color: '#ffffff', fontWeight: 800, fontSize: '0.85rem', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
@@ -184,7 +183,7 @@ export default function Footer({ navigate, settings }) {
           fontSize: '0.84rem'
         }}>
           <div>
-            © 2026 Konya Bilgisayar. Tüm hakları saklıdır. Ürün ve teknik servis ödemelerinde kredi kartı geçerlidir; nakit ödemede %5 indirim uygulanır.
+            © 2026 Konya Bilgisayar. Tüm hakları saklıdır. Ürün alım ve satışlarında kredi kartı veya havale/EFT geçerlidir; nakit ödemede %5 indirim uygulanır.
           </div>
           <div style={{ display: 'flex', gap: '16px' }}>
             <span style={{ color: '#94a3b8' }}>Konya Selçuklu · Değerinde Nakit Alım</span>

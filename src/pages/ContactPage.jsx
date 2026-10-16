@@ -31,7 +31,7 @@ export default function ContactPage({ settings }) {
             İletişim & Konya Mağazamız
           </h1>
           <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', maxWidth: '640px', margin: '0 auto 16px' }}>
-            Cihaz satışı, ikinci el alım, teknik servis veya takas için Konya Selçuklu mağazamıza gelebilir veya doğrudan <strong>0551 045 42 55</strong> numaramızı arayabilirsiniz.
+            Cihaz satışı, ikinci el alım veya takas için Konya Selçuklu mağazamıza gelebilir veya doğrudan <strong>0551 045 42 55</strong> numaramızı arayabilirsiniz.
           </p>
 
           {/* Önemli Randevu Uyarısı Banner */}
