@@ -116,7 +116,6 @@ export default function Footer({ navigate, settings }) {
               <li><button onClick={() => navigate('hakkimizda')} style={footerBtnStyle}>Hakkımızda</button></li>
               <li><button onClick={() => navigate('musteri-hikayeleri')} style={footerBtnStyle}>Müşteri Hikayeleri</button></li>
               <li><button onClick={() => navigate('blog')} style={footerBtnStyle}>Blog & Donanım Rehberi</button></li>
-              <li><button onClick={() => navigate('edmin')} style={footerBtnStyle}>Yönetim Paneli</button></li>
             </ul>
 
             <h4 style={{ color: '#ffffff', fontWeight: 800, fontSize: '0.85rem', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>

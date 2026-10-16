@@ -514,40 +514,6 @@ export default function Navbar({
               <ArrowRight size={12} />
             </button>
 
-            {/* Yönetim Paneli Butonu (Zarif Ghost Buton) */}
-            <button
-              onClick={() => handleNav('edmin')}
-              title="Yönetim Paneli"
-              style={{
-                width: '30px',
-                height: '30px',
-                borderRadius: '8px',
-                border: 'none',
-                background: (currentRoute === 'edmin' || currentRoute === 'admin') ? '#0284c7' : 'transparent',
-                color: (currentRoute === 'edmin' || currentRoute === 'admin') ? '#ffffff' : '#94a3b8',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-                transition: 'all 0.15s ease',
-                flexShrink: 0
-              }}
-              onMouseEnter={e => {
-                if (currentRoute !== 'edmin' && currentRoute !== 'admin') {
-                  e.currentTarget.style.background = '#f1f5f9';
-                  e.currentTarget.style.color = '#334155';
-                }
-              }}
-              onMouseLeave={e => {
-                if (currentRoute !== 'edmin' && currentRoute !== 'admin') {
-                  e.currentTarget.style.background = 'transparent';
-                  e.currentTarget.style.color = '#94a3b8';
-                }
-              }}
-            >
-              <Settings size={15} />
-            </button>
-
             {/* Mobil Hamburger Butonu */}
             <button 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -602,7 +568,6 @@ export default function Navbar({
             <MobileNavLink label="Bilgisayar Takası" onClick={() => handleNav('takas')} />
             <MobileNavLink label="Kargoyla Cihaz Satışı (Türkiye Geneli)" onClick={() => handleNav('kargo')} />
             <MobileNavLink label="İletişim & Konum" onClick={() => handleNav('iletisim')} />
-            <MobileNavLink label="Yönetim Paneli" onClick={() => handleNav('edmin')} />
 
             <div style={{ marginTop: '20px', paddingTop: '16px', borderTop: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <div style={{ fontSize: '0.84rem', color: '#64748b', textAlign: 'center' }}>
