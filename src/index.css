@@ -1364,5 +1364,14 @@ select.form-control option {
   box-shadow: 0 12px 32px rgba(10, 37, 64, 0.2);
 }
 
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spin-animation {
+  animation: spin 1s linear infinite;
+}
+
 
 

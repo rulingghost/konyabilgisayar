@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Package, 
   Plus, 
@@ -13,12 +13,50 @@ import {
   Lock, 
   LogOut, 
   Save, 
-  BookOpen,
-  Eye,
-  FileText,
-  Search
+  BookOpen, 
+  Eye, 
+  FileText, 
+  Search,
+  UploadCloud,
+  ImagePlus,
+  Star,
+  Image as ImageIcon,
+  Loader2,
+  Link as LinkIcon
 } from 'lucide-react';
 import WhatsAppIcon from '../components/WhatsAppIcon';
+
+// Cihazdan yüklenen fotoğrafları optimize edip Base64 formatına çeviren yardımcı
+function readFileAndCompress(file, maxWidth = 1280, quality = 0.85) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = reject;
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onerror = reject;
+      img.onload = () => {
+        let width = img.width;
+        let height = img.height;
+
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        const dataUrl = canvas.toDataURL('image/jpeg', quality);
+        resolve(dataUrl);
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
 
 export default function AdminPage({ 
   products = [], 
@@ -53,6 +91,11 @@ export default function AdminPage({
   const [pPrice, setPPrice] = useState('');
   const [pStatus, setPStatus] = useState('satilik');
   const [pImage, setPImage] = useState('');
+  const [pImages, setPImages] = useState([]);
+  const [isUploading, setIsUploading] = useState(false);
+  const [showUrlInput, setShowUrlInput] = useState(false);
+  const [urlInputVal, setUrlInputVal] = useState('');
+  const fileInputRef = useRef(null);
   const [pCpu, setPCpu] = useState('');
   const [pGpu, setPGpu] = useState('');
   const [pRam, setPRam] = useState('');
@@ -145,7 +188,10 @@ export default function AdminPage({
     setPCategory('laptop');
     setPPrice('');
     setPStatus('satilik');
-    setPImage('https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&w=800&q=80');
+    setPImage('');
+    setPImages([]);
+    setShowUrlInput(false);
+    setUrlInputVal('');
     setPCpu('');
     setPGpu('');
     setPRam('');
@@ -164,6 +210,12 @@ export default function AdminPage({
     setPPrice(prod.price || '');
     setPStatus(prod.status || 'satilik');
     setPImage(prod.image || '');
+    const existing = prod.gallery && prod.gallery.length > 0 
+      ? [...prod.gallery] 
+      : (prod.image ? [prod.image] : []);
+    setPImages(existing);
+    setShowUrlInput(false);
+    setUrlInputVal('');
     setPCpu(prod.specs?.['İşlemci'] || '');
     setPGpu(prod.specs?.['Ekran Kartı'] || '');
     setPRam(prod.specs?.['RAM'] || '');
@@ -173,6 +225,42 @@ export default function AdminPage({
     setPWarranty(prod.specs?.['Garanti'] || '6 Ay Konya Bilgisayar Garantili');
     setPDesc(prod.description || '');
     setShowProductModal(true);
+  };
+
+  const handleFileInputChange = async (e) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    setIsUploading(true);
+    try {
+      const promises = Array.from(files).map(file => readFileAndCompress(file));
+      const newImages = await Promise.all(promises);
+      setPImages(prev => [...prev, ...newImages]);
+    } catch (err) {
+      console.error('Fotoğraf işleme hatası:', err);
+      alert('Fotoğraflar işlenirken bir sorun oluştu.');
+    } finally {
+      setIsUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
+  const handleSetCover = (index) => {
+    if (index === 0) return;
+    setPImages(prev => {
+      const copy = [...prev];
+      const selected = copy.splice(index, 1)[0];
+      return [selected, ...copy];
+    });
+  };
+
+  const handleRemoveImage = (index) => {
+    setPImages(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleAddUrlImage = () => {
+    if (!urlInputVal.trim()) return;
+    setPImages(prev => [...prev, urlInputVal.trim()]);
+    setUrlInputVal('');
   };
 
   const handleSaveProduct = async (e) => {
@@ -201,13 +289,18 @@ export default function AdminPage({
       parca: 'Bilgisayar Donanımı'
     };
 
+    const mainImage = pImages.length > 0 
+      ? pImages[0] 
+      : (pImage || 'https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&w=800&q=80');
+
     const payload = {
       title: pTitle,
       category: pCategory,
       categoryName: categoryNames[pCategory] || pCategory,
       price: Number(pPrice),
       status: pStatus,
-      image: pImage || 'https://images.unsplash.com/photo-1603302576837-37561b2e2302?auto=format&fit=crop&w=800&q=80',
+      image: mainImage,
+      gallery: pImages.length > 0 ? pImages : [mainImage],
       specs,
       description: pDesc
     };
@@ -816,9 +909,192 @@ export default function AdminPage({
                 <label className="form-label">Fiyat (TL) *</label>
                 <input type="number" className="form-control" required value={pPrice} onChange={e => setPPrice(e.target.value)} />
               </div>
-              <div className="form-group" style={{ marginBottom: '16px' }}>
-                <label className="form-label">Görsel URL</label>
-                <input type="url" className="form-control" value={pImage} onChange={e => setPImage(e.target.value)} />
+              {/* ÜRÜN FOTOĞRAFLARI (CİHAZDAN ÇOKLU YÜKLEME) */}
+              <div className="form-group" style={{ marginBottom: '20px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                  <label className="form-label" style={{ marginBottom: 0, fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <ImagePlus size={16} color="var(--primary)" />
+                    <span>Ürün Fotoğrafları {pImages.length > 0 && <span style={{ color: '#0284c7', fontSize: '0.85rem' }}>({pImages.length} adet)</span>}</span>
+                  </label>
+                  <button 
+                    type="button" 
+                    onClick={() => setShowUrlInput(!showUrlInput)}
+                    style={{ background: 'transparent', border: 'none', color: '#64748b', fontSize: '0.78rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}
+                  >
+                    <LinkIcon size={12} />
+                    <span>{showUrlInput ? 'Link Alanını Kapat' : 'Link ile de ekle'}</span>
+                  </button>
+                </div>
+
+                {/* Gizli Dosya Seçici */}
+                <input 
+                  type="file" 
+                  ref={fileInputRef} 
+                  accept="image/*" 
+                  multiple 
+                  onChange={handleFileInputChange} 
+                  style={{ display: 'none' }} 
+                />
+
+                {/* Cihazdan Yükleme Dropzone / Tıklama Kutusu */}
+                <div 
+                  onClick={() => fileInputRef.current && fileInputRef.current.click()}
+                  onDragOver={(e) => { e.preventDefault(); e.currentTarget.style.borderColor = '#0284c7'; e.currentTarget.style.background = '#f0f9ff'; }}
+                  onDragLeave={(e) => { e.currentTarget.style.borderColor = '#93c5fd'; e.currentTarget.style.background = '#f8fafc'; }}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    e.currentTarget.style.borderColor = '#93c5fd';
+                    e.currentTarget.style.background = '#f8fafc';
+                    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                      handleFileInputChange({ target: { files: e.dataTransfer.files } });
+                    }
+                  }}
+                  style={{
+                    border: '2px dashed #93c5fd',
+                    borderRadius: '12px',
+                    background: '#f8fafc',
+                    padding: '22px 16px',
+                    textAlign: 'center',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                    marginBottom: pImages.length > 0 || showUrlInput ? '14px' : '0'
+                  }}
+                >
+                  {isUploading ? (
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', color: '#0284c7' }}>
+                      <Loader2 size={26} className="spin-animation" />
+                      <span style={{ fontSize: '0.9rem', fontWeight: 600 }}>Fotoğraflar optimize ediliyor ve yükleniyor...</span>
+                    </div>
+                  ) : (
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
+                      <div style={{ width: '46px', height: '46px', borderRadius: '12px', background: '#e0f2fe', color: '#0284c7', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <UploadCloud size={24} />
+                      </div>
+                      <div style={{ fontWeight: 700, fontSize: '0.96rem', color: '#0f172a' }}>
+                        Cihazınızdan Fotoğraf Seçin veya Buraya Sürükleyin
+                      </div>
+                      <div style={{ fontSize: '0.8rem', color: '#64748b' }}>
+                        Birden fazla fotoğraf seçebilirsiniz · Telefon & Bilgisayar desteklenir (JPG, PNG, WEBP)
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* İsteğe Bağlı URL Ekleme Alanı */}
+                {showUrlInput && (
+                  <div style={{ display: 'flex', gap: '8px', marginBottom: '14px' }}>
+                    <input 
+                      type="url" 
+                      className="form-control" 
+                      placeholder="https://... (Fotoğraf internet bağlantısı)" 
+                      value={urlInputVal} 
+                      onChange={e => setUrlInputVal(e.target.value)} 
+                      onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); handleAddUrlImage(); } }}
+                    />
+                    <button 
+                      type="button" 
+                      onClick={handleAddUrlImage} 
+                      className="btn btn-primary"
+                      style={{ whiteSpace: 'nowrap', padding: '0 16px', fontSize: '0.85rem' }}
+                    >
+                      Ekle
+                    </button>
+                  </div>
+                )}
+
+                {/* Yüklenen Fotoğraflar Önizleme Listesi */}
+                {pImages.length > 0 && (
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(115px, 1fr))', gap: '10px' }}>
+                    {pImages.map((imgUrl, idx) => (
+                      <div 
+                        key={idx} 
+                        style={{
+                          position: 'relative',
+                          borderRadius: '10px',
+                          overflow: 'hidden',
+                          border: idx === 0 ? '2.5px solid #0284c7' : '1px solid #e2e8f0',
+                          background: '#ffffff',
+                          boxShadow: '0 2px 6px rgba(0,0,0,0.06)'
+                        }}
+                      >
+                        <img 
+                          src={imgUrl} 
+                          alt={`Ürün ${idx + 1}`} 
+                          style={{ width: '100%', height: '88px', objectFit: 'cover', display: 'block' }} 
+                        />
+                        
+                        {/* Kapak Rozeti veya Kapak Yap Butonu */}
+                        {idx === 0 ? (
+                          <div style={{
+                            position: 'absolute',
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            background: 'linear-gradient(to top, rgba(2, 132, 199, 0.95), rgba(2, 132, 199, 0.8))',
+                            color: '#ffffff',
+                            fontSize: '0.68rem',
+                            fontWeight: 800,
+                            textAlign: 'center',
+                            padding: '3px 0',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '3px'
+                          }}>
+                            <Star size={10} fill="#ffffff" /> Kapak Fotoğrafı
+                          </div>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => handleSetCover(idx)}
+                            title="Bu fotoğrafı kapak yap"
+                            style={{
+                              position: 'absolute',
+                              bottom: 0,
+                              left: 0,
+                              right: 0,
+                              background: 'rgba(15, 23, 42, 0.75)',
+                              color: '#ffffff',
+                              border: 'none',
+                              fontSize: '0.65rem',
+                              fontWeight: 600,
+                              textAlign: 'center',
+                              padding: '3px 0',
+                              cursor: 'pointer'
+                            }}
+                          >
+                            Kapak Yap
+                          </button>
+                        )}
+
+                        {/* Sil Butonu */}
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveImage(idx)}
+                          title="Fotoğrafı sil"
+                          style={{
+                            position: 'absolute',
+                            top: '4px',
+                            right: '4px',
+                            width: '22px',
+                            height: '22px',
+                            borderRadius: '50%',
+                            background: 'rgba(239, 68, 68, 0.9)',
+                            color: '#ffffff',
+                            border: 'none',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            boxShadow: '0 1px 3px rgba(0,0,0,0.2)'
+                          }}
+                        >
+                          <Trash2 size={12} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
                 <input type="text" placeholder="İşlemci" className="form-control" value={pCpu} onChange={e => setPCpu(e.target.value)} />
