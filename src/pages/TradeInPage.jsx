@@ -24,33 +24,46 @@ export default function TradeInPage({ products = [], targetProductId, navigate, 
   );
 
   const [myDeviceType, setMyDeviceType] = useState('laptop');
-  const [myBrand, setMyBrand] = useState('Asus');
-  const [mySeries, setMySeries] = useState(POPULAR_SERIES_BY_BRAND['Asus'] ? POPULAR_SERIES_BY_BRAND['Asus'][0] : '');
-  const [myCpu, setMyCpu] = useState('i5-12');
-  const [myGpu, setMyGpu] = useState('rtx3050');
-  const [myRam, setMyRam] = useState('16');
-  const [myStorage, setMyStorage] = useState('512ssd');
-  const [myScreen, setMyScreen] = useState('15-144hz');
-  const [myBattery, setMyBattery] = useState('mukemmel');
-  const [myThermal, setMyThermal] = useState('serin');
-  const [myAppleChip, setMyAppleChip] = useState('m2');
-  const [myConsole, setMyConsole] = useState('ps5-slim-disk');
+  const [myBrand, setMyBrand] = useState('');
+  const [mySeries, setMySeries] = useState('');
+  const [myCpu, setMyCpu] = useState('');
+  const [myGpu, setMyGpu] = useState('');
+  const [myRam, setMyRam] = useState('');
+  const [myStorage, setMyStorage] = useState('');
+  const [myScreen, setMyScreen] = useState('');
+  const [myBattery, setMyBattery] = useState('');
+  const [myThermal, setMyThermal] = useState('');
+  const [myAppleChip, setMyAppleChip] = useState('');
+  const [myConsole, setMyConsole] = useState('');
   const [mySpecs, setMySpecs] = useState('');
-  const [myCosmetic, setMyCosmetic] = useState('10');
-  const [myBoxInvoice, setMyBoxInvoice] = useState('tam_garanti');
+  const [myCosmetic, setMyCosmetic] = useState('');
+  const [myBoxInvoice, setMyBoxInvoice] = useState('');
 
   const targetPrice = selectedProduct?.price || 30000;
 
   const getHardwareTextSummary = () => {
     if (myDeviceType === 'laptop') {
-      return `${myBrand} ${mySeries || ''} • ${getHardwareLabel('cpu', myCpu)} • ${getHardwareLabel('gpu', myGpu)} • ${myRam}GB RAM • ${myStorage.toUpperCase()} ${mySpecs ? `(${mySpecs})` : ''}`;
+      const parts = [];
+      if (myBrand) parts.push(`${myBrand}${mySeries ? ` (${mySeries})` : ''}`);
+      if (myCpu) parts.push(getHardwareLabel('cpu', myCpu));
+      if (myGpu) parts.push(getHardwareLabel('gpu', myGpu));
+      if (myRam) parts.push(`${myRam}GB RAM`);
+      if (myStorage) parts.push(myStorage.toUpperCase());
+      if (mySpecs) parts.push(`(${mySpecs})`);
+      return parts.length > 0 ? parts.join(' • ') : 'Özellik seçiniz...';
     }
     if (myDeviceType === 'masaustu') {
-      return `Masaüstü PC • ${getHardwareLabel('cpu', myCpu)} • ${getHardwareLabel('gpu', myGpu)} • ${myRam}GB RAM • ${myStorage.toUpperCase()} ${mySpecs ? `(${mySpecs})` : ''}`;
+      const parts = ['Masaüstü PC'];
+      if (myCpu) parts.push(getHardwareLabel('cpu', myCpu));
+      if (myGpu) parts.push(getHardwareLabel('gpu', myGpu));
+      if (myRam) parts.push(`${myRam}GB RAM`);
+      if (myStorage) parts.push(myStorage.toUpperCase());
+      if (mySpecs) parts.push(`(${mySpecs})`);
+      return parts.length > 1 ? parts.join(' • ') : 'Özellik seçiniz...';
     }
-    if (myDeviceType === 'macbook') return `Apple Silicon ${myAppleChip.toUpperCase()} ${mySpecs ? `(${mySpecs})` : ''}`;
-    if (myDeviceType === 'konsol') return `${myConsole.toUpperCase()} Konsol ${mySpecs ? `(${mySpecs})` : ''}`;
-    return mySpecs || 'Standart Donanım';
+    if (myDeviceType === 'macbook') return myAppleChip ? `Apple Silicon ${myAppleChip.toUpperCase()} ${mySpecs ? `(${mySpecs})` : ''}` : 'MacBook çipi seçiniz...';
+    if (myDeviceType === 'konsol') return myConsole ? `${myConsole.toUpperCase()} Konsol ${mySpecs ? `(${mySpecs})` : ''}` : 'Konsol modeli seçiniz...';
+    return mySpecs || 'Özellik seçiniz...';
   };
 
   const handleWhatsAppTrade = () => {
@@ -187,11 +200,10 @@ export default function TradeInPage({ products = [], targetProductId, navigate, 
                       onChange={e => {
                         const b = e.target.value;
                         setMyBrand(b);
-                        const list = POPULAR_SERIES_BY_BRAND[b];
-                        if (list && list.length > 0) setMySeries(list[0]);
-                        else setMySeries('');
+                        setMySeries('');
                       }}
                     >
+                      <option value="">-- Laptop Markası Seçiniz --</option>
                       {BRAND_OPTIONS}
                     </select>
                   </div>
@@ -199,17 +211,19 @@ export default function TradeInPage({ products = [], targetProductId, navigate, 
                   <div className="form-group">
                     <label className="form-label">Model Serisi</label>
                     <select className="form-control" value={mySeries} onChange={e => setMySeries(e.target.value)}>
-                      {POPULAR_SERIES_BY_BRAND[myBrand] ? (
+                      <option value="">-- Model Serisi Seçiniz --</option>
+                      {myBrand && POPULAR_SERIES_BY_BRAND[myBrand] ? (
                         POPULAR_SERIES_BY_BRAND[myBrand].map(s => <option key={s} value={s}>{s}</option>)
-                      ) : (
+                      ) : myBrand ? (
                         <option value="Standart Seri">Standart Seri</option>
-                      )}
+                      ) : null}
                     </select>
                   </div>
 
                   <div className="form-group">
                     <label className="form-label">İşlemciniz (CPU) - Tümü Listelendi</label>
                     <select className="form-control" value={myCpu} onChange={e => setMyCpu(e.target.value)}>
+                      <option value="">-- İşlemci (CPU) Seçiniz --</option>
                       {CPU_OPTIONS_GROUPED}
                     </select>
                   </div>
@@ -217,6 +231,7 @@ export default function TradeInPage({ products = [], targetProductId, navigate, 
                   <div className="form-group">
                     <label className="form-label">Ekran Kartınız (GPU) - Tümü Listelendi</label>
                     <select className="form-control" value={myGpu} onChange={e => setMyGpu(e.target.value)}>
+                      <option value="">-- Ekran Kartı (GPU) Seçiniz --</option>
                       {GPU_OPTIONS_GROUPED}
                     </select>
                   </div>
@@ -225,6 +240,7 @@ export default function TradeInPage({ products = [], targetProductId, navigate, 
                     <div className="form-group">
                       <label className="form-label">RAM Bellek</label>
                       <select className="form-control" value={myRam} onChange={e => setMyRam(e.target.value)}>
+                        <option value="">-- RAM Seçiniz --</option>
                         {RAM_OPTIONS}
                       </select>
                     </div>
@@ -232,6 +248,7 @@ export default function TradeInPage({ products = [], targetProductId, navigate, 
                     <div className="form-group">
                       <label className="form-label">Depolama (SSD)</label>
                       <select className="form-control" value={myStorage} onChange={e => setMyStorage(e.target.value)}>
+                        <option value="">-- SSD Seçiniz --</option>
                         {STORAGE_OPTIONS}
                       </select>
                     </div>
@@ -240,6 +257,7 @@ export default function TradeInPage({ products = [], targetProductId, navigate, 
                   <div className="form-group">
                     <label className="form-label">Ekran Yenileme Hızı</label>
                     <select className="form-control" value={myScreen} onChange={e => setMyScreen(e.target.value)}>
+                      <option value="">-- Ekran & Hz Seçiniz --</option>
                       {SCREEN_OPTIONS}
                     </select>
                   </div>
@@ -247,6 +265,7 @@ export default function TradeInPage({ products = [], targetProductId, navigate, 
                   <div className="form-group">
                     <label className="form-label">Batarya Durumu</label>
                     <select className="form-control" value={myBattery} onChange={e => setMyBattery(e.target.value)}>
+                      <option value="">-- Pil Durumu Seçiniz --</option>
                       {BATTERY_OPTIONS}
                     </select>
                   </div>
@@ -254,6 +273,7 @@ export default function TradeInPage({ products = [], targetProductId, navigate, 
                   <div className="form-group">
                     <label className="form-label">Termal Durum & Fan Sesi</label>
                     <select className="form-control" value={myThermal} onChange={e => setMyThermal(e.target.value)}>
+                      <option value="">-- Isınma Durumu Seçiniz --</option>
                       {THERMAL_OPTIONS}
                     </select>
                   </div>
@@ -265,6 +285,7 @@ export default function TradeInPage({ products = [], targetProductId, navigate, 
                   <div className="form-group">
                     <label className="form-label">İşlemciniz (CPU)</label>
                     <select className="form-control" value={myCpu} onChange={e => setMyCpu(e.target.value)}>
+                      <option value="">-- İşlemci (CPU) Seçiniz --</option>
                       {CPU_OPTIONS_GROUPED}
                     </select>
                   </div>
@@ -272,6 +293,7 @@ export default function TradeInPage({ products = [], targetProductId, navigate, 
                   <div className="form-group">
                     <label className="form-label">Ekran Kartınız (GPU)</label>
                     <select className="form-control" value={myGpu} onChange={e => setMyGpu(e.target.value)}>
+                      <option value="">-- Ekran Kartı (GPU) Seçiniz --</option>
                       {GPU_OPTIONS_GROUPED}
                     </select>
                   </div>
@@ -280,6 +302,7 @@ export default function TradeInPage({ products = [], targetProductId, navigate, 
                     <div className="form-group">
                       <label className="form-label">RAM Bellek</label>
                       <select className="form-control" value={myRam} onChange={e => setMyRam(e.target.value)}>
+                        <option value="">-- RAM Seçiniz --</option>
                         {RAM_OPTIONS}
                       </select>
                     </div>
@@ -287,6 +310,7 @@ export default function TradeInPage({ products = [], targetProductId, navigate, 
                     <div className="form-group">
                       <label className="form-label">Depolama (SSD)</label>
                       <select className="form-control" value={myStorage} onChange={e => setMyStorage(e.target.value)}>
+                        <option value="">-- SSD Seçiniz --</option>
                         {STORAGE_OPTIONS}
                       </select>
                     </div>
@@ -295,6 +319,7 @@ export default function TradeInPage({ products = [], targetProductId, navigate, 
                   <div className="form-group">
                     <label className="form-label">Termal & Sıcaklık Durumu</label>
                     <select className="form-control" value={myThermal} onChange={e => setMyThermal(e.target.value)}>
+                      <option value="">-- Termal Durum Seçiniz --</option>
                       {THERMAL_OPTIONS}
                     </select>
                   </div>
@@ -305,6 +330,7 @@ export default function TradeInPage({ products = [], targetProductId, navigate, 
                 <div className="form-group">
                   <label className="form-label">Apple Silicon Çipi</label>
                   <select className="form-control" value={myAppleChip} onChange={e => setMyAppleChip(e.target.value)}>
+                    <option value="">-- Apple Çip Seçiniz --</option>
                     {APPLE_CHIP_OPTIONS}
                   </select>
                 </div>
@@ -314,6 +340,7 @@ export default function TradeInPage({ products = [], targetProductId, navigate, 
                 <div className="form-group">
                   <label className="form-label">Konsol Modeli</label>
                   <select className="form-control" value={myConsole} onChange={e => setMyConsole(e.target.value)}>
+                    <option value="">-- Konsol Modeli Seçiniz --</option>
                     {CONSOLE_OPTIONS}
                   </select>
                 </div>
@@ -324,6 +351,7 @@ export default function TradeInPage({ products = [], targetProductId, navigate, 
                 <div className="form-group">
                   <label className="form-label">Kozmetik Durum</label>
                   <select className="form-control" value={myCosmetic} onChange={e => setMyCosmetic(e.target.value)}>
+                    <option value="">-- Kozmetik Durum Seçiniz --</option>
                     {COSMETIC_OPTIONS}
                   </select>
                 </div>
@@ -331,6 +359,7 @@ export default function TradeInPage({ products = [], targetProductId, navigate, 
                 <div className="form-group">
                   <label className="form-label">Kutu & Fatura</label>
                   <select className="form-control" value={myBoxInvoice} onChange={e => setMyBoxInvoice(e.target.value)}>
+                    <option value="">-- Kutu & Fatura Seçiniz --</option>
                     {BOX_INVOICE_OPTIONS}
                   </select>
                 </div>

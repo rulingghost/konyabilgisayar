@@ -60,11 +60,11 @@ export default function Footer({ navigate, settings }) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.86rem' }}>
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
                 <MapPin size={17} style={{ color: '#60a5fa', flexShrink: 0, marginTop: '2px' }} />
-                <span>{settings?.address || 'Feritpaşa Mah. Nalçacı Cad. No:42/B, Selçuklu / KONYA'}</span>
+                <span>{settings?.address || 'Hüsamettin Çelebi Mah. Akabe Cad. Tüybek Çarşısı No: 9 G, Selçuklu / KONYA'}</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Clock size={17} style={{ color: '#60a5fa', flexShrink: 0 }} />
-                <span>{settings?.workingHours || 'Haftanın her günü: 09:00 - 20:00'}</span>
+                <span>{settings?.workingHours || 'Haftanın her günü: 09:00 - 20:00 (Lütfen Randevu Alınız)'}</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Phone size={17} style={{ color: '#60a5fa', flexShrink: 0 }} />

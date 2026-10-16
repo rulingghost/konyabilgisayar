@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MapPin, Phone, Clock, Send, CheckCircle2 } from 'lucide-react';
+import { MapPin, Phone, Clock, Send, CheckCircle2, AlertTriangle, Calendar } from 'lucide-react';
 import WhatsAppIcon from '../components/WhatsAppIcon';
 
 export default function ContactPage({ settings }) {
@@ -16,20 +16,41 @@ export default function ContactPage({ settings }) {
     setSent(true);
   };
 
+  const storeAddress = settings?.address || 'Hüsamettin Çelebi Mah. Akabe Cad. Tüybek Çarşısı No: 9 G, Selçuklu / KONYA';
+  const mapUrl = settings?.mapEmbedUrl || 'https://maps.google.com/maps?q=H%C3%BCsamettin+%C3%87elebi+Mah.+Akabe+Cad.+T%C3%BCybek+%C3%87ar%C5%9F%C4%B1s%C4%B1+No:+9+G+Sel%C3%A7uklu+Konya&t=&z=16&ie=UTF8&iwloc=&output=embed';
+
   return (
     <div style={{ padding: '50px 0 80px', background: 'var(--bg)' }}>
       <div className="container" style={{ maxWidth: '980px' }}>
         {/* Başlık */}
-        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
           <span className="badge badge-blue" style={{ marginBottom: '8px' }}>
             Bize Ulaşın
           </span>
           <h1 style={{ fontSize: '2.2rem', fontWeight: 900, color: 'var(--heading)', marginBottom: '12px' }}>
             İletişim & Konya Mağazamız
           </h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', maxWidth: '640px', margin: '0 auto' }}>
-            Cihaz satışı, ikinci el alım, teknik servis veya takas için Konya Selçuklu mağazamıza randevusuz gelebilir veya doğrudan <strong>0551 045 42 55</strong> numaramızı arayabilirsiniz.
+          <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', maxWidth: '640px', margin: '0 auto 16px' }}>
+            Cihaz satışı, ikinci el alım, teknik servis veya takas için Konya Selçuklu mağazamıza gelebilir veya doğrudan <strong>0551 045 42 55</strong> numaramızı arayabilirsiniz.
           </p>
+
+          {/* Önemli Randevu Uyarısı Banner */}
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '10px',
+            background: 'linear-gradient(135deg, rgba(234, 88, 12, 0.1) 0%, rgba(245, 158, 11, 0.12) 100%)',
+            border: '1.5px solid rgba(234, 88, 12, 0.35)',
+            color: '#c2410c',
+            padding: '10px 20px',
+            borderRadius: 'var(--radius-full)',
+            fontSize: '0.92rem',
+            fontWeight: 800,
+            boxShadow: '0 2px 8px rgba(234, 88, 12, 0.08)'
+          }}>
+            <AlertTriangle size={18} style={{ color: '#ea580c', flexShrink: 0 }} />
+            <span>⚠️ Önemli: Mağazamıza gelmeden önce lütfen telefon veya WhatsApp üzerinden randevu alınız.</span>
+          </div>
         </div>
 
         <div style={{
@@ -49,31 +70,43 @@ export default function ContactPage({ settings }) {
                   <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--heading)', marginBottom: '4px' }}>
                     Mağaza Adresi
                   </h3>
-                  <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem', lineHeight: 1.6 }}>
-                    {settings?.address || 'Feritpaşa Mah. Ahmet Hilmi Nalçacı Cad. No:42/B, Selçuklu / KONYA'}
+                  <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem', lineHeight: 1.6, fontWeight: 600 }}>
+                    {storeAddress}
                   </p>
-                  <p style={{ fontSize: '0.84rem', color: 'var(--primary-bright)', fontWeight: 600, marginTop: '6px' }}>
-                    (Nalçacı Tramvay Durağı ve Zafer Yakını)
+                  <p style={{ fontSize: '0.84rem', color: 'var(--primary-bright)', fontWeight: 700, marginTop: '6px' }}>
+                    (Tüybek Çarşısı No: 9 G - Selçuklu / Konya)
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="card">
+            <div className="card" style={{ borderLeft: '4px solid #ea580c' }}>
               <div style={{ display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
-                <div style={{ width: '46px', height: '46px', borderRadius: '12px', background: 'var(--primary-glow)', color: 'var(--primary-bright)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <div style={{ width: '46px', height: '46px', borderRadius: '12px', background: 'rgba(234, 88, 12, 0.12)', color: '#ea580c', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                   <Clock size={22} />
                 </div>
                 <div>
                   <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: 'var(--heading)', marginBottom: '4px' }}>
-                    Çalışma Saatleri
+                    Çalışma Saatleri & Randevu
                   </h3>
-                  <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem' }}>
+                  <p style={{ color: 'var(--text-muted)', fontSize: '0.92rem', marginBottom: '6px' }}>
                     {settings?.workingHours || 'Haftanın her günü: 09:00 - 20:00'}
                   </p>
-                  <p style={{ fontSize: '0.82rem', color: '#059669', fontWeight: 700, marginTop: '6px' }}>
-                    Randevu gerekmez, her zaman bekleriz.
-                  </p>
+                  <div style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    fontSize: '0.84rem',
+                    color: '#c2410c',
+                    fontWeight: 800,
+                    background: 'rgba(234, 88, 12, 0.1)',
+                    padding: '4px 10px',
+                    borderRadius: '6px',
+                    marginTop: '4px'
+                  }}>
+                    <Calendar size={14} />
+                    <span>Lütfen gelmeden önce randevu alınız.</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -159,25 +192,60 @@ export default function ContactPage({ settings }) {
           </div>
         </div>
 
-        {/* Harita */}
+        {/* Harita ve Konum Başlığı */}
         <div style={{
+          background: '#ffffff',
           borderRadius: 'var(--radius-lg)',
           overflow: 'hidden',
           boxShadow: 'var(--shadow-md)',
-          border: '1px solid var(--border)',
-          height: '380px'
+          border: '1px solid var(--border)'
         }}>
-          <iframe 
-            src={settings?.mapEmbedUrl || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d100770.83538965876!2d32.4178788448373!3d37.87834524792622!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14d08568d71221bd%3A0x897914eec5f524f7!2sKonya!5e0!3m2!1str!2str"}
-            width="100%" 
-            height="100%" 
-            style={{ border: 0 }} 
-            allowFullScreen="" 
-            loading="lazy"
-            title="Konya Bilgisayar Harita"
-          />
+          <div style={{
+            padding: '16px 20px',
+            background: 'var(--surface-2)',
+            borderBottom: '1px solid var(--border)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '12px'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <MapPin size={20} color="var(--primary-bright)" />
+              <div>
+                <strong style={{ fontSize: '0.96rem', color: 'var(--heading)' }}>
+                  Hüsamettin Çelebi Mah. Akabe Cad. Tüybek Çarşısı No: 9 G Selçuklu / Konya
+                </strong>
+                <span style={{ display: 'block', fontSize: '0.8rem', color: '#c2410c', fontWeight: 700 }}>
+                  ⚠️ Lütfen mağazamıza gelmeden önce 0551 045 42 55 üzerinden randevu alınız.
+                </span>
+              </div>
+            </div>
+            <a
+              href="https://maps.google.com/?q=H%C3%BCsamettin+%C3%87elebi+Mah.+Akabe+Cad.+T%C3%BCybek+%C3%87ar%C5%9F%C4%B1s%C4%B1+No:+9+G+Sel%C3%A7uklu+Konya"
+              target="_blank"
+              rel="noreferrer"
+              className="btn btn-outline btn-sm"
+              style={{ fontWeight: 700, fontSize: '0.82rem' }}
+            >
+              Google Haritalarda Aç ↗
+            </a>
+          </div>
+
+          <div style={{ height: '380px', width: '100%' }}>
+            <iframe 
+              src={mapUrl}
+              width="100%" 
+              height="100%" 
+              style={{ border: 0 }} 
+              allowFullScreen="" 
+              loading="lazy"
+              title="Konya Bilgisayar Harita - Tüybek Çarşısı"
+            />
+          </div>
         </div>
       </div>
     </div>
   );
 }
+

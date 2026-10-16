@@ -27,20 +27,35 @@ app.use((req, res, next) => {
 
 const DATA_DIR = path.join(__dirname, 'data');
 
+// In-memory ve dosya sistemi senkronize önbellek
+const memoryStore = {};
+
 // Yardımcı dosya okuma / yazma fonksiyonları
 function readJson(filename) {
+  if (memoryStore[filename]) {
+    return memoryStore[filename];
+  }
   const pathsToTry = [
+    path.join('/tmp', filename),
     path.join(DATA_DIR, filename),
     path.join(process.cwd(), 'server', 'data', filename),
     path.join(process.cwd(), 'data', filename)
   ];
-  const filePath = pathsToTry.find(p => fs.existsSync(p));
+  const filePath = pathsToTry.find(p => {
+    try {
+      return fs.existsSync(p);
+    } catch {
+      return false;
+    }
+  });
   if (!filePath) {
     return [];
   }
   try {
     const raw = fs.readFileSync(filePath, 'utf8');
-    return JSON.parse(raw);
+    const parsed = JSON.parse(raw);
+    memoryStore[filename] = parsed;
+    return parsed;
   } catch (err) {
     console.error(`Error reading ${filename}:`, err);
     return [];
@@ -48,18 +63,25 @@ function readJson(filename) {
 }
 
 function writeJson(filename, data) {
+  memoryStore[filename] = data;
   const pathsToTry = [
     path.join(DATA_DIR, filename),
-    path.join(process.cwd(), 'server', 'data', filename)
+    path.join(process.cwd(), 'server', 'data', filename),
+    path.join('/tmp', filename)
   ];
-  const filePath = pathsToTry.find(p => fs.existsSync(p)) || pathsToTry[0];
-  try {
-    fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
-    return true;
-  } catch (err) {
-    console.error(`Error writing ${filename}:`, err);
-    return false;
+  for (const p of pathsToTry) {
+    try {
+      const dir = path.dirname(p);
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
+      fs.writeFileSync(p, JSON.stringify(data, null, 2), 'utf8');
+      return true;
+    } catch {
+      // Bir sonraki yazılabilir dizine (/tmp vs.) geç
+    }
   }
+  return true;
 }
 
 // ==========================================

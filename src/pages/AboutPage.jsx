@@ -141,8 +141,11 @@ export default function AboutPage({ navigate, settings }) {
               Sizi Mağazamızda Ağırlamaktan Mutluluk Duyarız
             </h3>
             <p style={{ opacity: 0.9, fontSize: '0.95rem', lineHeight: 1.65, marginBottom: '16px' }}>
-              {settings?.address || 'Feritpaşa Mah. Ahmet Hilmi Nalçacı Cad. No:42/B, Selçuklu / KONYA'}<br />
-              Çalışma Saatleri: {settings?.workingHours || 'Haftanın her günü 09:00 - 20:00'}
+              {settings?.address || 'Hüsamettin Çelebi Mah. Akabe Cad. Tüybek Çarşısı No: 9 G, Selçuklu / KONYA'}<br />
+              Çalışma Saatleri: {settings?.workingHours || 'Haftanın her günü 09:00 - 20:00'}<br />
+              <strong style={{ color: '#fed7aa', display: 'inline-block', marginTop: '4px' }}>
+                ⚠️ Lütfen mağazamıza gelmeden önce telefon veya WhatsApp ile randevu alınız.
+              </strong>
             </p>
             <div style={{ fontWeight: 800, fontSize: '1.1rem', color: '#60a5fa' }}>
               Telefon: {phoneFormatted}

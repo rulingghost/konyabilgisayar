@@ -188,11 +188,11 @@ export default function QuickContactWidget({ settings }) {
             <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', display: 'flex', flexDirection: 'column', gap: '4px', paddingTop: '4px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <MapPin size={13} style={{ color: 'var(--primary-bright)' }} />
-                <span>Selçuklu / Nalçacı Mağazamız</span>
+                <span>Selçuklu / Tüybek Çarşısı No: 9 G</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Clock size={13} style={{ color: 'var(--primary-bright)' }} />
-                <span>Haftanın her günü 09:00 - 20:00 açık</span>
+                <Clock size={13} style={{ color: '#ea580c' }} />
+                <span>09:00 - 20:00 (Lütfen Gelmeden Önce Randevu Alınız)</span>
               </div>
             </div>
           </div>

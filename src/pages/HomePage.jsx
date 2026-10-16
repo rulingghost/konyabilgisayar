@@ -66,18 +66,18 @@ export default function HomePage({
   const [activeFaq, setActiveFaq] = useState(null);
   const [currentReviewIndex, setCurrentReviewIndex] = useState(0);
 
-  // Hero Hızlı Değerleme Simülatörü State
+  // Hero Hızlı Değerleme Simülatörü State (Kullanıcı seçene kadar boş kalır)
   const [simCategory, setSimCategory] = useState('laptop');
-  const [simBrand, setSimBrand] = useState('Asus');
-  const [simSeries, setSimSeries] = useState('ROG Strix G16 (2023-2024 - 13./14. Nesil Intel)');
-  const [simCpu, setSimCpu] = useState('i7-13');
-  const [simGpu, setSimGpu] = useState('rtx4060');
-  const [simRam, setSimRam] = useState('16');
-  const [simStorage, setSimStorage] = useState('512ssd');
-  const [simAppleChip, setSimAppleChip] = useState('m2');
-  const [simPhoneModel, setSimPhoneModel] = useState('iphone15');
-  const [simConsoleModel, setSimConsoleModel] = useState('ps5-slim-disk');
-  const [simTabletModel, setSimTabletModel] = useState('ipad-10');
+  const [simBrand, setSimBrand] = useState('');
+  const [simSeries, setSimSeries] = useState('');
+  const [simCpu, setSimCpu] = useState('');
+  const [simGpu, setSimGpu] = useState('');
+  const [simRam, setSimRam] = useState('');
+  const [simStorage, setSimStorage] = useState('');
+  const [simAppleChip, setSimAppleChip] = useState('');
+  const [simPhoneModel, setSimPhoneModel] = useState('');
+  const [simConsoleModel, setSimConsoleModel] = useState('');
+  const [simTabletModel, setSimTabletModel] = useState('');
 
   // Modern Hero Slider State
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -232,42 +232,52 @@ export default function HomePage({
 
   const getSimDetailSummary = () => {
     if (simCategory === 'laptop' || simCategory === 'masaustu') {
-      const brandPart = simBrand ? `${simBrand} ${simSeries ? `(${simSeries})` : ''} • ` : '';
-      return `${brandPart}${getHardwareLabel('cpu', simCpu)} • ${getHardwareLabel('gpu', simGpu)} • ${getHardwareLabel('ram', simRam)} RAM • ${getHardwareLabel('storage', simStorage)}`;
+      const parts = [];
+      if (simBrand) parts.push(`${simBrand}${simSeries ? ` (${simSeries})` : ''}`);
+      if (simCpu) parts.push(getHardwareLabel('cpu', simCpu));
+      if (simGpu) parts.push(getHardwareLabel('gpu', simGpu));
+      if (simRam) parts.push(`${getHardwareLabel('ram', simRam)} RAM`);
+      if (simStorage) parts.push(getHardwareLabel('storage', simStorage));
+      return parts.length > 0 ? parts.join(' • ') : 'Lütfen yukarıdaki menüden donanım özelliklerini seçiniz...';
     }
-    if (simCategory === 'macbook') return `Apple MacBook ${simSeries ? `(${simSeries})` : ''} • ${getHardwareLabel('appleChip', simAppleChip)} • Retina Ekran`;
-    if (simCategory === 'iphone') return `${simPhoneModel.replace('iphone', 'iPhone ').toUpperCase()}`;
-    if (simCategory === 'tablet') return `${simTabletModel.toUpperCase()} Tablet`;
-    if (simCategory === 'konsol') return `${simConsoleModel.toUpperCase()} Konsol`;
-    return 'Standart Donanım';
+    if (simCategory === 'macbook') {
+      const parts = [];
+      if (simSeries) parts.push(`Apple MacBook (${simSeries})`);
+      if (simAppleChip) parts.push(getHardwareLabel('appleChip', simAppleChip));
+      return parts.length > 0 ? parts.join(' • ') : 'Lütfen MacBook modelini ve çipini seçiniz...';
+    }
+    if (simCategory === 'iphone') return simPhoneModel ? simPhoneModel.replace('iphone', 'iPhone ').toUpperCase() : 'Lütfen telefon modelini seçiniz...';
+    if (simCategory === 'tablet') return simTabletModel ? `${simTabletModel.toUpperCase()} Tablet` : 'Lütfen tablet modelini seçiniz...';
+    if (simCategory === 'konsol') return simConsoleModel ? `${simConsoleModel.toUpperCase()} Konsol` : 'Lütfen konsol modelini seçiniz...';
+    return 'Lütfen cihaz özelliklerini seçiniz...';
   };
 
   // WhatsApp'a Doğrudan Düşecek Hazır Mesaj Oluşturucu
   const getFullSimWaMessage = () => {
     let msg = `Merhaba Konya Bilgisayar (0551 045 42 55),\n`;
-    msg += `Web siteniz üzerinden cihazımın özelliklerini seçtim. Bu özellikler için nakit alım veya takas fiyat teklifi almak istiyorum:\n\n`;
+    msg += `Web siteniz üzerinden cihazımın özelliklerini belirttim. Bu özellikler için nakit alım veya takas fiyat teklifi almak istiyorum:\n\n`;
     msg += `📌 Cihaz Türü: ${getSimCategoryTitle()}\n`;
 
     if (simCategory === 'laptop' || simCategory === 'masaustu') {
-      msg += `• Marka: ${simBrand}\n`;
-      msg += `• Model / Seri: ${simSeries || 'Standart Seri'}\n`;
-      msg += `• İşlemci (CPU): ${getHardwareLabel('cpu', simCpu)}\n`;
-      msg += `• Ekran Kartı (GPU): ${getHardwareLabel('gpu', simGpu)}\n`;
-      msg += `• RAM Bellek: ${getHardwareLabel('ram', simRam)} RAM\n`;
-      msg += `• Depolama (SSD/HDD): ${getHardwareLabel('storage', simStorage)}\n`;
+      if (simBrand) msg += `• Marka: ${simBrand}\n`;
+      if (simSeries) msg += `• Model / Seri: ${simSeries}\n`;
+      if (simCpu) msg += `• İşlemci (CPU): ${getHardwareLabel('cpu', simCpu)}\n`;
+      if (simGpu) msg += `• Ekran Kartı (GPU): ${getHardwareLabel('gpu', simGpu)}\n`;
+      if (simRam) msg += `• RAM Bellek: ${getHardwareLabel('ram', simRam)} RAM\n`;
+      if (simStorage) msg += `• Depolama (SSD/HDD): ${getHardwareLabel('storage', simStorage)}\n`;
     } else if (simCategory === 'macbook') {
-      msg += `• Model & Kasa: ${simSeries || 'Apple MacBook'}\n`;
-      msg += `• Apple Çipi: ${getHardwareLabel('appleChip', simAppleChip)}\n`;
+      if (simSeries) msg += `• Model & Kasa: ${simSeries}\n`;
+      if (simAppleChip) msg += `• Apple Çipi: ${getHardwareLabel('appleChip', simAppleChip)}\n`;
       msg += `• Ekran: Orijinal Retina Ekran\n`;
     } else if (simCategory === 'iphone') {
-      msg += `• Model: ${simPhoneModel.replace('iphone', 'iPhone ').toUpperCase()}\n`;
+      if (simPhoneModel) msg += `• Model: ${simPhoneModel.replace('iphone', 'iPhone ').toUpperCase()}\n`;
     } else if (simCategory === 'tablet') {
-      msg += `• Model: ${simTabletModel.toUpperCase()}\n`;
+      if (simTabletModel) msg += `• Model: ${simTabletModel.toUpperCase()}\n`;
     } else if (simCategory === 'konsol') {
-      msg += `• Konsol Modeli: ${simConsoleModel.toUpperCase()}\n`;
+      if (simConsoleModel) msg += `• Konsol Modeli: ${simConsoleModel.toUpperCase()}\n`;
     }
 
-    msg += `\n📍 Teslimat / Konum: Konya Selçuklu mağazanıza elden teslim edebilirim (veya Türkiye geneli ücretsiz kargoyla gönderim).\n`;
+    msg += `\n📍 Teslimat / Konum: Konya Selçuklu mağazanıza elden randevuyla teslim edebilirim (veya Türkiye geneli ücretsiz kargoyla gönderim).\n`;
     msg += `📸 İsterseniz cihazımın fotoğraflarını da gönderebilirim.\n`;
     msg += `Bu özelliklerdeki cihazım için verebileceğiniz en güncel peşin nakit alım veya takas fiyat teklifiniz nedir?`;
     return msg;
@@ -369,8 +379,8 @@ export default function HomePage({
       categoryName: 'Ödeme & Test Süreci',
       color: 'green',
       q: "Mağazaya gelmeden önce randevu almam gerekir mi?",
-      a: "Hayır, randevu almanıza gerek yoktur. Feritpaşa Mahallesi Ahmet Hilmi Nalçacı Caddesi'ndeki Selçuklu mağazamıza haftanın 7 günü 09:00 - 20:00 çalışma saatleri içinde dilediğiniz an çat kapı gelebilirsiniz.",
-      highlight: "Haftanın 7 günü 09:00 - 20:00 arası randevusuz elden teslim imkanı."
+      a: "Evet, siz değerli müşterilerimizi bekletmemek, testleri hızlıca tamamlayıp nakit ödemenizi anında gerçekleştirebilmek adına mağazamıza gelmeden önce 0551 045 42 55 numaramızdan veya WhatsApp üzerinden randevu almanızı rica ederiz. Mağazamız Selçuklu Tüybek Çarşısı (Hüsamettin Çelebi Mah. Akabe Cad. No: 9 G) adresindedir.",
+      highlight: "Hızlı test ve anında nakit ödeme için gelmeden önce randevu alınız."
     },
     {
       id: 8,
@@ -801,12 +811,12 @@ export default function HomePage({
                           onChange={e => {
                             const newBrand = e.target.value;
                             setSimBrand(newBrand);
-                            const series = POPULAR_SERIES_BY_BRAND[newBrand];
-                            if (series && series.length > 0) setSimSeries(series[0]);
+                            setSimSeries('');
                           }}
                           className="form-control"
                           style={{ padding: '10px 12px', fontSize: '0.88rem' }}
                         >
+                          <option value="">-- Marka Seçiniz --</option>
                           {BRAND_OPTIONS}
                         </select>
                       </div>
@@ -821,9 +831,14 @@ export default function HomePage({
                           className="form-control"
                           style={{ padding: '10px 12px', fontSize: '0.88rem' }}
                         >
-                          {(POPULAR_SERIES_BY_BRAND[simBrand] || ['Standart Model']).map((seri, idx) => (
-                            <option key={idx} value={seri}>{seri}</option>
-                          ))}
+                          <option value="">-- Seri / Model Seçiniz --</option>
+                          {simBrand && POPULAR_SERIES_BY_BRAND[simBrand] ? (
+                            POPULAR_SERIES_BY_BRAND[simBrand].map((seri, idx) => (
+                              <option key={idx} value={seri}>{seri}</option>
+                            ))
+                          ) : simBrand ? (
+                            <option value="Standart Model">Standart Model</option>
+                          ) : null}
                         </select>
                       </div>
                     </div>
@@ -839,6 +854,7 @@ export default function HomePage({
                           className="form-control"
                           style={{ padding: '10px 12px', fontSize: '0.88rem' }}
                         >
+                          <option value="">-- İşlemci Seçiniz --</option>
                           {CPU_OPTIONS_GROUPED}
                         </select>
                       </div>
@@ -853,6 +869,7 @@ export default function HomePage({
                           className="form-control"
                           style={{ padding: '10px 12px', fontSize: '0.88rem' }}
                         >
+                          <option value="">-- Ekran Kartı Seçiniz --</option>
                           {GPU_OPTIONS_GROUPED}
                         </select>
                       </div>
@@ -869,6 +886,7 @@ export default function HomePage({
                           className="form-control"
                           style={{ padding: '10px 12px', fontSize: '0.88rem' }}
                         >
+                          <option value="">-- RAM Seçiniz --</option>
                           {RAM_OPTIONS}
                         </select>
                       </div>
@@ -883,6 +901,7 @@ export default function HomePage({
                           className="form-control"
                           style={{ padding: '10px 12px', fontSize: '0.88rem' }}
                         >
+                          <option value="">-- SSD Seçiniz --</option>
                           {STORAGE_OPTIONS}
                         </select>
                       </div>
@@ -902,6 +921,7 @@ export default function HomePage({
                         className="form-control"
                         style={{ padding: '10px 12px', fontSize: '0.88rem' }}
                       >
+                        <option value="">-- Model Seçiniz --</option>
                         {(POPULAR_SERIES_BY_BRAND['Apple'] || []).map((seri, idx) => (
                           <option key={idx} value={seri}>{seri}</option>
                         ))}
@@ -918,6 +938,7 @@ export default function HomePage({
                         className="form-control"
                         style={{ padding: '10px 12px', fontSize: '0.88rem' }}
                       >
+                        <option value="">-- Çip Seçiniz --</option>
                         {APPLE_CHIP_OPTIONS}
                       </select>
                     </div>
@@ -935,6 +956,7 @@ export default function HomePage({
                       className="form-control"
                       style={{ padding: '10px 12px', fontSize: '0.88rem' }}
                     >
+                      <option value="">-- Telefon Modeli Seçiniz --</option>
                       {IPHONE_OPTIONS}
                     </select>
                   </div>
@@ -951,6 +973,7 @@ export default function HomePage({
                       className="form-control"
                       style={{ padding: '10px 12px', fontSize: '0.88rem' }}
                     >
+                      <option value="">-- Tablet Modeli Seçiniz --</option>
                       <optgroup label="Apple iPad Modelleri">
                         <option value="ipad-pro-m4">Apple iPad Pro M4 (2024 - 11"/13")</option>
                         <option value="ipad-pro-m2">Apple iPad Pro M2 (11"/12.9")</option>
@@ -981,6 +1004,7 @@ export default function HomePage({
                       className="form-control"
                       style={{ padding: '10px 12px', fontSize: '0.88rem' }}
                     >
+                      <option value="">-- Konsol Modeli Seçiniz --</option>
                       {CONSOLE_OPTIONS}
                     </select>
                   </div>
@@ -1400,7 +1424,7 @@ export default function HomePage({
                 Mağazamıza Getirin veya Ücretsiz Kargolayın
               </h3>
               <p style={{ fontSize: '0.9rem', color: '#64748b', lineHeight: 1.6 }}>
-                Konya Selçuklu Nalçacı mağazamıza elden getirebilir veya Türkiye geneli anlaşmalı Yurtiçi Kargo kodumuzla ücretsiz gönderebilirsiniz.
+                Konya Selçuklu Tüybek Çarşısı mağazamıza randevu alarak elden getirebilir veya Türkiye geneli anlaşmalı Yurtiçi Kargo kodumuzla ücretsiz gönderebilirsiniz.
               </p>
             </div>
 
@@ -2147,14 +2171,30 @@ export default function HomePage({
               <h2 style={{ fontSize: '1.85rem', fontWeight: 800, color: 'var(--heading)', marginBottom: '14px' }}>
                 Selçuklu Mağazamız
               </h2>
-              <p style={{ color: 'var(--text-muted)', marginBottom: '20px', lineHeight: 1.65 }}>
-                {settings?.address || 'Feritpaşa Mah. Ahmet Hilmi Nalçacı Cad. No:42/B, Selçuklu / KONYA'} adresindeyiz. Mağazamıza her gün 09:00 - 20:00 arasında randevu almadan gelebilirsiniz.
+              <p style={{ color: 'var(--text-muted)', marginBottom: '16px', lineHeight: 1.65 }}>
+                {settings?.address || 'Hüsamettin Çelebi Mah. Akabe Cad. Tüybek Çarşısı No: 9 G, Selçuklu / KONYA'} adresindeyiz.
               </p>
+              <div style={{
+                background: 'rgba(234, 88, 12, 0.1)',
+                border: '1px solid rgba(234, 88, 12, 0.3)',
+                color: '#c2410c',
+                padding: '10px 14px',
+                borderRadius: '8px',
+                fontSize: '0.86rem',
+                fontWeight: 700,
+                marginBottom: '20px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}>
+                <Clock size={18} style={{ flexShrink: 0 }} />
+                <span>⚠️ Önemli: Mağazamıza gelmeden önce lütfen telefon veya WhatsApp üzerinden randevu alınız.</span>
+              </div>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '28px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <Clock size={18} style={{ color: 'var(--primary-bright)' }} />
-                  <span>Çalışma Saatleri: <strong>{settings?.workingHours || '09:00 - 20:00 (Her gün)'}</strong></span>
+                  <span>Çalışma Saatleri: <strong>{settings?.workingHours || '09:00 - 20:00 (Lütfen Randevu Alınız)'}</strong></span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <ShieldCheck size={18} style={{ color: 'var(--primary-bright)' }} />
