@@ -25,10 +25,18 @@ export default function ProductDetailPage({
   const [activeImage, setActiveImage] = useState(product?.image);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
     if (product?.image) {
       setActiveImage(product.image);
     }
-  }, [product?.id]);
+    const timer = setTimeout(() => {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+    }, 20);
+    return () => clearTimeout(timer);
+  }, [productId, product?.id]);
 
   if (!product) {
     return (

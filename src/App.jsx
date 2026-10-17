@@ -186,16 +186,38 @@ export default function App() {
 
   // Temiz URL (HTML5 History API) takibi & popstate
   useEffect(() => {
+    if (typeof window !== 'undefined' && 'scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+
     const handlePopState = () => {
       const { route, params } = parseCurrentPath();
       setCurrentRoute(route);
       setRouteParams(params);
       window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
     };
 
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
+
+  // Sayfa / Rota / Parametre her değiştiğinde kesin olarak en tepeye kaydır
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+
+    // DOM render sonrasında garantile
+    const frame = requestAnimationFrame(() => {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    });
+
+    return () => cancelAnimationFrame(frame);
+  }, [currentRoute, routeParams]);
 
   // Modern HTML5 Navigasyon Yönlendirici (Temiz URL - No Hash #)
   const navigate = (route, params = {}) => {
@@ -224,7 +246,9 @@ export default function App() {
     window.history.pushState(params, '', fullUrl);
     setCurrentRoute(route);
     setRouteParams(params);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
   };
 
   // Listem (Wishlist) Eylemleri

@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Calendar, Clock, ArrowLeft, Share2, BookOpen, User } from 'lucide-react';
 import WhatsAppIcon from '../components/WhatsAppIcon';
 
 export default function BlogDetailPage({ slug, blogs = [], navigate, settings }) {
   const blog = blogs.find(b => b.slug === slug || String(b.id) === String(slug)) || blogs[0];
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [slug, blog?.id]);
 
   if (!blog) {
     return (
